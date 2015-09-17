@@ -1,18 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 char* alphabet[36] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','G','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+char* output[999];
 int indexOf(char element)
 {
-    int j = alphabet[10];
     int i;
     for(i = 0; i<36;i++)
     {
         if(alphabet[i]==element)
             return i;
     }
-    return "37";
 }
-double convertToTen(char* num, unsigned int sourceBase)
+int convertToTen(char* num, unsigned int sourceBase)
 {
     int numberBaseNInt[999];
     int i = 0;
@@ -22,7 +21,7 @@ double convertToTen(char* num, unsigned int sourceBase)
         i++;
     }
     int n;
-    double result = 0;
+    int result = 0;
     for(n=0;n<i;n++)
     {
         int j;
@@ -34,32 +33,41 @@ double convertToTen(char* num, unsigned int sourceBase)
     }
     return result;
 }
+char* ns_convert(char* number, unsigned int sourceBase, unsigned int destBase)
+{
+    char* converted[9999];
+    unsigned int k = convertToTen(number,sourceBase);
+    int i = 0;
+    while(!(k<destBase))
+    {
+        converted[i]=(char)(k%destBase);
+        k/=destBase;
+        i++;
+    }
+    converted[i]=(char)k;
+    int n;
+    int b = 0;
+    int ten = 1;
+    for(n=0;n<i+1;n++)
+    {
+
+        b+=ten*(int)converted[n];
+        ten *= 10;
+    }
+   // output[i+1]='\0';
+    return b;
+}
 int main()
 {
-    printf ("%f",10^0);
+    int c;
+    c = ns_convert("10",2,10);
     printf("\n");
-    double k = convertToTen("77765",8);
-    printf("Hello world!\n Number is ");
-    printf("%f",k);
+    printf("Hello world!\n Number is %i", c);
     return 0;
 }
 
-/*
-char* ns_convert(char* number, unsigned int sourceBase, unsigned int destBase)
-{
-    char* output;
-    if(sourceBase!=10)
-    {
-        number = convertToTen(number,sourceBase);
-    }
-    while(!number<destBase)
-    {
-        // output+=number%destBase;
-        //  number/=destBase;
-    }
 
-    return "r";
-}
-*/
+
+
 
 
