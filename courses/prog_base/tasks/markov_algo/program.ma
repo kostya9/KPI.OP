@@ -4,6 +4,6 @@ ca->ac
 aa->a
 bb->b
 cc->c
-a->I
-b->I
-c->I
+a->|
+b->|
+c->|
