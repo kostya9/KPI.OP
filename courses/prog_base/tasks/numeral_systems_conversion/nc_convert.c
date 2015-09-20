@@ -55,7 +55,7 @@ char* ns_convert(char* number, unsigned int sourceBase, unsigned int destBase)
         converted[n] = converted[z-n];
         converted[z-n]=temp;
     }
-    char result[z+1];
+    char* result=(char *)malloc((z + 2) * sizeof(char));
     for(n=0;n<z+1;n++)
         result[n]=converted[n];
     result[z+1]='\0';
@@ -63,10 +63,8 @@ char* ns_convert(char* number, unsigned int sourceBase, unsigned int destBase)
 }
 int main()
 {
-    char* c;
-    c = (char *)malloc(5);
-    strcpy(c, ns_convert("A1",16,10));
-    printf("\n");
-    printf("Hello world!\n Number is %s", c );
+    char* c = ns_convert("A1", 16,10);
+    printf("\nHello world!\n Number is %s", c );
+    free(c);
     return 0;
 }
