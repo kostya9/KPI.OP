@@ -132,7 +132,7 @@ char* ns_convert(char* number, unsigned int sourceBase, unsigned int destBase)
     unsigned int kInt = k/1;
     fr = k-kInt;
     int z = 0;
-    while(!(k<destBase))
+    while(!(kInt<destBase))
     {
         int mod = (kInt)%destBase;
         if(mod>9)
@@ -179,7 +179,7 @@ char* ns_convert(char* number, unsigned int sourceBase, unsigned int destBase)
 }
 int main()
 {
-    char* c = ns_convert("A.AA", 16,10);
+    char* c = ns_convert("A.AA", 16,8);
     printf("\nHello world!\n Number is %s", c );
     free(c);
     return 0;
