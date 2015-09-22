@@ -1,7 +1,20 @@
-#include <stdio.h>
-#include <stdlib.h>
-char start = 48;
-char startL = 48+7;
+char getIntOrChar(char c, int intOrChar)
+{
+    if(intOrChar==0)
+    {
+        if(c>48+9)
+            return c -('0'+7);
+        else
+            return c - '0';
+    }
+    else
+    {
+        if(c>9)
+            return c +('0'+7);
+        else
+            return c + '0';
+    }
+}
 float pow(float source, int power)
 {
     float f = source;
@@ -21,165 +34,117 @@ float pow(float source, int power)
 
     return source;
 }
-float convertFractionToTen(char* fraction, unsigned int sourceBase, unsigned int length)
+double doubleToTenDouble(char* number, unsigned int sourceBase)
 {
-    float fr = 0;
-    int i=0;
-    while(fraction[i]!='\0')
+    double doubleTen=0;
+    signed int i = 0;
+    while(number[i*(-1)]!='\0')
     {
-        if(fraction[i]>start+9)
-            fr += (fraction[i])*pow(sourceBase, -i-1);
-        else
-            fr += (fraction[i])*pow(sourceBase, -i-1);
-        i++;
+        doubleTen+=getIntOrChar(number[i*(-1)],0)*pow(sourceBase, i-1);
+        i--;
     }
-    return fr;
+    return doubleTen;
 }
-float convertIntToTen(char* num, unsigned int sourceBase)
+int intToTenInt(char* number, unsigned int sourceBase, unsigned int length)
 {
-    int numberBaseNInt[999];
+    int intTen=0;
     int i = 0;
-    float fr;
-    char fraction[12];
-    while(num[i]!='\0')
+    while(number[i]!='\0')
     {
-        if(num[i]=='.')
-        {
-            fr=1;
-            break;
-        }
-        if(num[i]>start+9)
-           numberBaseNInt[i] = num[i] - startL;
-        else
-            numberBaseNInt[i] = num[i] - start;
+        intTen+=getIntOrChar(number[length-i-1],0)*pow(sourceBase, i);
         i++;
     }
-        numberBaseNInt[i]='\0';
-    int k;
-    if(fr)
-    {
-        i++;
-        k = i;
-
-        do
-        {
-            if(num[i]>start+9)
-                fraction[i-k] = num[i] - startL;
-            else
-                fraction[i-k] = num[i] - start;
-            i++;
-        }
-        while(num[i]!='\0'&&i<k+12);
-        fr=convertFractionToTen(fraction, sourceBase, i-k+1);
-    }
-
-    int n;
-    int result = 0;
-    for(n=0;n<k-1;n++)
-    {
-        int base;
-        base = pow(sourceBase, n);
-        int numb =numberBaseNInt[k-n-2];
-        result+= numb * base;
-    }
-    return result+fr;
+    return intTen;
 }
 char* ns_convert(char* number, unsigned int sourceBase, unsigned int destBase)
 {
-    float fr;
-    char converted[64];
-    char fraction[12];
-    float k = convertIntToTen(number,sourceBase);
-    if(destBase==10)
+    char cDouble[64 * sizeof(char)];
+    char cInteg[64* sizeof(char)];
+    double dNum;
+    int iNum;
+    int isDouble = 0;
+    int i=0;
+    int length;
+    while(number[i]!='\0')
     {
-        char out[999];
-        int kI = (int)k;
-        int j = 0;
-        if((int)k==0)
+        if(number[i]=='.')
         {
-            out[0]='0';
-            j++;
+            isDouble = 1;
+            break;
         }
         else
-            while(kI!=0)
-            {
-                int mod = (kI)%10;
-                out[j]=start + mod;
-                kI/=10;
-                j++;
-            }
-        int n;
-        char temp;
-        for(n=0;n<(j-1)/2+1;n++)
+            cInteg[i]=number[i];
+        i++;
+    }
+    length = i;
+    cInteg[i]='\0';
+    if(isDouble)
+    {
+        i++;
+        while(number[i-1]!='\0')
         {
-            temp = out[n];
-            out[n] = out[(j-1)-n];
-            out[(j-1)-n]=temp;
+            cDouble[i-length-1]=number[i];
+            i++;
         }
-        out[j]='.';
-        j++;
-        k=k-(int)k;
-        while(k!=0)
-        {
-            k*=10;
-            out[j] = start + k/1;
-            k-=(int)k;
-            j++;
-        }
-        out[j]='\0';
-        return out;
-    }
-    unsigned int kInt = k/1;
-    fr = k-kInt;
-    int z = 0;
-    while(!(kInt<destBase))
-    {
-        int mod = (kInt)%destBase;
-        if(mod>9)
-           converted[z]=startL + mod;
-        else
-           converted[z]=start + mod;
-        kInt/=destBase;
-        z++;
-    }
-    if(kInt> 9)
-        converted[z]=startL + kInt;
-    else
-        converted[z]=start + kInt;
-    int n;
-    char temp;
-    for(n=0;n<z/2+1;n++)
-    {
-        temp = converted[n];
-        converted[n] = converted[z-n];
-        converted[z-n]=temp;
-    }
-
-    char* result=(char *)malloc((z + 2+12) * sizeof(char));
-    for(n=0;n<z+1;n++)
-        result[n]=converted[n];
-    int i;
-    if(fr>0)
-    {
-        result[z+1]='.';
-
+        cDouble[i-length-1]='\0';
+        dNum = doubleToTenDouble(cDouble, sourceBase) + intToTenInt(cInteg, sourceBase, length);
+        iNum = (int)dNum;
+        double d = dNum-iNum;
         for(i=0;i<12;i++)
         {
-                fr*=destBase;
-                int integ = fr/1;
-                if(integ>9)
-                result[z+i+2]=startL+ integ;
-                else
-                    result[z+i+2]=start + integ;
-                fr=fr-integ;
+            d*=destBase;
+            cDouble[i]=getIntOrChar((int)d, 1);
+            d -=(int)d;
         }
+        cDouble[i] = '\0';
+        }
+    else
+            iNum = intToTenInt(cInteg, sourceBase, length);
+
+    i=0;
+    while(iNum>=destBase)
+    {
+        cInteg[i] = getIntOrChar(iNum%destBase,1);
+        iNum/=destBase;
+        i++;
     }
-    result[z+2+i]='\0';
-    return result;
+    cInteg[i]= getIntOrChar(iNum,1);
+    cInteg[i+1]='\0';
+    length = i+1;
+    char* t = malloc(64*sizeof(char));
+    i=0;
+    while(cInteg[i]!='\0')
+    {
+        t[i]=cInteg[i];
+        i++;
+    }
+
+    length = i-1;
+    int n;
+    char temp;
+    for(n=0;n<length/2+1;n++)
+    {
+        temp = t[n];
+        t[n] = t[length-n];
+        t[length-n]=temp;
+    }
+    if(isDouble)
+    {
+        t[i]='.';
+        i++;
+        length=i;
+        while(cDouble[i-length]!='\0')
+            {
+                t[i]=cDouble[i-length];
+                i++;
+            }
+    }
+    t[i]='\0';
+    return t;
 }
 int main()
 {
-    char* c = ns_convert("A.AA", 16,8);
+    char* c = ns_convert("AA", 16,9);
     printf("\nHello world!\n Number is %s", c );
     free(c);
     return 0;
