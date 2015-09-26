@@ -11,3 +11,7 @@
 
 1443287846 source:f:\university\op(git)\courses\prog_base\tasks\numeral_systems_conversion\nc_convert.c
 
+1443297116 source:w:\op(git)\courses\prog_base\tasks\numeral_systems_conversion\nc_convert.c
+	<stdio.h>
+	<math.h>
+

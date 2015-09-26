@@ -31,9 +31,6 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="nc_convert(old).c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="nc_convert.c">
 			<Option compilerVar="CC" />
 		</Unit>

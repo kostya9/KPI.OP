@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <math.h>
 char getIntOrChar(char c, int intOrChar)
 {
     if(intOrChar==0)
@@ -14,25 +16,6 @@ char getIntOrChar(char c, int intOrChar)
         else
             return c + '0';
     }
-}
-float pow(float source, int power)
-{
-    float f = source;
-    int i;
-    if(power == 1)
-        return source;
-    else if(power==0&&source!=0)
-            return 1;
-    else if(power>1)
-        for(i=2;i<=power;i++)
-            source*=f;
-    else
-        for(i=0;i>=power;i--)
-            source/=f;
-    if(source == 0)
-        return 0;
-
-    return source;
 }
 double doubleToTenDouble(char* number, unsigned int sourceBase)
 {
