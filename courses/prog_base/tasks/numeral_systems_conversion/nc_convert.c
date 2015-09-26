@@ -144,7 +144,7 @@ char* ns_convert(char* number, unsigned int sourceBase, unsigned int destBase)
 }
 int main()
 {
-    char* c = ns_convert("AA", 16,9);
+    char* c = ns_convert("1010100", 2,10);
     printf("\nHello world!\n Number is %s", c );
     free(c);
     return 0;
