@@ -15,7 +15,7 @@ int satisfies(int a, int b, int c)
         min = abs(min);
         
 
-        else if(sum<-256 && (min&(min-1)==0) && min<256)
+        if(sum<-256 && (min&(min-1)==0) && min<256)
             return 1;
         else if ((abs(sum)-min)<16||abs(sum)<16)
             return 1;

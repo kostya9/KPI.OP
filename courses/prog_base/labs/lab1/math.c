@@ -2,7 +2,7 @@
 double calc(double x, double y, double z)
 {
     double a;
-    if(x!=y && x!=0 && (x>=y ||((1/z - (int)(1/z))==0 && ((int)(1/z))%2!=0)))
+    if(x!=y && x!=0 && (x>=y ||((z - (int)(z))==0 && ((int)(z))%2!=0)))
     {
         a = pow(x, y + 1) / pow(x - y, 1 / z);
         a += 8*y + z / x;
