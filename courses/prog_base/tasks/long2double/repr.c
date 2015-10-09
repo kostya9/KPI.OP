@@ -25,16 +25,12 @@ double long2double(long long longNum)
 	}
 	if (exponent == 2047 && mantissa > 0)
 	{
-		return NAN;
+		return pow(-1, sign)*NAN;
 	}
-	else if (exponent == 2047 && sign == 1)
-		return -INFINITY;
-	else if (exponent == 2047 && sign == 0)
-		return INFINITY;
-	else if (exponent == 0 && mantissa == 0 && sign == 1)
-		return -0.0;
-	else if (exponent == 0 && mantissa == 0 && sign == 0)
-		return 0.0;
+	else if (exponent == 2047)
+		return pow(-1, sign)*INFINITY;
+	else if (exponent == 0 && mantissa == 0)
+		return pow(-1, sign)*0.0;
 	else if (exponent==0 && mantissa > 0)
 		return pow(-1, sign)*pow(2,-1022) * (mantissa);
 	else if(exponent>0 && exponent<2047)
