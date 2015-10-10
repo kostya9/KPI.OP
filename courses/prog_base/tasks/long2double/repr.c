@@ -3,24 +3,28 @@ double long2double(long long longNum)
 {
 	unsigned long long mask = 1;
 	mask <<= 63;
-	int count;
+	int count = 0;
 	int sign = 0;
 	short int exponent=0;
 	double mantissa = 0;
 	if (mask == (longNum&mask))
 		sign = 1;
 	mask >>= 1;
-	for (count = 0; count < 11; count++)
+	count++;
+	int powN = 10;
+	for (count; count < 12; count++)
 	{
 
 		if (mask == (longNum&mask))
-			exponent += pow(2, 10 - count);
+			exponent += pow(2, powN);
+		powN--;
 		mask >>= 1;
 	}
-	for (count = 1; count < 64 - 11; count++)
+	for (count; count < 64; count++)
 	{
 		if (mask == (longNum&mask))
-			mantissa += pow(2, -count);
+			mantissa += pow(2, powN);
+		powN--;
 		mask >>= 1;
 	}
 	if (exponent == 2047 && mantissa > 0)
