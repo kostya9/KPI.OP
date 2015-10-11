@@ -14,7 +14,6 @@ double long2double(long long longNum)
 	int powN = 10;
 	for (count; count < 12; count++)
 	{
-
 		if (mask == (longNum&mask))
 			exponent += pow(2, powN);
 		powN--;
@@ -28,9 +27,7 @@ double long2double(long long longNum)
 		mask >>= 1;
 	}
 	if (exponent == 2047 && mantissa > 0)
-	{
 		return pow(-1, sign)*NAN;
-	}
 	else if (exponent == 2047)
 		return pow(-1, sign)*INFINITY;
 	else if (exponent == 0 && mantissa == 0)
