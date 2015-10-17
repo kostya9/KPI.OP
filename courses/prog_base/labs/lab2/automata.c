@@ -53,10 +53,10 @@ int run(int moves[], int movesLen, int res[], int resLen)
 			int n;
 			for (n = resPos; n < resLen; n++)
 				res[n] = 0;
-			return resPos+1;
+			return resPos;
 		}
-		//@todo everything after resPos - 0;
 	}
+	return resPos;
 }
 int move(int res[], int resLen, int * resPos, struct Move mov[4][4], int moveNum, int * curStance)
 {
@@ -66,7 +66,7 @@ int move(int res[], int resLen, int * resPos, struct Move mov[4][4], int moveNum
 		case 10:
 		{
 			currMov = mov[*curStance][0];
-			curStance = currMov.stance;
+			*curStance = currMov.stance;
 		}
 		break;
 		case 18:
@@ -93,9 +93,9 @@ int move(int res[], int resLen, int * resPos, struct Move mov[4][4], int moveNum
 	{
 		case POP:
 		{
-			if (resPos == 0)
+			if (*resPos == 0)
 				return 0;
-			resPos--;
+			*resPos--;
 		}
 		break;
 		case CONTINUE:
@@ -119,8 +119,8 @@ int move(int res[], int resLen, int * resPos, struct Move mov[4][4], int moveNum
 		}
 		default:
 		{
-			(*resPos)++;
 			res[*resPos] = currMov.m;
+			(*resPos)++;
 		}
 	}
 }
