@@ -110,7 +110,7 @@ int move(int res[], int resLen, int * resPos, struct Move mov[4][4], int moveNum
 		break;
 		case BREAK:
 		{
-			0;
+			return 0;
 		}
 		break;
 		case NOTHING:
