@@ -72,16 +72,19 @@ int move(int res[], int resLen, int * resPos, struct Move mov[4][4], int moveNum
 		case 18:
 		{
 			currMov = mov[*curStance][1];
+			*curStance = currMov.stance;
 		}
 		break;
 		case 28:
 		{
 			currMov = mov[*curStance][2];
+			*curStance = currMov.stance;
 		}
 		break;
 		case 208:
 		{
 			currMov = mov[*curStance][3];
+			*curStance = currMov.stance;
 		}
 		break;
 		default:
@@ -95,7 +98,7 @@ int move(int res[], int resLen, int * resPos, struct Move mov[4][4], int moveNum
 		{
 			if (*resPos == 0)
 				return 0;
-			*resPos--;
+			(*resPos)--;
 		}
 		break;
 		case CONTINUE:
