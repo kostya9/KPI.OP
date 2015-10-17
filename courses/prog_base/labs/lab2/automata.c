@@ -53,7 +53,7 @@ int run(int moves[], int movesLen, int res[], int resLen)
 			int n;
 			for (n = resPos; n < resLen; n++)
 				res[n] = 0;
-			return resPos;
+			return resPos+1;
 		}
 		//@todo everything after resPos - 0;
 	}
