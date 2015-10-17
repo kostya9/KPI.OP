@@ -49,7 +49,13 @@ int run(int moves[], int movesLen, int res[], int resLen)
 	for (i = 0; i < movesLen; i++)
 	{
 		if (!move(res, resLen, &resPos, mov, moves[i], &curStance))
-			return; //@todo everything after resPos - 0;
+		{
+			int n;
+			for (n = resPos; n < resLen; n++)
+				res[n] = 0;
+			return resPos;
+		}
+		//@todo everything after resPos - 0;
 	}
 }
 int move(int res[], int resLen, int * resPos, struct Move mov[4][4], int moveNum, int * curStance)
@@ -109,7 +115,7 @@ int move(int res[], int resLen, int * resPos, struct Move mov[4][4], int moveNum
 		break;
 		case NOTHING:
 		{
-			return -1;
+			return 0;
 		}
 		default:
 		{
