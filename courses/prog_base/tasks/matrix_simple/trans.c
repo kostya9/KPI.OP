@@ -45,4 +45,12 @@ void transposSide(int mat[4][4])		// (n0 % 2 == 1)
 
 		
 }
-
+void flipV(int mat[4][4])
+{
+	int i, n;
+	int tempMat[4][4];
+	matCopy(mat, tempMat);
+	for (i = 0; i < 4; i++)
+		for (n = 0; n < 4; n++)
+			mat[3-n][i] = tempMat[n][i];
+}
