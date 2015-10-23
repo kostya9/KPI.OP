@@ -4,7 +4,7 @@ void fillRand(int mat[4][4])
 	int i, n;
 	for (i = 0; i < 4; i++)
 		for (n = 0; n < 4; n++)
-			mat[i][n] = 1000 - rand() % 2000;
+			mat[i][n] = 999 - rand() % 1999;
 }
 void matCopy(int src[4][4], int dest[4][4])
 {
