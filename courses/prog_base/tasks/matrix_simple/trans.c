@@ -28,7 +28,7 @@ void rotateCW270(int mat[4][4])
 	for (i = 0; i < 3;i++)
 		rotateCW90(mat);
 }
-void transposeMain(int mat[4][4])		
+void transposMain(int mat[4][4])		
 {
 	int i, n;
 	int tempMat[4][4];
