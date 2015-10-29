@@ -5,27 +5,32 @@
 char * process(char * resultStr, const char * textLines[],
     int linesNum, const char * extraStr)
 {
-    int mostNum = -1;
-    int zeroNum = -1;
+    int nMost = -1;
+    int iMost = -1;
+    int nZero = -1;
     int nMoreOne = 0;
     int i, curOutputSymb = 0;
     for(i=0; i<linesNum; i++)
     {
-        int curMostNum = 0;
+        int nCurMost = 0;
         const char * line = textLines[i];
-        if(!strstr(line, extraStr) && zeroNum==-1)
-            zeroNum = i;
+        if(!strstr(line, extraStr) && nZero==-1)
+            nZero = i;
         else
             nMoreOne++;
         while(strstr(line, extraStr))
         {
-            curMostNum++;
+            nCurMost++;
             line = strstr(line, extraStr) + 1;
         }
-        mostNum = mostNum>curMostNum ? mostNum : curMostNum;
+        if(nCurMost>nMost)
+        {
+            nMost = nCurMost;
+            iMost = i;
+        }
     }
-    if(mostNum>0 || zeroNum>0)
-        sprintf(resultStr, "%i %s", nMoreOne, textLines[zeroNum]);
+    if(nMost>0 || nZero>0)
+        sprintf(resultStr, "%i %i %s", iMost, nMoreOne, textLines[nZero]);
     else
         sprintf(resultStr, "0 NULL %s", extraStr);
     return resultStr;
