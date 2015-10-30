@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #ifdef max
-#undef max
+    #undef max
 #endif
 void fillRand3(int arr[], int size)
 {
@@ -69,17 +69,11 @@ int maxOccurance(int arr[], int size)
         for(k=0;k<size;k++)
             if(arr[i]==arr[k])
                 curNOccur++;
-        if(prevMaxOccur[1]==curNOccur)
+        if(prevMaxOccur[1]<=curNOccur)
         {
             prevMaxOccur[0] = prevMaxOccur[0]>arr[i] ? prevMaxOccur[0] : arr[i];
             prevMaxOccur[1] = curNOccur;
         }
-        else if(prevMaxOccur[1]<curNOccur)
-        {
-            prevMaxOccur[0] = arr[i];
-            prevMaxOccur[1] = curNOccur;
-        }
-
     }
     return prevMaxOccur[0];
 }
@@ -99,26 +93,19 @@ void add(int arr1[], int arr2[], int res[], int size)
 {
 	int i;
 	for (i = 0; i < size; i++)
-	{
 		res[i] = arr1[i] + arr2[i];
-	}
 }
 int lteq(int arr1[], int arr2[], int size)
 {
-	int isLessOrEqauals = 1;
 	int i;
 	for (i = 0; i < size; i++)
-	{
 		if (arr1[i] > arr2[i])
-			isLessOrEqauals = 0;
-	}
-	return isLessOrEqauals;
+			return 0;
+	return 1;
 }
 void lor(int arr1[], int arr2[], int res[], int size)
 {
 	int i;
 	for (i = 0; i < size; i++)
-	{
 		res[i] = arr1[i] | arr2[i];
-	}
 }
