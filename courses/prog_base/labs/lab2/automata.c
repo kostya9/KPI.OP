@@ -1,17 +1,17 @@
 #define NOTHING -100
+enum Ops { POP = -4, CONTINUE, REPEAT, BREAK };
 struct Move
 {
 	enum Ops m;
 	int stance;
 };
-enum Ops { POP = -4, CONTINUE, REPEAT, BREAK };
 int run(int moves[], int movesLen, int res[], int resLen)
 {
 	int resPos = 0;
 	int movePos = 0;
 	int i;
 
-	
+
 	int curStance = 0;
 	struct Move mov[4][4];
 	mov[0][0].m = 11;
@@ -35,7 +35,7 @@ int run(int moves[], int movesLen, int res[], int resLen)
 	mov[2][1].m = 5;
 	mov[2][1].stance = 3;
 	mov[2][2].m = REPEAT;
-	mov[2][2].stance = 2;
+	mov[2][2].stance = 1;
 	mov[2][3].m = 11;
 	mov[2][3].stance = 2;
 	mov[3][0].m = NOTHING;
@@ -96,9 +96,10 @@ int move(int res[], int resLen, int * resPos, struct Move mov[4][4], int moveNum
 	{
 		case POP:
 		{
-			if (*resPos == 0)
-				return 0;
-			(*resPos)--;
+		    if(*resPos>0)
+                (*resPos)--;
+            else
+                return 0;
 		}
 		break;
 		case CONTINUE:
@@ -122,8 +123,12 @@ int move(int res[], int resLen, int * resPos, struct Move mov[4][4], int moveNum
 		}
 		default:
 		{
+
 			res[*resPos] = currMov.m;
-			(*resPos)++;
+			if(*resPos<resLen)
+                (*resPos)++;
+            else
+                return 0;
 		}
 	}
 }
