@@ -2,14 +2,12 @@
 #ifdef max
 #undef max
 #endif
-/* Заповнює масив випадковими цілими числами в діапазоні [0..1] (включно) */
 void fillRand3(int arr[], int size)
 {
 	int i;
 	for (i = 0; i < size; i++)
 		arr[i] = rand() % 2;
 }
-/* Перевіряє чи всі елементи масиву знаходяться у діапазоні [0..1] (включно). Повертає 1, якщо умова задовольняється і 0 - якщо не задовольняється */
 int checkRand3(int arr[], int size)
 {
 	int i;
@@ -20,16 +18,39 @@ int checkRand3(int arr[], int size)
 	}
 	return 1;
 }
-/* Знаходить максимальний серед елементів масиву */
+float meanValue(int arr[], int size)
+{
+    int i;
+    float sum = 0;
+    for(i = 0; i<size; i++)
+        sum+=arr[i];
+    return sum/size;
+}
 int max(int arr[], int size)
-	{	
+	{
 		int i;
 		int max = arr[0];
 		for (i = 1; i < size; i++)
 			max = max>arr[i] ? max : arr[i];
 		return max;
 	}
-/* Знаходить індекс першого максимального елемента масиву */
+int meanIndex(int arr[], int size)
+{
+    int i;
+    float mean = meanValue(arr, size);
+    int iMean = 0;
+    float deltaMean = fabs(arr[0] - mean);
+    for(i=1;i<size; i++)
+    {
+        float curDeltaMean = fabs(mean - arr[i]);
+        if(curDeltaMean<deltaMean)
+        {
+            iMean = i;
+            deltaMean = curDeltaMean;
+        }
+    }
+    return iMean;
+}
 int maxIndex(int arr[], int size)
 {
 	int i;
@@ -38,36 +59,30 @@ int maxIndex(int arr[], int size)
 		if (arr[i] == m)
 			return i;
 }
-/* Знаходить значення, яке найчастіше зустрічається у масиві. Якщо таких декілька, повертає більше з них*/
-int maxOccurance(int arr[], int size)         //@todo DIRTY AF
+int maxOccurance(int arr[], int size)
 {
-	int maxOccur[2] = { arr[0], 1 }; // 0 - number, 1 - number of occurances
-	int occs[10][2];// 0 - number, 1 - number of occurances
-	occs[0][0] = arr[0];
-	occs[0][1] = 1;
-	int i;
-	int n;
-	for (i = 1; i < size; i++)
-	{
-		occs[i][0] = arr[i];
-		occs[i][1] = 1;
-		for (n = 0; n < size; n++)
-		{
-			if (arr[i] == occs[n][0])
-				occs[n][1]++;
-		}
-	}
-	for (i = 1; i < size; i++)
-	{
-		if (occs[i][1]>maxOccur[1] || (occs[i][1] == maxOccur[1] && occs[i][0]>maxOccur[0]))
-		{
-			maxOccur[0] = occs[i][0];
-			maxOccur[1] = occs[i][1];
-		}
-	}
-	return maxOccur[0];
+	int prevMaxOccur[2] = { 0, -1 }; // 0 - number, 1 - number of occurances
+	int i, k;
+	for(i=0;i<size;i++)
+    {
+        int curNOccur = 0;
+        for(k=0;k<size;k++)
+            if(arr[i]==arr[k])
+                curNOccur++;
+        if(prevMaxOccur[1]==curNOccur)
+        {
+            prevMaxOccur[0] = prevMaxOccur[0]>arr[i] ? prevMaxOccur[0] : arr[i];
+            prevMaxOccur[1] = curNOccur;
+        }
+        else if(prevMaxOccur[1]<curNOccur)
+        {
+            prevMaxOccur[0] = arr[i];
+            prevMaxOccur[1] = curNOccur;
+        }
+
+    }
+    return prevMaxOccur[0];
 }
-/* Розміри arr1, arr2 і res одинакові. Перевіряється різниця між відповідними елементами масивів arr1 і arr2. Ця різниця записується у відповідний елемент масиву res. Якщо всі різниці рівні 0 (тобто масиви arr1 і arr2 одинакові, то функція повертає 1, інакше - 0 */
 int diff(int arr1[], int arr2[], int res[], int size)
 {
 	int i;
@@ -80,10 +95,6 @@ int diff(int arr1[], int arr2[], int res[], int size)
 	}
 	return isEqual;
 }
-/* Розміри arr1, arr2 і res одинакові. Виконати відповідну арифметичну операцію над елементами масивів arr1 і arr2 і записати у відповідний елемент масиву res результат. */
-
-// Якщо n0 % 4 == 0
-/* сума */
 void add(int arr1[], int arr2[], int res[], int size)
 {
 	int i;
@@ -92,7 +103,6 @@ void add(int arr1[], int arr2[], int res[], int size)
 		res[i] = arr1[i] + arr2[i];
 	}
 }
-/* lteq - less than or equals */
 int lteq(int arr1[], int arr2[], int size)
 {
 	int isLessOrEqauals = 1;
@@ -104,9 +114,6 @@ int lteq(int arr1[], int arr2[], int size)
 	}
 	return isLessOrEqauals;
 }
-/* Розміри arr1, arr2 і res одинакові. Виконати відповідну логічну операцію над елементами масивів arr1 і 
-arr2 і записати результат у масив res. Всі елементи масиву знаходяться у діапазоні [0..1] (включно) */
-/* lor - logical OR */
 void lor(int arr1[], int arr2[], int res[], int size)
 {
 	int i;
