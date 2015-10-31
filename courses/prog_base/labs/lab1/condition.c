@@ -35,7 +35,7 @@ int satisfies(int a, int b, int c)
         }
         else
         {
-            if (a*b>0)
+             if (a*b>0)
                 return (a + b)*(1 + 8)>-256;
             else if(b*c>0)
                 return (b + c)*(1 + 8)>-256;
