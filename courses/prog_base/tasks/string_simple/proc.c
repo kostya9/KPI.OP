@@ -14,9 +14,10 @@ char * process(char * resultStr, const char * textLines[],
     {
         int nCurMost = 0;
         const char * line = textLines[i];
-        if(!strstr(line, extraStr) && nZero==-1)
+        int hasOne = strstr(line, extraStr);
+        if(!hasOne && nZero==-1)
             nZero = i;
-        else
+        if(hasOne)
             nMoreOne++;
         while(strstr(line, extraStr))
         {
