@@ -1,4 +1,5 @@
 #include <windows.h>
+#include <stdlib.h>
 #define RED BACKGROUND_RED
 #define PURPLE BACKGROUND_RED | BACKGROUND_BLUE
 #define YELLOW BACKGROUND_RED | BACKGROUND_GREEN
@@ -22,16 +23,18 @@ void setConsoleColor(int curColorPos)
 }
 void consoleFill(int rows, int columns)
 {
-    int i, curRow;
+    int i, curRow, once = 1;
     for(i = 0, curRow = 0; curRow<rows; i++, curRow = (i/columns))
     {
-        int left = (i/columns)%2 ? 0 : 1;
+        int left = curRow %2 ? 0 : 1;
         int curColumn = left ? (columns-1)-i%columns : i%columns;
-        int curColorPos = abs((curColumn - curRow)%3);
+        int curColorPos = abs( (curColumn - curRow) % 3);
+        if(curRow > curColumn)
+            curColorPos = 2 - abs( (curColumn - curRow - 2) % 3);
         setCursorPosition(curColumn, curRow);
         setConsoleColor(curColorPos);
-        printf("*");
-        Sleep(10);
+        printf(" ");
+        Sleep(1);
     }
     setCursorPosition(0, 0);
 }
@@ -43,4 +46,5 @@ int main()
     columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
     rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
     consoleFill(rows, columns);
+    getchar();
 }
