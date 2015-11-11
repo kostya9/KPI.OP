@@ -23,7 +23,7 @@ void setConsoleColor(int curColorPos)
 }
 void consoleFill(int rows, int columns)
 {
-    int i, curRow, once = 1;
+    int i, curRow;
     for(i = 0, curRow = 0; curRow<rows; i++, curRow = (i/columns))
     {
         int left = curRow %2 ? 0 : 1;
@@ -33,7 +33,7 @@ void consoleFill(int rows, int columns)
             curColorPos = 2 - abs( (curColumn - curRow - 2) % 3);
         setCursorPosition(curColumn, curRow);
         setConsoleColor(curColorPos);
-        printf(" ");
+        printf("*"); /* " " is more beautiful */
         Sleep(1);
     }
     setCursorPosition(0, 0);
