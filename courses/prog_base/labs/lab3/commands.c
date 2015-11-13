@@ -11,6 +11,7 @@ void setConsoleColor(int color)
 void clearCommandPanel(int from, int to)
 {
     CONSOLE_SCREEN_BUFFER_INFO csbi;
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     int columns, rows;
     int i, k;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
@@ -26,38 +27,46 @@ void clearCommandPanel(int from, int to)
 void printArray(double arr[], size_t size)
 {
     int i, j;
+    CONSOLE_SCREEN_BUFFER_INFO SBInfo;
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     clearCommandPanel(WORKZONE, COMMANDSACTIONS);
-    setConsoleColor(BACKGROUND_BLUE | FOREGROUND_GREEN);
-    for(j = 0; j < 8; j++)
+    setConsoleColor(WORKBACK);
+    for(j = 0; j < 9; j++)
         for(i = TAB - 4; i < 37 + LENGTH/2; i++)
         {
             setCursorPosition(i, WORKZONE + j);
             printf(" ");
         }
-    setCursorPosition( LENGTH/2 - 3, WORKZONE);
+    setCursorPosition( (LENGTH - TAB)/2, WORKZONE);
     puts("Our Array");
-    setConsoleColor(BACKGROUND_GREEN);
+    setConsoleColor(WORKFOR);
     setCursorPosition(TAB, WORKZONE + 2);
     for(i = 0; i < size; i++)
+    {
+        GetConsoleScreenBufferInfo(hConsole, &SBInfo);
+        if(SBInfo.dwCursorPosition.X > LENGTH - TAB - 5)
+            setCursorPosition(TAB, WORKZONE + 3);
         printf("%.3lf ", arr[i]);
-    setConsoleColor(BACKGROUND_BLUE | FOREGROUND_GREEN);
-    setCursorPosition(LENGTH/2 - 6, WORKZONE + 4);
+    }
+    setConsoleColor(WORKBACK);
+    setCursorPosition( (LENGTH - TAB)/2 - 3, WORKZONE + 4);
     puts("Command's action : ");
     setCursorPosition(0, 1);
-    setConsoleColor(0x07);
+    setConsoleColor(DEFCOLOR);
 }
 void printArrayTo(double arr[], size_t size, unsigned int where)
 {
     int i;
     setCursorPosition(TAB, where);
-    setConsoleColor(BACKGROUND_GREEN);
+    setConsoleColor(WORKFOR);
     for(i = 0; i < size; i++)
         printf("%.3lf ", arr[i]);
-        setConsoleColor(0x07);
+        setConsoleColor(DEFCOLOR);
     setCursorPosition(0, 1);
 }
 void initConsole()
 {
+    int i, j;
     int status = 0;
     size_t nOfElements =0;
     char buffer[100];
@@ -73,6 +82,13 @@ void initConsole()
         status = sscanf(buffer, "%u", &nOfElements);
     }
     while(!status || nOfElements < 1 || nOfElements > 10);
+    setConsoleColor(DEFCOLOR);
+    for(i = 0; i < LENGTH; i++)
+        for(j = 0; j < HEIGHT; j++)
+        {
+            setCursorPosition(i, j);
+            printf(" ");
+        }
     double arr[nOfElements];
     system("cls");
     setCursorPosition(LENGTH/3, 0);
@@ -135,21 +151,21 @@ void getCommand(double arr[], size_t size)
         double sum = findSum(arr, size);
         printArray(arr, size);
         setCursorPosition(TAB, COMMANDSACTIONS);
-        setConsoleColor(BACKGROUND_GREEN);
+        setConsoleColor(WORKFOR);
         printf("sum : ");
         printf("%.3lf", sum);
         setCursorPosition(0, 1);
-        setConsoleColor(0x07);
+        setConsoleColor(DEFCOLOR);
     }
     else if(!strcmp(buffer, "nnegative\n"))
     {
         int nnegative = numOfNegElements(arr, size);
         printArray(arr, size);
         setCursorPosition(TAB, COMMANDSACTIONS);
-        setConsoleColor(BACKGROUND_GREEN);
+        setConsoleColor(WORKFOR);
         printf("number of negative elements : ");
         printf("%i", nnegative);
-        setConsoleColor(0x07);
+        setConsoleColor(DEFCOLOR);
         setCursorPosition(0, 1);
     }
     else if(strstr(buffer, "shift"))
@@ -192,10 +208,11 @@ void getCommand(double arr[], size_t size)
     {
         int ifmin = getMinimumIndex(arr, size);
         printArray(arr, size);
-        setConsoleColor(BACKGROUND_GREEN);
+        setConsoleColor(WORKFOR);
         setCursorPosition(TAB, COMMANDSACTIONS);
         printf("Index and value of the first minimal element : ");
         printf("%i %.3lf", ifmin, arr[ifmin]);
+        setConsoleColor(DEFCOLOR);
         setCursorPosition(0, 1);
     }
     else if(!strcmp(buffer, "swapmaxmin\n"))

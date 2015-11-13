@@ -14,11 +14,14 @@ powall i - to set all elements to their power of i \n \
 firsmin - to get first minimal value and its index \n \
 swapmaxmin - to swap last maximum and minimum values \n \
 exit - to quit the program"
-#define LENGTH 100
+#define LENGTH 90
 #define HEIGHT 30
 #define WORKZONE 20
 #define TAB 10
 #define COMMANDSACTIONS WORKZONE + 6
+#define DEFCOLOR 0xF0
+#define WORKBACK 0x60 | BACKGROUND_INTENSITY
+#define WORKFOR 0x30 | BACKGROUND_INTENSITY
 void writeHelp();
 void getCommand(double[], size_t);
 void setCursorPosition(int, int);
