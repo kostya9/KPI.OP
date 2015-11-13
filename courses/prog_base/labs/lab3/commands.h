@@ -19,9 +19,9 @@ exit - to quit the program"
 #define WORKZONE 20
 #define TAB 10
 #define COMMANDSACTIONS WORKZONE + 6
-#define DEFCOLOR 0xF0
-#define WORKBACK 0x60 | BACKGROUND_INTENSITY
-#define WORKFOR 0x30 | BACKGROUND_INTENSITY
+#define DEFCOLOR 0x07
+#define WORKBACK BACKGROUND_BLUE | FOREGROUND_GREEN
+#define WORKFOR BACKGROUND_GREEN
 void writeHelp();
 void getCommand(double[], size_t);
 void setCursorPosition(int, int);
