@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1446473310 source:c:\op\main.c
+	<windows.h>
+
+1446468447 source:c:\op\animatedtext.c
+	<windows.h>
+	<unistd.h>
+	<time.h>
+	<stdio.h>
+	<stdlib.h>
+
