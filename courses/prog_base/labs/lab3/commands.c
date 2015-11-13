@@ -25,23 +25,35 @@ void clearCommandPanel(int from, int to)
 }
 void printArray(double arr[], size_t size)
 {
-    int i;
+    int i, j;
     clearCommandPanel(WORKZONE, COMMANDSACTIONS);
-    setCursorPosition(LENGTH/3, WORKZONE);
-    puts("\tOur Array");
+    setConsoleColor(BACKGROUND_BLUE | FOREGROUND_GREEN);
+    for(j = 0; j < 8; j++)
+        for(i = TAB - 4; i < 37 + LENGTH/2; i++)
+        {
+            setCursorPosition(i, WORKZONE + j);
+            printf(" ");
+        }
+    setCursorPosition( LENGTH/2 - 3, WORKZONE);
+    puts("Our Array");
+    setConsoleColor(BACKGROUND_GREEN);
     setCursorPosition(TAB, WORKZONE + 2);
     for(i = 0; i < size; i++)
         printf("%.3lf ", arr[i]);
-    setCursorPosition(LENGTH/3 + 3, WORKZONE + 4);
+    setConsoleColor(BACKGROUND_BLUE | FOREGROUND_GREEN);
+    setCursorPosition(LENGTH/2 - 6, WORKZONE + 4);
     puts("Command's action : ");
     setCursorPosition(0, 1);
+    setConsoleColor(0x07);
 }
 void printArrayTo(double arr[], size_t size, unsigned int where)
 {
     int i;
     setCursorPosition(TAB, where);
+    setConsoleColor(BACKGROUND_GREEN);
     for(i = 0; i < size; i++)
         printf("%.3lf ", arr[i]);
+        setConsoleColor(0x07);
     setCursorPosition(0, 1);
 }
 void initConsole()
@@ -112,7 +124,7 @@ void getCommand(double arr[], size_t size)
     else if(!strcmp(buffer, "reverse\n"))
     {
         int i;
-        clearCommandPanel(COMMANDSACTIONS, COMMANDSACTIONS + 1);
+        printArray(arr, size);
         reverseArr(arr, size);
         printArrayTo(arr, size, COMMANDSACTIONS);
         reverseArr(arr, size);
@@ -121,21 +133,23 @@ void getCommand(double arr[], size_t size)
     else if(!strcmp(buffer, "sum\n"))
     {
         double sum = findSum(arr, size);
+        printArray(arr, size);
         setCursorPosition(TAB, COMMANDSACTIONS);
-        clearCommandPanel(COMMANDSACTIONS, COMMANDSACTIONS + 1);
-        setCursorPosition(TAB, COMMANDSACTIONS);
+        setConsoleColor(BACKGROUND_GREEN);
         printf("sum : ");
         printf("%.3lf", sum);
         setCursorPosition(0, 1);
+        setConsoleColor(0x07);
     }
     else if(!strcmp(buffer, "nnegative\n"))
     {
         int nnegative = numOfNegElements(arr, size);
+        printArray(arr, size);
         setCursorPosition(TAB, COMMANDSACTIONS);
-        clearCommandPanel(COMMANDSACTIONS, COMMANDSACTIONS + 1);
-        setCursorPosition(TAB, COMMANDSACTIONS);
+        setConsoleColor(BACKGROUND_GREEN);
         printf("number of negative elements : ");
         printf("%i", nnegative);
+        setConsoleColor(0x07);
         setCursorPosition(0, 1);
     }
     else if(strstr(buffer, "shift"))
@@ -177,9 +191,9 @@ void getCommand(double arr[], size_t size)
     else if(!strcmp(buffer, "firstmin\n"))
     {
         int ifmin = getMinimumIndex(arr, size);
+        printArray(arr, size);
+        setConsoleColor(BACKGROUND_GREEN);
         setCursorPosition(TAB, COMMANDSACTIONS);
-        clearCommandPanel(COMMANDSACTIONS, COMMANDSACTIONS + 1);
-        setCursorPosition(TAB - 8, COMMANDSACTIONS);
         printf("Index and value of the first minimal element : ");
         printf("%i %.3lf", ifmin, arr[ifmin]);
         setCursorPosition(0, 1);
