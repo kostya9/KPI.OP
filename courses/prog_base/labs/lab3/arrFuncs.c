@@ -3,13 +3,25 @@
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
-void initRandArray(double arr[], size_t size)
+#include <limits.h>
+void initRandArray(double arr[], size_t size, double from, double to)
 {
     time_t t;
     srand((unsigned) time(&t));
     int i;
+    if(to < from)
+    {
+        double temp = to;
+        to = from;
+        from = temp;
+    }
     for(i = 0; i < size; i++)
-        arr[i] = rand()%100 * pow(10, -(rand()%3)) - 10;
+    {
+        double randTo = to - from < 0 ? -rand()%(int)(to - from) : rand()%(int)(to - from);
+        double r=((double)rand()/(double)RAND_MAX);
+        arr[i] = (from + randTo) - r;
+    }
+
 }
 void nullifyArr(double arr[], size_t size)
 {
@@ -23,7 +35,8 @@ void changeNumByInd(double arr[], size_t size, int index, double number)
 }
 double findSum(double arr[], size_t size)
 {
-    int i,sum = 0;
+    int i;
+    double sum = 0;
     for(i = 0; i < size; i++)
         sum+=arr[i];
     return sum;
@@ -75,7 +88,7 @@ int getMinimumIndex(double arr[], size_t size)
         }
     return iMin;
 }
-void swapLastMaxAndMin(double arr[], size_t size)
+void swapLastMaxAndMin(double arr[], size_t size, int * swap1, int * swap2)
 {
     int i;
     int iMin = 0;
@@ -94,6 +107,8 @@ void swapLastMaxAndMin(double arr[], size_t size)
             nMax = arr[i];
         }
     double temp = arr[iMax];
+    *swap1 = iMax;
+    *swap2 = iMin;
     arr[iMax] = arr[iMin];
     arr[iMin] = temp;
 }

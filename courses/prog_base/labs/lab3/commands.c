@@ -5,64 +5,59 @@
 #include "arrFuncs.h"
 void setConsoleColor(int color)
 {
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    HANDLE hConsole=GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, color);
 }
-void clearCommandPanel(int from, int to)
-{
-    CONSOLE_SCREEN_BUFFER_INFO csbi;
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    int columns, rows;
-    int i, k;
-    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-    columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
-    for(i = 0; i < to - from; i++)
-        for(k = 0; k < columns; k++)
-        {
-            setCursorPosition(k, from + i);
-            printf(" ");
-        }
-    setCursorPosition(0, from);
-}
-void printArray(double arr[], size_t size)
+void clearZone(int xFrom, int yFrom, int xTo, int yTo, int color)
 {
     int i, j;
-    CONSOLE_SCREEN_BUFFER_INFO SBInfo;
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    clearCommandPanel(WORKZONE, COMMANDSACTIONS);
-    setConsoleColor(WORKBACK);
-    for(j = 0; j < 9; j++)
-        for(i = TAB - 4; i < 37 + LENGTH/2; i++)
+    setConsoleColor(color);
+    for(i = xFrom; i <= xTo; i++)
+        for(j = yFrom; j <= yTo; j++)
         {
-            setCursorPosition(i, WORKZONE + j);
+            setCursorPosition(i, j);
             printf(" ");
         }
-    setCursorPosition( (LENGTH - TAB)/2, WORKZONE);
-    puts("Our Array");
-    setConsoleColor(WORKFOR);
-    setCursorPosition(TAB, WORKZONE + 2);
+    setConsoleColor(COLORDEF);
+}
+
+void printArrEl(double arr[], size_t size, int el)
+{
+    CONSOLE_SCREEN_BUFFER_INFO SBInfo;
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    GetConsoleScreenBufferInfo(hConsole, &SBInfo);
+    setConsoleColor(COLORWORKFOR);
+    clearZone(RIGHTBORDER, el + 1, LENGTH - 1, el + 1, COLORSELECT);
+    setConsoleColor(COLORSELECT);
+    setCursorPosition(RIGHTBORDER + (LENGTH - (RIGHTBORDER))/3 - 3 , el + 1);
+    printf("%.2f", arr[el]);
+    setCursorPosition(SBInfo.dwCursorPosition.X, SBInfo.dwCursorPosition.Y);
+    setConsoleColor(COLORDEF);
+}
+void printArr(double arr[], size_t size)
+{
+    CONSOLE_SCREEN_BUFFER_INFO SBInfo;
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    GetConsoleScreenBufferInfo(hConsole, &SBInfo);
+    int i;
+    clearZone(RIGHTBORDER, 1, LENGTH - 1, size, COLORWORKFOR);
+    setConsoleColor(COLORWORKFOR);
     for(i = 0; i < size; i++)
     {
-        GetConsoleScreenBufferInfo(hConsole, &SBInfo);
-        if(SBInfo.dwCursorPosition.X > LENGTH - TAB - 5)
-            setCursorPosition(TAB, WORKZONE + 3);
-        printf("%.3lf ", arr[i]);
+        setCursorPosition(RIGHTBORDER + (LENGTH - (RIGHTBORDER))/3 - 3 , i + 1);
+        if(fabs(arr[i]) > 99999999999999)
+        {
+            setCursorPosition(SBInfo.dwCursorPosition.X, SBInfo.dwCursorPosition.Y - 1);
+            setConsoleColor(COLORERROR);
+            puts("Numbers are too big. Resetting...");
+            initRandArray(arr, size, -10, 10);
+            printArr(arr, size);
+            break;
+        }
+        printf("%.2lf", arr[i]);
     }
-    setConsoleColor(WORKBACK);
-    setCursorPosition( (LENGTH - TAB)/2 - 3, WORKZONE + 4);
-    puts("Command's action : ");
-    setCursorPosition(0, 1);
-    setConsoleColor(DEFCOLOR);
-}
-void printArrayTo(double arr[], size_t size, unsigned int where)
-{
-    int i;
-    setCursorPosition(TAB, where);
-    setConsoleColor(WORKFOR);
-    for(i = 0; i < size; i++)
-        printf("%.3lf ", arr[i]);
-        setConsoleColor(DEFCOLOR);
-    setCursorPosition(0, 1);
+    setCursorPosition(SBInfo.dwCursorPosition.X, SBInfo.dwCursorPosition.Y);
+    setConsoleColor(COLORDEF);
 }
 void initConsole()
 {
@@ -76,25 +71,28 @@ void initConsole()
     do
     {
         system("cls");
-        puts("Please write the size of the array (1..10)");
+        puts("Please write the size of the array (1..23)");
         printf(" >> ");
         fgets(buffer, 100,stdin);
         status = sscanf(buffer, "%u", &nOfElements);
     }
-    while(!status || nOfElements < 1 || nOfElements > 10);
-    setConsoleColor(DEFCOLOR);
-    for(i = 0; i < LENGTH; i++)
-        for(j = 0; j < HEIGHT; j++)
-        {
-            setCursorPosition(i, j);
-            printf(" ");
-        }
+    while(!status || nOfElements < 1 || nOfElements > 230);
     double arr[nOfElements];
     system("cls");
-    setCursorPosition(LENGTH/3, 0);
-    puts("Type 'help' for commands");
-    initRandArray(arr, nOfElements);
-    printArray(arr, nOfElements);
+    setCursorPosition((LENGTH - (RIGHTBORDER))/2, 1);
+    printf("Type 'help' for commands");
+    clearZone(RIGHTBORDER, 0, LENGTH - 1, HEIGHT - 2, COLORWORKBACK);
+    clearZone(0, BOTBORDER, LENGTH - 1, HEIGHT - 1, COLORWORKCOM);
+    setConsoleColor(COLORWORKCOM);
+    setCursorPosition(LENGTH/3, BOTBORDER);
+    printf("Command's action :");
+    setConsoleColor(COLORWORKBACK);
+    setCursorPosition(RIGHTBORDER + (LENGTH - (RIGHTBORDER))/3, 0);
+    printf("Array : ");
+    initRandArray(arr, nOfElements, -10, 10);
+    printArr(arr, nOfElements);
+    setConsoleColor(COLORDEF);
+    setCursorPosition(0, 1);
     getCommand(arr, nOfElements);
 }
 void setCursorPosition(int x, int y)
@@ -106,67 +104,107 @@ void setCursorPosition(int x, int y)
 void getCommand(double arr[], size_t size)
 {
     char buffer[100];
+    CONSOLE_SCREEN_BUFFER_INFO SBInfo;
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    GetConsoleScreenBufferInfo(hConsole, &SBInfo);
+    if(SBInfo.dwCursorPosition.Y > BOTBORDER - 3)
+    {
+        clearZone(0, 1, RIGHTBORDER - 1, BOTBORDER - 2, COLORDEF);
+        setCursorPosition(0, 1);
+    }
     printf(" >> ");
     fgets(buffer, 100,stdin);
-    clearCommandPanel(1, WORKZONE);
     if(!strcmp(buffer, "help\n"))
     {
+        if(SBInfo.dwCursorPosition.Y > BOTBORDER - 20)
+        {
+            clearZone(0, 1, RIGHTBORDER - 1, BOTBORDER - 2, COLORDEF);
+            setCursorPosition(0, 1);
+        }
         puts(HELPINFO);
     }
     else if(!strcmp(buffer, "nullify\n"))
     {
         nullifyArr(arr, size);
-        printArray(arr, size);
+        printArr(arr, size);
     }
     else if(strstr(buffer, "change"))
     {
         unsigned int index;
         int status;
         double value;
+        printArr(arr, size);
         status = sscanf(buffer, "change %u %lf", &index, &value);
         if(status==2 && index < size)
         {
             changeNumByInd(arr, size, index, value);
-            printArray(arr, size);
+            printArrEl(arr, size, index);
         }
         else
+        {
+            setConsoleColor(COLORERROR);
             puts("Inappropriate format");
+            setConsoleColor(COLORDEF);
+        }
+
     }
-    else if(!strcmp(buffer, "random\n"))
+    else if(strstr(buffer, "random"))
     {
-        initRandArray(arr, size);
-        printArray(arr, size);
+        double from, to;
+        int status = sscanf(buffer, "random %lf %lf", &from, &to);
+        if(status==2)
+        {
+            initRandArray(arr, size, from, to);
+            printArr(arr, size);
+        }
+        else
+        {
+            setConsoleColor(COLORERROR);
+            puts("Inappropriate format");
+            setConsoleColor(COLORDEF);
+        }
     }
     else if(!strcmp(buffer, "reverse\n"))
     {
         int i;
-        printArray(arr, size);
         reverseArr(arr, size);
-        printArrayTo(arr, size, COMMANDSACTIONS);
+        clearZone(RIGHTBORDER, 0, LENGTH - 1, 0, COLORSELECT);
+        setConsoleColor(COLORSELECT);
+        setCursorPosition(RIGHTBORDER + 1, 0);
+        printf("REVERSED array : ");
+        printArr(arr, size);
+        setCursorPosition(0, SBInfo.dwCursorPosition.Y + 1);
+        puts("Press anything to reverse back...");
+        getch();
+        setConsoleColor(COLORSELECT);
+        clearZone(RIGHTBORDER, 0, LENGTH - 1, 0, COLORWORKBACK);
+        setCursorPosition(RIGHTBORDER + (LENGTH - (RIGHTBORDER))/3, 0);
+        setConsoleColor(COLORWORKBACK);
+        printf("Array : ");
+        clearZone(0, SBInfo.dwCursorPosition.Y + 1,RIGHTBORDER - 1, SBInfo.dwCursorPosition.Y + 1, COLORDEF);
+        setCursorPosition(0, SBInfo.dwCursorPosition.Y + 1);
         reverseArr(arr, size);
-        clearCommandPanel(1, 2);
+        printArr(arr, size);
     }
     else if(!strcmp(buffer, "sum\n"))
     {
         double sum = findSum(arr, size);
-        printArray(arr, size);
-        setCursorPosition(TAB, COMMANDSACTIONS);
-        setConsoleColor(WORKFOR);
-        printf("sum : ");
-        printf("%.3lf", sum);
-        setCursorPosition(0, 1);
-        setConsoleColor(DEFCOLOR);
+        clearZone(0, BOTBORDER + 3, LENGTH - 1, BOTBORDER + 3, COLORWORKCOM);
+        setCursorPosition(LENGTH/4, BOTBORDER + 3);
+        setConsoleColor(COLORWORKCOM);
+        printf("The sum of the array is : %.2f", sum);
+        setConsoleColor(COLORDEF);
+        setCursorPosition(0, SBInfo.dwCursorPosition.Y + 1);
     }
     else if(!strcmp(buffer, "nnegative\n"))
     {
         int nnegative = numOfNegElements(arr, size);
-        printArray(arr, size);
-        setCursorPosition(TAB, COMMANDSACTIONS);
-        setConsoleColor(WORKFOR);
-        printf("number of negative elements : ");
-        printf("%i", nnegative);
-        setConsoleColor(DEFCOLOR);
-        setCursorPosition(0, 1);
+        clearZone(0, BOTBORDER + 3, LENGTH - 1, BOTBORDER + 3, COLORWORKCOM);
+        setCursorPosition(LENGTH/4, BOTBORDER + 3);
+        setConsoleColor(COLORWORKCOM);
+        printf("The number of negative elements of the array is : %i", nnegative);
+        setConsoleColor(COLORDEF);
+        setCursorPosition(0, SBInfo.dwCursorPosition.Y + 1);
     }
     else if(strstr(buffer, "shift"))
     {
@@ -175,10 +213,14 @@ void getCommand(double arr[], size_t size)
         if(status)
         {
             shiftArrR(arr, size, nSH);
-            printArray(arr, size);
+            printArr(arr, size);
         }
         else
+        {
+            setConsoleColor(COLORERROR);
             puts("Inappropriate format");
+            setConsoleColor(COLORDEF);
+        }
     }
     else if(strstr(buffer, "cyclesh"))
     {
@@ -187,10 +229,14 @@ void getCommand(double arr[], size_t size)
         if(status)
         {
             cycleShiftArrR(arr, size, nSH);
-            printArray(arr, size);
+            printArr(arr, size);
         }
         else
+        {
+            setConsoleColor(COLORERROR);
             puts("Inappropriate format");
+            setConsoleColor(COLORDEF);
+        }
     }
     else if(strstr(buffer, "powall"))
     {
@@ -199,26 +245,34 @@ void getCommand(double arr[], size_t size)
         if(status)
         {
             powEachElement(arr, size, power);
-            printArray(arr, size);
+            printArr(arr, size);
         }
         else
+        {
+            setConsoleColor(COLORERROR);
             puts("Inappropriate format");
+            setConsoleColor(COLORDEF);
+        }
     }
     else if(!strcmp(buffer, "firstmin\n"))
     {
-        int ifmin = getMinimumIndex(arr, size);
-        printArray(arr, size);
-        setConsoleColor(WORKFOR);
-        setCursorPosition(TAB, COMMANDSACTIONS);
-        printf("Index and value of the first minimal element : ");
-        printf("%i %.3lf", ifmin, arr[ifmin]);
-        setConsoleColor(DEFCOLOR);
-        setCursorPosition(0, 1);
+        int imin = getMinimumIndex(arr, size);
+        printArr(arr, size);
+        printArrEl(arr, size, imin);
+        clearZone(0, BOTBORDER + 3, LENGTH - 1, BOTBORDER + 3, COLORWORKCOM);
+        setCursorPosition(LENGTH/4, BOTBORDER + 3);
+        setConsoleColor(COLORWORKCOM);
+        printf("The index and value of first minimum element is : %i, %.2f", imin, arr[imin]);
+        setConsoleColor(COLORDEF);
+        setCursorPosition(0, SBInfo.dwCursorPosition.Y + 1);
     }
     else if(!strcmp(buffer, "swapmaxmin\n"))
     {
-        swapLastMaxAndMin(arr, size);
-        printArray(arr, size);
+        int swap1, swap2;
+        printArr(arr, size);
+        swapLastMaxAndMin(arr, size, &swap1, &swap2);
+        printArrEl(arr, size, swap1);
+        printArrEl(arr, size, swap2);
     }
     else if(!strcmp(buffer, "exit\n"))
     {
