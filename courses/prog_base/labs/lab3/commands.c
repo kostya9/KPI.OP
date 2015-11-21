@@ -4,6 +4,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <conio.h>
+#include <time.h>
 #include "commands.h"
 #include "arrFuncs.h"
 void setConsoleColor(int color)
@@ -69,6 +70,8 @@ void initConsole()
     size_t nOfElements =0;
     char buffer[100];
     char settings[100];
+    time_t t;
+    srand((unsigned) time(&t));
     sprintf(settings,"mode con:cols=%i lines=%i", LENGTH, HEIGHT);
     system(settings);
     do
@@ -79,7 +82,7 @@ void initConsole()
         fgets(buffer, 100,stdin);
         status = sscanf(buffer, "%u", &nOfElements);
     }
-    while(!status || nOfElements < 1 || nOfElements > 230);
+    while(!status || nOfElements < 1 || nOfElements > 23);
     double arr[nOfElements];
     system("cls");
     setCursorPosition((LENGTH - (RIGHTBORDER))/2, 1);

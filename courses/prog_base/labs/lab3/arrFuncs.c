@@ -6,8 +6,7 @@
 #include <limits.h>
 void initRandArray(double arr[], size_t size, double from, double to)
 {
-    time_t t;
-    srand((unsigned) time(&t));
+
     int i;
     if(to < from)
     {
@@ -16,12 +15,7 @@ void initRandArray(double arr[], size_t size, double from, double to)
         from = temp;
     }
     for(i = 0; i < size; i++)
-    {
-        double randTo = to - from < 0 ? -rand()%(int)(to - from) : rand()%(int)(to - from);
-        double r=((double)rand()/(double)RAND_MAX);
-        arr[i] = (from + randTo) - r;
-    }
-
+        arr[i] = from + (to - from) * ((double)rand()/RAND_MAX);
 }
 void nullifyArr(double arr[], size_t size)
 {

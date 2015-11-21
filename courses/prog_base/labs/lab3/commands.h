@@ -17,7 +17,6 @@ swapmaxmin - to swap last maximum and minimum values \n \
 exit - to quit the program"
 #define LENGTH 90
 #define HEIGHT 30
-#define WORKZONE 20
 #define RIGHTBORDER LENGTH - 20
 #define BOTBORDER HEIGHT - 5
 #define COLORSELECT BACKGROUND_BLUE | BACKGROUND_RED | 0x00

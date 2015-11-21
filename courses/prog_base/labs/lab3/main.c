@@ -6,7 +6,8 @@
 #define sizeOfArr(a) sizeof(a)/sizeof(a[0])
 int main(void)
 {
-    initConsole(); return EXIT_SUCCESS;
+    initConsole();
+    return EXIT_SUCCESS;
 }
 
 
