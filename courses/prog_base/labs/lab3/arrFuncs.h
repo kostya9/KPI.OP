@@ -11,5 +11,5 @@ void powEachElement(double[], size_t, double);
 int getMinimumIndex(double[], size_t);
 void swapLastMaxAndMin(double[], size_t, int *, int *);
 void reverseArr(double[], size_t);
-#endif // __arrFuncs_
+#endif
 

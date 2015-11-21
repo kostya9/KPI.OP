@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
+#include <math.h>
+#include <stdio.h>
+#include <conio.h>
 #include "commands.h"
 #include "arrFuncs.h"
 void setConsoleColor(int color)
@@ -54,7 +57,7 @@ void printArr(double arr[], size_t size)
             printArr(arr, size);
             break;
         }
-        printf("%.2lf", arr[i]);
+        printf("%.2f", arr[i]);
     }
     setCursorPosition(SBInfo.dwCursorPosition.X, SBInfo.dwCursorPosition.Y);
     setConsoleColor(COLORDEF);

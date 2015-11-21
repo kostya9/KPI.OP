@@ -27,6 +27,7 @@ exit - to quit the program"
 #define COLORWORKCOM 0x70
 #define COLORERROR BACKGROUND_RED
 void writeHelp();
+void initConsole();
 void getCommand(double[], size_t);
 void setCursorPosition(int, int);
 #endif
