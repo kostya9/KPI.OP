@@ -1,9 +1,13 @@
+#include <conio.h>
 #include "snake.h"
 #include "console.h"
 int initSnake(int level)
 {
     int columns, rows, i;
+    setFontSize(SNAKEFONT, SNAKEFONT);
     getConsoleAttributes(&rows, &columns);
+    setConsoleColor(COLORDEF);
+    system("cls");
     Apple apples[APPLECOUNT];
     POINT body[MAXLENGTH];
     for(i = 0; i < APPLECOUNT; i++)
@@ -21,6 +25,7 @@ int initSnake(int level)
     s.length = 1;
     s.dir = RIGHT;
     RefreshSnake(&s, apples, level);
+    return s.length - 1;
 }
 void DeleteSnake(Snake * s)
 {
@@ -141,4 +146,5 @@ int RefreshSnake(Snake * s, Apple apples[], int level)
     if(DrawSnake(s, level) || checkCollide(s))
         return 1;
     RefreshSnake(s, apples, level);
+    return 0;
 }
