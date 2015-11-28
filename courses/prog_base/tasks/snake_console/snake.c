@@ -36,6 +36,7 @@ int DrawSnake(Snake * s)
     getConsoleAttributes(&rows, &columns);
     setConsoleColor(COLORSNAKE);
     for(i = s->length - 1; i > 0; i--)
+    {
         s->body[i].x = s->body[i-1].x;
         s->body[i].y = s->body[i-1].y;
     }
