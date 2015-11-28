@@ -63,9 +63,19 @@ int main(int argc, char *argv[])
         }
         else if(isdigit(c) || isalpha(c) || c=='.' || c=='_'|| c=='%'|| c=='+'|| c=='-')
         {
-            if(countAfterDot>0)
+            if(countAfterDot>0 && !isalpha(c))
+            {
+                countAfterDot = 0;
+                count = 0;
+                isEmail = 0;
+            }
+            else if(countAfterDot>0)
+            {
                 countAfterDot++;
-            count++;
+                count++;
+            }
+            else
+                count++;
         }
         else
             count = 0;
