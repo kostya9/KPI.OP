@@ -1,70 +1,80 @@
 #include "snake.h"
 #include "console.h"
+int initSnake()
+{
+    int columns, rows, i;
+    getConsoleAttributes(&rows, &columns);
+    Apple apples[APPLECOUNT];
+    POINT body[MAXLENGTH];
+    for(i = 0; i < APPLECOUNT; i++)
+    {
+        apples[i].x = rand()%columns;
+        apples[i].y = rand()%rows;
+        setCursorPosition(apples[i].x, apples[i].y);
+        setConsoleColor(COLORAPPLE);
+        printf(" ");
+    }
+    Snake s;
+    s.body = body;
+    s.body[0].x = 0;
+    s.body[0].y = 0;
+    s.length = 1;
+    s.dir = RIGHT;
+    RefreshSnake(&s, apples);
+}
 void DeleteSnake(Snake * s)
 {
     int i;
     setConsoleColor(COLORDEF);
-    if(s->length==0)
-        setCursorPosition(s->head.x, s->head.y);
-    else
-        setCursorPosition(s->body[0].x, s->body[0].y);
+    setCursorPosition(s->body[s->length - 1].x, s->body[s->length - 1].y);
     printf(" ");
 }
-void DrawSnake(Snake * s)
+int DrawSnake(Snake * s)
 {
     int i = 0;
     int rows, columns;
     getConsoleAttributes(&rows, &columns);
     setConsoleColor(COLORSNAKE);
-    if(s->length > 0)
-    {
-        for(i = 0; i < s->length - 2; i++) /*New snake block is the last but not like tha array - redo that the last snake thing is the last IN THE ARRAY*/
-        {
-            s->body[i].x = s->body[i+1].x;
-            s->body[i].y = s->body[i+1].y;
-            setCursorPosition(s->body[i].x, s->body[i].y);
-            printf(" ");
-        }
-        s->body[i].x = s->head.x;
-        s->body[i].y = s->head.y;
-        setCursorPosition(s->body[i].x, s->body[i].y);
-        printf(" ");
+    for(i = s->length - 1; i > 0; i--)
+        s->body[i].x = s->body[i-1].x;
+        s->body[i].y = s->body[i-1].y;
     }
     switch(s->dir)
     {
         case RIGHT:
         {
-            if(s->head.x != columns - 1)
-                (s->head.x)++;
+            if(s->body[0].x != columns - 1)
+                (s->body[0].x)++;
             else
-                return;
+                return 1;
         }break;
         case LEFT:
         {
-            if(s->head.x != 0)
-                (s->head.x)--;
+            if(s->body[0].x != 0)
+                (s->body[0].x)--;
             else
-                return;
+                return 1;
         }break;
         case UP:
         {
-            if(s->head.y != 0)
-                (s->head.y)--;
+            if(s->body[0].y != 0)
+                (s->body[0].y)--;
             else
-                return;
+                return 1;
         }break;
         case DOWN:
         {
-            if(s->head.y != rows - 1)
-                (s->head.y)++;
+            if(s->body[0].y != rows - 1)
+                (s->body[0].y)++;
             else
-                return;
+                return 1;
         }break;
     }
-    setCursorPosition(s->head.x, s->head.y);
+    setCursorPosition(s->body[0].x, s->body[0].y);
     printf(" ");
     setConsoleColor(COLORDEF);
     Sleep(100);
+    return 0;
 }
 void ChangeDirection(Snake * s, char c)
 {
@@ -88,7 +98,7 @@ void CheckApple(Snake * s, Apple apples[])
 {
     int i;
     for(i = 0; i < APPLECOUNT; i++)
-        if(s->head.x==apples[i].x && s->head.y==apples[i].y)
+        if(s->body[0].x==apples[i].x && s->body[0].y==apples[i].y)
         {
             int rows, columns;
             getConsoleAttributes(&rows, &columns);
@@ -101,7 +111,17 @@ void CheckApple(Snake * s, Apple apples[])
             break;
         }
 }
-void RefreshSnake(Snake * s, Apple apples[])
+int checkCollide(Snake * s)
+{
+    int i, j;
+    for(i = 0; i < s->length; i++)
+        for(j = 0; j < s->length; j++)
+            if(i!=j && s->body[i].x == s->body[j].x && s->body[i].y == s->body[j].y)
+                return 1;
+    return 0;
+
+}
+int RefreshSnake(Snake * s, Apple apples[])
 {
     DeleteSnake(s);
     char c;
@@ -111,6 +131,7 @@ void RefreshSnake(Snake * s, Apple apples[])
         ChangeDirection(s, c);
     }
     CheckApple(s, apples);
-    DrawSnake(s);
+    if(DrawSnake(s) || checkCollide(s))
+        return 1;
     RefreshSnake(s, apples);
 }
