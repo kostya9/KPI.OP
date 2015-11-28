@@ -16,10 +16,11 @@ typedef struct
     int x;
     int y;
 }Apple;
-void CheckApple(Snake * s, Apple apples[]);
+void CheckApple(Snake * s, Apple apples[], int * apple);
 void DeleteSnake(Snake * s);
-int DrawSnake(Snake * s);
-int RefreshSnake(Snake * s, Apple apples[]);
+int DrawSnake(Snake * s, int level);
+int RefreshSnake(Snake * s, Apple apples[], int level);
 void ChangeDirection(Snake * s, char c);
-int initSnake();
+int checkCollide(Snake * s);
+int initSnake(int level);
 #endif // __snake_

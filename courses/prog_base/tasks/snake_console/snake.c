@@ -1,6 +1,6 @@
 #include "snake.h"
 #include "console.h"
-int initSnake()
+int initSnake(int level)
 {
     int columns, rows, i;
     getConsoleAttributes(&rows, &columns);
@@ -20,7 +20,7 @@ int initSnake()
     s.body[0].y = 0;
     s.length = 1;
     s.dir = RIGHT;
-    RefreshSnake(&s, apples);
+    RefreshSnake(&s, apples, level);
 }
 void DeleteSnake(Snake * s)
 {
@@ -29,7 +29,7 @@ void DeleteSnake(Snake * s)
     setCursorPosition(s->body[s->length - 1].x, s->body[s->length - 1].y);
     printf(" ");
 }
-int DrawSnake(Snake * s)
+int DrawSnake(Snake * s, int level)
 {
     int i = 0;
     int rows, columns;
@@ -74,7 +74,7 @@ int DrawSnake(Snake * s)
     setCursorPosition(s->body[0].x, s->body[0].y);
     printf(" ");
     setConsoleColor(COLORDEF);
-    Sleep(100);
+    Sleep(150 - level * 10);
     return 0;
 }
 void ChangeDirection(Snake * s, char c)
@@ -82,20 +82,24 @@ void ChangeDirection(Snake * s, char c)
     switch(c)
     {
         case 'w': case 'W':
-            s->dir = UP;
+            if(s->length==1 || s->dir!=DOWN)
+                s->dir = UP;
         break;
         case 's': case 'S':
-            s->dir = DOWN;
+            if(s->length==1 || s->dir!=UP)
+                s->dir = DOWN;
         break;
         case 'a': case 'A':
-            s->dir = LEFT;
+            if(s->length==1 || s->dir!=RIGHT)
+                s->dir = LEFT;
         break;
         case 'd': case 'D':
-            s->dir = RIGHT;
+            if(s->length==1 || s->dir!=LEFT)
+                s->dir = RIGHT;
         break;
     }
 }
-void CheckApple(Snake * s, Apple apples[])
+void CheckApple(Snake * s, Apple apples[], int * level)
 {
     int i;
     for(i = 0; i < APPLECOUNT; i++)
@@ -109,6 +113,8 @@ void CheckApple(Snake * s, Apple apples[])
             setConsoleColor(COLORAPPLE);
             printf(" ");
             s->length++;
+            if(s->length % 3 == 1 && (*level) <9)
+                (*level)++;
             break;
         }
 }
@@ -122,7 +128,7 @@ int checkCollide(Snake * s)
     return 0;
 
 }
-int RefreshSnake(Snake * s, Apple apples[])
+int RefreshSnake(Snake * s, Apple apples[], int level)
 {
     DeleteSnake(s);
     char c;
@@ -131,8 +137,8 @@ int RefreshSnake(Snake * s, Apple apples[])
         c = getch();
         ChangeDirection(s, c);
     }
-    CheckApple(s, apples);
-    if(DrawSnake(s) || checkCollide(s))
+    CheckApple(s, apples, &level);
+    if(DrawSnake(s, level) || checkCollide(s))
         return 1;
-    RefreshSnake(s, apples);
+    RefreshSnake(s, apples, level);
 }

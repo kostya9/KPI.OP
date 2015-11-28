@@ -17,3 +17,4 @@ void getConsoleAttributes(int * rows, int * columns)
     *columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
     *rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
 }
+

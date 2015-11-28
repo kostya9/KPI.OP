@@ -5,5 +5,6 @@
 #include "snake.h"
 int main(void)
 {
-    initSnake();
+    int level = 0;
+    initSnake(level);
 }
