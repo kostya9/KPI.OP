@@ -1,3 +1,4 @@
-2
-1 c
-200 d
+3
+1 NOOB
+5 COOLGUY
+4 COOLGUY

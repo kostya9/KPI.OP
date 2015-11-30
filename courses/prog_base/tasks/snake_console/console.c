@@ -68,7 +68,8 @@ void addToScoreBoard(Player * player, int * nOfPlayers)
     (*nOfPlayers)++;
     fprintf(scoreboardFile, "%i\n",*nOfPlayers);
     fseek(scoreboardFile, 0, SEEK_END);
-    fprintf(scoreboardFile, "\n%i %s", player->points, player->name);
+    fprintf(scoreboardFile, "%i %s", player->points, player->name);
+    fprintf(scoreboardFile, "\n");
     fclose(scoreboardFile);
 }
 void initScoreBoard(Player * players, int nOfPlayers)
@@ -118,24 +119,35 @@ void initInterface(Player * players, int nOfPlayers)
     }
     puts("Press anything to start...");
     getch();
-    curY = 0;
     points = initSnake(level);
+    curY = 0;
     setConsoleColor(COLORDEF);
     setCursorPosition(0,curY++);
     Player p;
     strcpy(p.name, name);
     p.points = points;
-    printf("HOORAY! You've got %i points. Type YES if you want to restart. Type SCORE if you want to see the scoreboard previously. Type anything else if you want to stop\n", points);
     addToScoreBoard(&p, &nOfPlayers);
-    fgets(buff, 100, stdin);
-    if(!strcmp(buff, "YES\n"))
-        initInterface(players, nOfPlayers);
-    else if(!strcmp(buff, "SCORE"))
+    free(players);
+    players = getScoreBoard(&nOfPlayers);
+    while(1)
     {
-        initScoreBoard(players, nOfPlayers);
-        initInterface(players, nOfPlayers);
+        setConsoleColor(COLORDEF);
+        system("cls");
+        setCursorPosition(0,0);
+        printf("HOORAY! You've got %i points. Type NO if you want to stop\n Type SCORE if you want to look through the scoreboard\nType anything else if you want to try again\n", points);
+        fgets(buff, 100, stdin);
+        if(!strcmp(buff, "NO\n"))
+            break;
+        else if(!strcmp(buff, "SCORE\n"))
+            initScoreBoard(players, nOfPlayers);
+        else
+        {
+            points = initSnake(level);
+            p.points = points;
+            addToScoreBoard(&p, &nOfPlayers);
+            free(players);
+            players = getScoreBoard(&nOfPlayers);
+        }
     }
-
-
 }
 
