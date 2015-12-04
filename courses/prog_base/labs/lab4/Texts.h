@@ -18,5 +18,6 @@ typedef struct
 Post * getPosts(int * nOfPosts);
 Post * savePosts(Post * posts, int * nOfPosts);
 Post * deletePost(Post * posts, Post * post, int * nOfPosts);
+Post * addPost(Post * posts, Post * pst, int * nOfPosts);
 /*@todo Write a text write a comment(by author and to a post)*/
 #endif // __TXTS_
