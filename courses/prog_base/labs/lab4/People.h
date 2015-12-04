@@ -14,5 +14,5 @@ Person * signUp(Person * people, int * nOfPeople, char * name, enum Sex sx);
 Person * getPeople(int * nOfPeople);
 Person * savePeople(Person * people, int * nOfPeople);
 Person * deletePerson(Person * people, int * nOfPeople, Person * pson);
-Person * addFriend(Person * pers, int friendId);
+Person * addFriend(Person * ppl, int * nOfPeople, int persId, int friendId);
 #endif // __PPL_

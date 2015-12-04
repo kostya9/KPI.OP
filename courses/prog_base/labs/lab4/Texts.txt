@@ -1,7 +1,10 @@
-5 1
+6 3
 p 0 0 This is my first Post. Hello World.
 c 0 0 I am pretty sure this is a strange post. Let's think about it. Is it informative. No? Is it neccassary to write a first post? Yes. To sum up, everything is ok and it doesn't matter.
+c 0 0 I have nothing to write but I need tests. To test or not to test? Poor Mr. Yorick
 p 1 0 Okay. This is my second post. Let's discuss it!
+c 1 0 LOL TEST OMG LMAO
 p 2 1 fdgfdgdfsgsdfgp
 p 3 1 fdgfdgdfsgsdfg
 p 4 1 fdgfdgdfsgsdfg
+p 5 1 khdgfkjgfl;jkasdflkasdf;s

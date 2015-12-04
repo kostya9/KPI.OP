@@ -5,7 +5,7 @@ Person * signUp(Person * people, int * nOfPeople, char * name, enum Sex sx)
 {
     FILE * f = fopen("People.txt", "a");
     if(strlen(name)<100)
-        fprintf(f, "%i %i %s %i", *nOfPeople, sx, name, 0);
+        fprintf(f, "%i %i %s %i\n", *nOfPeople, sx, name, 0);
     else
         return NULL;
     fclose(f);
@@ -87,9 +87,13 @@ Person * deletePerson(Person * people, int * nOfPeople, Person * pson)
     people = getPeople(nOfPeople);
     return people;
 }
-Person * addFriend(Person * pers, int friendId)
+Person * addFriend(Person * ppl, int * nOfPeople, int persId, int friendId)
 {
-    pers->friends[pers->nOfFriends] = friendId;
-    pers->nOfFriends++;
-    return pers;
+    ppl[persId].friends[ppl[persId].nOfFriends] = friendId;
+    ppl[persId].nOfFriends++;
+    ppl[friendId].friends[ppl[friendId].nOfFriends] = persId;
+    ppl[friendId].nOfFriends++;
+    ppl = savePeople(ppl, nOfPeople);
+    ppl = getPeople(nOfPeople);
+    return ppl;
 }

@@ -1,5 +1,8 @@
-4
-0 -1 admin 0
-1 -2 adminF 1 0
+7
+0 -1 admin 1 1
+1 -2 adminF 4 2 4 3 0
 2 -1 dfjererh 1 1
-3 -2 Vasya 0
+3 -2 Vasya 1 1
+4 -2 Kostya 2 6 1
+5 -1 fsdfasdf 0
+6 -1 Olya 1 4

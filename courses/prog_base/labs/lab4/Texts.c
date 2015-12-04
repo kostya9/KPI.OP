@@ -62,7 +62,7 @@ Post * savePosts(Post * posts, int * nOfPosts)
         fprintf(f, "%c %i %i %s", 'p', posts[i].postId, posts[i].authorId, posts[i].text);
         for(j = 0; j < posts[i].nOfComments; j++)
         {
-            fprintf(f, "%c %i %i %s%c", 'c', i, posts[i].comments[j].authorId, posts[i].comments[j].text, j!=0 ? '\n' : ' ');
+            fprintf(f, "%c %i %i %s", 'c', i, posts[i].comments[j].authorId, posts[i].comments[j].text);
             nOfComments++;
         }
     }
@@ -102,9 +102,10 @@ Post * addPost(Post * posts, Post * pst, int * nOfPosts)
     posts = getPosts(nOfPosts);
     return posts;
 }
-Post * addComentToPost(int id, Post * posts, const char * comment, int * nOfPosts)
+Post * addComentToPost(int id, Post * posts, const char * comment, const char author, int * nOfPosts)
 {
     strcpy(posts[id].comments[posts[id].nOfComments].text, comment);
+    posts[id].comments[posts[id].nOfComments].authorId = author;
     posts[id].nOfComments++;
     posts = savePosts(posts, nOfPosts);
     posts = getPosts(nOfPosts);
