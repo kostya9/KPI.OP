@@ -1,18 +1,21 @@
-#ifndef __PPL_
-#define __PPL_
-#define BUFFERSIZE 200
-enum Sex{Male= -2, Female};
+#ifndef __ppl_
+#define __ppl_
+#define PPLSAVEPLACE "ppl.bin"
+#include "mainHead.h"
+enum Sex{Male = -2, Female = -1, Else = 0}; //Else is whatever you want it to be
 typedef struct
 {
     char id;
-    enum Sex sx;
     char name[100];
-    int nOfFriends;
-    char friends[100];
+    enum Sex sx;
+    char friends[20];
 } Person;
-Person * signUp(Person * people, int * nOfPeople, char * name, enum Sex sx);
-Person * getPeople(int * nOfPeople);
-Person * savePeople(Person * people, int * nOfPeople);
-Person * deletePerson(Person * people, int * nOfPeople, Person * pson);
-Person * addFriend(Person * ppl, int * nOfPeople, int persId, int friendId);
-#endif // __PPL_
+int savePeople(Person ppl[LIMIT]);
+int getPeople(Person ppl[LIMIT]);
+void nullifyPeople(Person ppl[LIMIT]);
+void deletePerson(Person * prs, Post * psts);
+int getFreeIndOfPerson(Person ppl[LIMIT]);
+int signUp(Person ppl[LIMIT], char * name, enum Sex sx);
+int getFreeIndOfFriend(char * friends);
+int addFriend(Person ppl[LIMIT], char friendId, char yourId);
+#endif // __ppl_

@@ -1,23 +1,23 @@
-#ifndef __TXTS_
-#define __TXTS_
-#define TEXTBUFFERSIZE 500
+#ifndef __texts_
+#define __texts_
+#define PSTSAVEPLACE "texts.bin"
+#define POSTLIMIT (LIMIT * 2)
+#define COMMENTLIMIT LIMIT
+#define COMMENTSIZE 150
+#define TEXTSIZE 300
 #define MAXCOMMENTNUM 20
 typedef struct
 {
+    char postId;
     char authorId;
-    char text[300];
+    char text[COMMENTSIZE];
 } Comment;
 typedef struct
 {
     char postId;
     char authorId;
-    char text[300];
+    char text[TEXTSIZE];
     int nOfComments;
-    Comment comments[MAXCOMMENTNUM];
+    Comment comments[COMMENTLIMIT];
 } Post;
-Post * getPosts(int * nOfPosts);
-Post * savePosts(Post * posts, int * nOfPosts);
-Post * deletePost(Post * posts, Post * post, int * nOfPosts);
-Post * addPost(Post * posts, Post * pst, int * nOfPosts);
-/*@todo Write a text write a comment(by author and to a post)*/
-#endif // __TXTS_
+#endif // __texts_

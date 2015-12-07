@@ -1,18 +1,13 @@
 #include <stdlib.h>
-#include <stdio.h>
-#include "People.h"
-#include "Texts.h"
-#include "interface.h"
+#include "mainHead.h"
 int main(void)
 {
-    Post * posts;
-    Person * ppl;
-    int nOfPosts;
-    int nOfPeople;
-    posts = getPosts(&nOfPosts);
-    ppl = getPeople(&nOfPeople);
-    initConsole(posts, nOfPosts, ppl, nOfPeople);
-    posts = savePosts(posts, &nOfPosts);
-    ppl = savePeople(ppl, &nOfPeople);
+    Person ppl[LIMIT];
+    Post psts[POSTLIMIT];
+    nullifyPeople(ppl);
+    nullifyPosts(psts);
+    getPeople(ppl);
+    getPosts(psts);
+    initConsole(psts, ppl);
     return EXIT_SUCCESS;
 }

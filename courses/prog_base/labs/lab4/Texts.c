@@ -1,113 +1,83 @@
-#include "People.h"
-#include "Texts.h"
+#include "mainHead.h"
 #include <stdio.h>
-#include <stdlib.h>
-Post * getPosts(int * nOfPosts)
+#include <string.h>
+int savePosts(Post psts[POSTLIMIT])
+{
+    FILE * f = fopen(PSTSAVEPLACE, "wb");
+    if(!f)
+        return RETURN_FAILURE;
+    int sz = sizeof(psts);
+    fwrite(psts, sz, 1, f);
+    fflush(f);
+    fclose(f);
+    return RETURN_SUCCESS;
+}
+int getPosts(Post psts[POSTLIMIT])
+{
+    FILE * f = fopen(PSTSAVEPLACE, "rb");
+    if(!f)
+        return RETURN_FAILURE;
+    int sz = sizeof(psts);
+    fread(psts, sz, 1, f);
+    fclose(f);
+    return RETURN_SUCCESS;
+}
+void nullifyPosts(Post psts[POSTLIMIT])
 {
     int i, j;
-    char buffer[TEXTBUFFERSIZE];
-    int nOfComments;
-    int idText;
-    int idAuthor;
-    FILE * f = fopen("Texts.txt", "r");
-    if(f==NULL)
-        return NULL;
-    fgets(buffer, TEXTBUFFERSIZE, f);
-    sscanf(buffer, "%i %i", nOfPosts, &nOfComments);
-    Post * posts = (Post *)calloc(*nOfPosts, sizeof(Post));
-    for(i = 0; i < nOfComments + *nOfPosts; i++)
+    for(i = 0; i < POSTLIMIT; i++)
     {
-        char * curP;
-        fgets(buffer, TEXTBUFFERSIZE, f);
-        curP = strtok(buffer, " ");
-        curP = strtok(NULL, " ");
-        sscanf(curP, "%i", &idText);
-        curP = strtok(NULL, " ");
-        sscanf(curP, "%i", &idAuthor);
-        while(curP[0]!='\0' && curP[0]!=' ')
-            curP++;
-        while(curP[0]=='\0')
-            curP++;
-        if(buffer[0]=='p')
-        {
-            posts[idText].authorId = idAuthor;
-            posts[idText].postId = idText;
-            strcpy(posts[idText].text, curP);
-        }
-        else if(buffer[0]=='c')
-        {
-            posts[idText].comments[posts[idText].nOfComments].authorId = idAuthor;
-            strcpy(posts[idText].comments[posts[idText].nOfComments].text, curP);
-            posts[idText].nOfComments++;
-        }
+        psts[i].postId = NOTINUSE;
+        for(j = 0; j < COMMENTLIMIT; j++)
+            psts[i].comments[j].postId = NOTINUSE;
     }
-    fclose(f);
-    return posts;
+
 }
-Post * deletePost(Post * posts, Post * post, int * nOfPosts)
+int deletePost(Post psts[POSTLIMIT], char postId)
 {
-    post->postId = -1;
-    --(*nOfPosts);
-    savePosts(posts, nOfPosts);
-    return getPosts(nOfPosts);
+    if(postId >= POSTLIMIT || postId < 0)
+        return RETURN_FAILURE;
+    psts[postId].postId = NOTINUSE;
+    return NOTINUSE;
 }
-Post * savePosts(Post * posts, int * nOfPosts)
+char getFreeIndOfPost(Post psts[POSTLIMIT])
 {
-    int i, j;
-    int nOfComments = 0;
-    FILE * f = fopen("Texts.txt", "w");
-    fprintf(f, "%10c\n", ' ');
-    for(i = 0; i < *nOfPosts && posts[i].postId>=0; i++)
-    {
-        fprintf(f, "%c %i %i %s", 'p', posts[i].postId, posts[i].authorId, posts[i].text);
-        for(j = 0; j < posts[i].nOfComments; j++)
-        {
-            fprintf(f, "%c %i %i %s", 'c', i, posts[i].comments[j].authorId, posts[i].comments[j].text);
-            nOfComments++;
-        }
-    }
-    fclose(f);
-    f = fopen("Texts.txt", "r+");
-    fprintf(f, "%i %i", *nOfPosts, nOfComments);
-    fclose(f);
-    *nOfPosts = 0;
-    free(posts);
-    return NULL;
+    int i;
+    for(i = 0; i < POSTLIMIT; i++)
+        if(psts[i].postId == NOTINUSE)
+            return i;
+    return NOTINUSE;
 }
-Post * addPost(Post * posts, Post * pst, int * nOfPosts)
+char writePost(Post psts[POSTLIMIT], char authorId, char * text)
 {
-    int nOfComments;
-    int j;
-    char buffer[100];
-    posts = savePosts(posts, nOfPosts);
-    posts = getPosts(nOfPosts);
-    FILE * f = fopen("Texts.txt", "r");
-    if(f==NULL)
-        return NULL;
-    fgets(buffer, TEXTBUFFERSIZE, f);
-    sscanf(buffer, "%i %i", nOfPosts, &nOfComments);
-    fclose(f);
-    f = fopen("Texts.txt", "a");
-    fprintf(f, "%c %i %i %s\n", 'p', *nOfPosts, pst->authorId, pst->text);
-    for(j = 0; j < pst->nOfComments; j++)
-    {
-        fprintf(f, "%c %i %i %s\n", 'c', *nOfPosts, pst->comments[j].authorId, pst->comments[j].text);
-        nOfComments++;
-    }
-    (*nOfPosts)++;
-    fclose(f);
-    f = fopen("Texts.txt", "r+");
-    fprintf(f, "%i %i", *nOfPosts, nOfComments);
-    fclose(f);
-    posts = getPosts(nOfPosts);
-    return posts;
+    char ind = getFreeIndOfPost(psts);
+    if(ind==NOTINUSE)
+        return RETURN_FAILURE;
+    strcpy(psts[ind].text, text);
+    psts[ind].authorId = authorId;
+    psts[ind].postId = ind;
+    savePosts(psts);
+    return ind;
 }
-Post * addComentToPost(int id, Post * posts, const char * comment, const char author, int * nOfPosts)
+int getFreeIndOfComment(Comment * comments)
 {
-    strcpy(posts[id].comments[posts[id].nOfComments].text, comment);
-    posts[id].comments[posts[id].nOfComments].authorId = author;
-    posts[id].nOfComments++;
-    posts = savePosts(posts, nOfPosts);
-    posts = getPosts(nOfPosts);
-    return posts;
+    int i;
+    for(i = 0; i < COMMENTLIMIT; i++)
+        if(comments[i].postId == NOTINUSE)
+            return i;
+    return NOTINUSE;
 }
+int addComment(Post psts[POSTLIMIT], char authorId, char postId, char * text)
+{
+    if(postId >= POSTLIMIT || postId < 0 || authorId < 0 || authorId >= LIMIT)
+        return RETURN_FAILURE;
+    int ind = getFreeIndOfComment(psts[postId].comments);
+    if(ind==NOTINUSE)
+        return RETURN_FAILURE;
+    psts[postId].comments[ind].postId = postId;
+    psts[postId].nOfComments++;
+    psts[postId].comments[ind].authorId = authorId;
+    strcpy(psts[postId].comments[ind].text, text);
+    return ind;
+}
+

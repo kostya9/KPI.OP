@@ -1,99 +1,101 @@
-#include "People.h"
-#include <stdio.h>
+#include "mainHead.h"
 #include <stdlib.h>
-Person * signUp(Person * people, int * nOfPeople, char * name, enum Sex sx)
+#include <stdio.h>
+#include <string.h>
+int savePeople(Person ppl[LIMIT])
 {
-    FILE * f = fopen("People.txt", "a");
-    if(strlen(name)<100)
-        fprintf(f, "%i %i %s %i\n", *nOfPeople, sx, name, 0);
-    else
-        return NULL;
+    FILE * f = fopen(PPLSAVEPLACE, "wb");
+    if(!f)
+        return RETURN_FAILURE;
+    int sz = sizeof(Person);
+    fwrite(ppl, sz, 20, f);
+    fflush(f);
     fclose(f);
-    f = fopen("People.txt", "r+");
-    fprintf(f, "%i\n", ++(*nOfPeople));
-    fclose(f);
-    free(people);
-    people = getPeople(&nOfPeople);
-    return people;
+    return RETURN_SUCCESS;
 }
-Person * getPeople(int * nOfPeople)
+int getPeople(Person ppl[LIMIT])
+{
+    FILE * f = fopen(PPLSAVEPLACE, "rb");
+    if(!f)
+        return RETURN_FAILURE;
+    int sz = sizeof(Person);
+    fread(ppl, sz, 20, f);
+    fclose(f);
+    return RETURN_SUCCESS;
+}
+void nullifyPeople(Person ppl[LIMIT])
 {
     int i, j;
-    char buffer[BUFFERSIZE];
-    char name[100];
-    enum Sex sx;
-    int nOfFriends;
-    int id;
-    FILE * f = fopen("People.txt", "r");
-    if(f==NULL)
-        return NULL;
-    fgets(buffer, BUFFERSIZE, f);
-    sscanf(buffer, "%i", nOfPeople);
-    if(!nOfPeople)
+    for(i = 0; i < LIMIT; i++)
     {
-        fclose(f);
-        return NULL;
+        ppl[i].id = NOTINUSE;
+        for(j = 0; j < LIMIT; j++)
+            ppl[i].friends[j] = NOTINUSE;
     }
-    Person * people = (Person *)malloc(sizeof(Person) * *nOfPeople);
-    for(i = 0; i < *nOfPeople; i++)
+}
+void deletePerson(Person * prs, Post * psts)
+{
+    int i, j;
+    for(i = 0; i < POSTLIMIT; i++)
     {
-        char * curP;
-        fgets(buffer, BUFFERSIZE, f);
-        sscanf(buffer, "%i %i %s %i", &id, &sx, name, &nOfFriends);
-        people[i].id = id;
-        strcpy(people[i].name, name);
-        people[i].sx = sx;
-        people[i].nOfFriends = nOfFriends;
-        if(nOfFriends>0)
+        if(psts[i].authorId == prs->id)
+            psts[i].postId = NOTINUSE;
+        for(j = 0; j < COMMENTLIMIT; j++)
+            if(psts[i].comments[j].authorId == prs->id)
+                psts[i].comments[j].postId = NOTINUSE;
+    }
+    prs->id = NOTINUSE;
+}
+int getFreeIndOfPerson(Person ppl[LIMIT])
+{
+    int i;
+    for(i = 0; i < LIMIT; i++)
+        if(ppl[i].id == NOTINUSE)
+            return i;
+    return NOTINUSE;
+}
+int signUp(Person ppl[LIMIT], char * name, enum Sex sx)
+{
+    int ind = getFreeIndOfPerson(ppl);
+    strcpy(ppl[ind].name, name);
+    ppl[ind].sx = sx;
+    ppl[ind].id = ind;
+    savePeople(ppl);
+    return ind;
+}
+int getFreeIndOfFriend(char * friends)
+{
+    int i;
+    for(i = 0; i < LIMIT; i++)
+        if(friends[i] == NOTINUSE)
+            return i;
+    return NOTINUSE;
+}
+int addFriend(Person ppl[LIMIT], char friendId, char yourId)
+{
+    char indY = getFreeIndOfFriend(ppl[yourId].friends);
+    char indF = getFreeIndOfFriend(ppl[friendId].friends);
+    if(indY==NOTINUSE || indF==NOTINUSE)
+        return NOTINUSE; // There is no free place for a friend. You are not FOREVERALONE!
+    else if(friendId > 19 || friendId < 0 || yourId > 19 || yourId < 0)
+        return  RETURN_FAILURE; // he can't be your friend. He's a bad boy\girl
+    ppl[yourId].friends[indY] = friendId;
+    ppl[friendId].friends[indF] = yourId;
+    return indY;
+}
+void deleteFriend(Person ppl[LIMIT], char yourId, char friendId)
+{
+    int i;
+    for(i = 0; i < LIMIT; i++)
+        if(ppl[yourId].friends[i]==friendId)
         {
-            strtok(buffer, " ");
-            for(j = 0; j < 4; j++)
-                curP = strtok(NULL, " ");
-            for(j = 0; j < nOfFriends; j++)
-            {
-                int n;
-                sscanf(curP, "%i", &n);
-                people[i].friends[j] = n;
-                curP = strtok(NULL, " ");
-            }
+            ppl[yourId].friends[i] = NOTINUSE;
+            break;
         }
-    }
-    fclose(f);
-    return people;
-}
-
-Person * savePeople(Person * people, int * nOfPeople)
-{
-    int i, j;
-    FILE * f = fopen("People.txt", "w");
-    fprintf(f, "%i\n", *nOfPeople);
-    for(i = 0; (i < *nOfPeople) && (people[i].id >= 0); i++)
-    {
-        fprintf(f, "%i %i %s %i", people[i].id, people[i].sx, people[i].name, people[i].nOfFriends);
-        for(j = 0; j < people[i].nOfFriends; j++)
-            fprintf(f, " %i", people[i].friends[j]);
-        fprintf(f, "\n");
-    }
-    fclose(f);
-    free(people);
-    people = NULL;
-    *nOfPeople = 0;
-    return people;
-}
-Person * deletePerson(Person * people, int * nOfPeople, Person * pson)
-{
-    pson->id = -1;
-    people = savePeople(people, *nOfPeople);
-    people = getPeople(nOfPeople);
-    return people;
-}
-Person * addFriend(Person * ppl, int * nOfPeople, int persId, int friendId)
-{
-    ppl[persId].friends[ppl[persId].nOfFriends] = friendId;
-    ppl[persId].nOfFriends++;
-    ppl[friendId].friends[ppl[friendId].nOfFriends] = persId;
-    ppl[friendId].nOfFriends++;
-    ppl = savePeople(ppl, nOfPeople);
-    ppl = getPeople(nOfPeople);
-    return ppl;
+    for(i = 0; i < LIMIT; i++)
+        if(ppl[friendId].friends[i]==yourId)
+        {
+            ppl[friendId].friends[i] = NOTINUSE;
+            break;
+        }
 }
