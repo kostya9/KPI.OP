@@ -115,8 +115,12 @@ Book * freeBook(Book * bk)
     free(bk);
     return NULL;
 }
-Writer * freeWriter(Writer * wr)
+Writer * freeWriter(Writer * wr, Book * bks, size_t sz)
 {
+    int i;
+    for(i = 0; i < sz; i++)
+        if(bks[i].author == wr)
+            free(bks[i]);
     free(wr);
     return NULL;
 }
