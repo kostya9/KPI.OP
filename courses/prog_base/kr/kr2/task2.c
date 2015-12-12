@@ -22,7 +22,7 @@ int idToIndWriter(Writer * wrts, size_t sz, int id);
 Book * getBook();
 Writer * getWriter();
 Book * freeBook(Book * bk);
-Writer * freeWriter(Writer * wr);
+Writer * freeWriter(Writer * wr, Book * bks, size_t sz)
 void outBook(Book * bk);
 void outWriter(Writer * wr);
 void outWriters(Writer * wrs, size_t sz);
