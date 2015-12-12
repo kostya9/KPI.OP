@@ -6,8 +6,8 @@ int savePosts(Post psts[POSTLIMIT])
     FILE * f = fopen(PSTSAVEPLACE, "wb");
     if(!f)
         return RETURN_FAILURE;
-    int sz = sizeof(psts);
-    fwrite(psts, sz, 1, f);
+    int sz = sizeof(Post);
+    fwrite(psts, sz, POSTLIMIT, f);
     fflush(f);
     fclose(f);
     return RETURN_SUCCESS;
@@ -17,8 +17,8 @@ int getPosts(Post psts[POSTLIMIT])
     FILE * f = fopen(PSTSAVEPLACE, "rb");
     if(!f)
         return RETURN_FAILURE;
-    int sz = sizeof(psts);
-    fread(psts, sz, 1, f);
+    int sz = sizeof(Post);
+    fread(psts, sz, POSTLIMIT, f);
     fclose(f);
     return RETURN_SUCCESS;
 }
@@ -37,6 +37,9 @@ int deletePost(Post psts[POSTLIMIT], char postId)
 {
     if(postId >= POSTLIMIT || postId < 0)
         return RETURN_FAILURE;
+    int i;
+    for(i = 0; i < COMMENTLIMIT; i++)
+        psts[postId].comments[i].postId = NOTINUSE;
     psts[postId].postId = NOTINUSE;
     return NOTINUSE;
 }

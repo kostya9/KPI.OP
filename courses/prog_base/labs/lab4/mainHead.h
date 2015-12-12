@@ -8,7 +8,7 @@
 #include "people.h"
 #include "texts.h"
 #include "interface.h"
-
+#include "cui.h"
 
 
 #endif // __mainHead_

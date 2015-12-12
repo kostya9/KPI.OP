@@ -54,12 +54,13 @@ int getFreeIndOfPerson(Person ppl[LIMIT])
             return i;
     return NOTINUSE;
 }
-int signUp(Person ppl[LIMIT], char * name, enum Sex sx)
+int signUp(Person ppl[LIMIT], char * name, enum Sex sx, enum Mood md)
 {
     int ind = getFreeIndOfPerson(ppl);
     strcpy(ppl[ind].name, name);
     ppl[ind].sx = sx;
     ppl[ind].id = ind;
+    ppl[ind].md = md;
     savePeople(ppl);
     return ind;
 }

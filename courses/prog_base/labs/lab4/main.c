@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <windows.h>
 #include "mainHead.h"
 int main(void)
 {
@@ -8,6 +9,8 @@ int main(void)
     nullifyPosts(psts);
     getPeople(ppl);
     getPosts(psts);
-    initConsole(psts, ppl);
+    init(ppl, psts);
+    savePeople(ppl);
+    savePosts(psts);
     return EXIT_SUCCESS;
 }
