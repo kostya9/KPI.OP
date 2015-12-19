@@ -7,7 +7,6 @@
 #define NOTINUSE -1
 #include "people.h"
 #include "texts.h"
-#include "interface.h"
 #include "cui.h"
 
 

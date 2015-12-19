@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <windows.h>
-#include "mainHead.h"
+#include "mainHead.h")
 int main(void)
 {
     Person ppl[LIMIT];

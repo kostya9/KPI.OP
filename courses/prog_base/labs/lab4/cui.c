@@ -1,6 +1,30 @@
 #include <windows.h>
 #include <stdio.h>
 #include "mainHead.h"
+void setCursorPosition(int x, int y)
+{
+    COORD coord = {x, y};
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleCursorPosition(hConsole, coord);
+}
+void setConsoleColor(int color)
+{
+    HANDLE hConsole=GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hConsole, color);
+}
+void clearZone(int xFrom, int yFrom, int xTo, int yTo, int color)
+{
+    int i, j;
+    setConsoleColor(color);
+    for(i = xFrom; i <= xTo; i++)
+        for(j = yFrom; j <= yTo; j++)
+        {
+            setCursorPosition(i, j);
+            printf(" ");
+        }
+    setConsoleColor(COLORDEF);
+    setCursorPosition(xFrom, yFrom);
+}
 void clearStdin()
 {
     rewind(stdin);
@@ -216,9 +240,8 @@ int doTask(int selected, size_t sz, Person * ppl, Post * psts, int logid)
                             printf("\tAuthor - %s\n", ppl[psts[i].comments[n].authorId].name);
                             printTextBlock(8, SBInfo.dwCursorPosition.Y + 1, RIGHT - 9, psts[i].comments[n].text);
                         }
-                    puts("");
-                    puts("");
-                }
+                    puts("\n\n");
+                                    }
 
             }while(getch()=='d');
         }break;
