@@ -13,6 +13,7 @@ int main(void)
     puts("Removed the 3rd element : ");
     output(list);
     printf("There are \n|| %i negatives \n|| %i positives\n|| %i 0s", int_list_get_negcount(list), int_list_get_poscount(list), int_list_get_zerocount(list));
+    int_list_delete(list);
 }
 void output(int_list_t list)
 {
