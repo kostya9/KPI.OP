@@ -54,7 +54,7 @@ static void shiftleft(int_list_t list, int starting_index)
 //moves the value next
 void int_list_insert(int_list_t list, int element, int index)
 {
-    if(index > list->size)
+    if(index > list->size || index < 0)
         return; // ERROR
     shiftright(list, index);
     list->array[index] = element;
@@ -105,7 +105,7 @@ int int_list_get_zerocount(int_list_t list)
 
 int int_list_get_element(int_list_t list, int index)
 {
-    if(index >= list->size)
+    if(index >= list->size || index < 0)
         return;
     return list->array[index];
 }
