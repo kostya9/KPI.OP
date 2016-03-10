@@ -75,3 +75,29 @@ void matrix_free(matrix_t * m)
     free(m->matrix);
     free(m);
 }
+matrix_t * matrix_transpose(matrix_t * m)
+{
+    size_t rows_count = m->size_1;
+    size_t columns_count = m->size_2;
+    int temparr[columns_count][rows_count];
+    for(size_t i = 0; i < rows_count; i++)
+        for(size_t j = 0; j < columns_count; j++)
+        {
+            temparr[j][i] = m->matrix[i * columns_count + j];
+        }
+    return matrix_new(columns_count, rows_count, temparr);
+}
+matrix_t * matrix_multiply_elwise(matrix_t * m1, matrix_t * m2)
+{
+    if(m1->size_1 != m2->size_1 || m1->size_2 != m2->size_2)
+        return NULL;
+
+    size_t size = m1->size_1 * m1->size_2;
+    int add[size];
+    for(int i = 0; i < size; i++)
+    {
+        add[i] = m1->matrix[i] * m2->matrix[i];
+    }
+    return matrix_new(m1->size_1, m1->size_2, add);
+}
+
