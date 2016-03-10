@@ -46,3 +46,21 @@ matrix_t * lab1_get_connections(matrix_t * con_mat)
         connections->matrix[i] = connections->matrix[i] > 0 ? 1 : 0;
     return connections;
 }
+
+int lab1_cycles_paths(matrix_t * con_mat, int vertex)
+{
+    int size = con_mat->size_1;
+    if(size != con_mat->size_2)
+        return 0;
+    if(vertex > size || vertex < 0)
+        return 0;
+
+    int vertex_cycles = 1;
+    for(int i = 1; i < size - 1; i++)
+    {
+        matrix_t * paths = lab1_get_paths_at_length(con_mat, i);
+        vertex_cycles += paths->matrix[(vertex - 1) * size + vertex - 1];
+        free(paths);
+    }
+    return vertex_cycles;
+}
