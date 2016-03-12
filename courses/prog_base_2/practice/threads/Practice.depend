@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1457775434 source:c:\data\university\op\practice\main.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	"thread.h"
+	"mutex.h"
+
+1457772562 c:\data\university\op\practice\lib\include\thread.h
+
+1457772562 c:\data\university\op\practice\lib\include\mutex.h
+
