@@ -5,14 +5,14 @@
 
 #include <cmocka.h>
 #include "int_list.h"
-static void new_CreatedListAddedTwoElements_SizeIsTwo(void ** state)
+static void int_list_get_size__CreatedListAddedTwoElements__SizeIsTwo(void ** state)
 {
     int_list_t list = int_list_new();
     int_list_insert(list, 1, 0);
     int_list_insert(list, 1, 0);
     assert_int_equal(2, int_list_get_size(list));
 }
-static void new_CreatedList_SizeIsNull(void ** state)
+static void int_list_get_size__CreatedList__SizeIsNull(void ** state)
 {
     int_list_t * list = int_list_new();
     assert_int_equal(0, int_list_get_size(list));
@@ -92,8 +92,8 @@ int main(void)
         cmocka_unit_test(get_negcount__ThreePositivesOneZero_ThenOnePositiveOneNegative__CorrectNumberOfNegatives),
         cmocka_unit_test(get_poscount__ThreePositiveOneNegative_ThenOnePositiveOneZero__CorrectNumberOfPositives),
         cmocka_unit_test(get_zerocount__ThreePositivesOneNegative_ThenOnePositiveOneZero__CorrectNumberOfZeros),
-        cmocka_unit_test(new_CreatedList_SizeIsNull),
-        cmocka_unit_test(new_CreatedListAddedTwoElements_SizeIsTwo)
+        cmocka_unit_test(int_list_get_size__CreatedList__SizeIsNull),
+        cmocka_unit_test(int_list_get_size__CreatedListAddedTwoElements__SizeIsTwo)
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }
