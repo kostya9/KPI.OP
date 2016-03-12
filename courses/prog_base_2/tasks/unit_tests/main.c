@@ -5,7 +5,7 @@
 
 #include <cmocka.h>
 #include "int_list.h"
-static void int_list_insert_elements(void **state)
+static void insert_100ElementsSequence_DataAtIndexCorrect(void **state)
 {
     int_list_t list = int_list_new();
     for(int i = 0; i < 100; i++)
@@ -16,7 +16,7 @@ static void int_list_insert_elements(void **state)
         assert_int_equal(i, int_list_get_element(list, i));
 }
 
-static void int_list_remove_elements(void **state)
+static void remove_ThreeElementsDeleteFirst_CorrectValueAtFirst(void **state)
 {
     int_list_t list = int_list_new();
     int_list_insert(list, 1, 0);
@@ -29,7 +29,7 @@ static void int_list_remove_elements(void **state)
     int_list_delete(list);
 }
 
-static void int_list_getPosCount(void **state)
+static void get_poscount__ThreePositiveOneNegative_ThenOnePositiveOneZero__CorrectNumberOfPositives(void **state)
 {
     int_list_t list = int_list_new();
     int_list_insert(list, 1, 0);
@@ -43,7 +43,7 @@ static void int_list_getPosCount(void **state)
     int_list_delete(list);
 }
 
-static void int_list_getNegCount(void **state)
+static void get_negcount__ThreePositivesOneZero_ThenOnePositiveOneNegative__CorrectNumberOfNegatives(void **state)
 {
     int_list_t list = int_list_new();
     int_list_insert(list, 1, 0);
@@ -57,7 +57,7 @@ static void int_list_getNegCount(void **state)
     int_list_delete(list);
 }
 
-static void int_list_getZeroCount(void **state)
+static void get_zerocount__ThreePositivesOneNegative_ThenOnePositiveOneZero__CorrectNumberOfZeros(void **state)
 {
     int_list_t list = int_list_new();
     int_list_insert(list, 1, 0);
@@ -75,11 +75,11 @@ int main(void)
 {
     const struct CMUnitTest tests[] =
     {
-        cmocka_unit_test(int_list_insert_elements),
-        cmocka_unit_test(int_list_remove_elements),
-        cmocka_unit_test(int_list_getNegCount),
-        cmocka_unit_test(int_list_getPosCount),
-        cmocka_unit_test(int_list_getZeroCount)
+        cmocka_unit_test(insert_100ElementsSequence_DataAtIndexCorrect),
+        cmocka_unit_test(remove_ThreeElementsDeleteFirst_CorrectValueAtFirst),
+        cmocka_unit_test(get_negcount__ThreePositivesOneZero_ThenOnePositiveOneNegative__CorrectNumberOfNegatives),
+        cmocka_unit_test(get_poscount__ThreePositiveOneNegative_ThenOnePositiveOneZero__CorrectNumberOfPositives),
+        cmocka_unit_test(get_zerocount__ThreePositivesOneNegative_ThenOnePositiveOneZero__CorrectNumberOfZeros)
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }
