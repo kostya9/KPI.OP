@@ -23,7 +23,7 @@ void loop(int N, int K, int L, cb overCB, cb underCB)
         assert(randomN != -N);
         if(abs(randomN) < L)
             underCB(randomN);
-        if(abs(randomN) > K)
+        else if(abs(randomN) > K)
             overCB(randomN);
     }
 }
