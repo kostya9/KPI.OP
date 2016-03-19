@@ -2,22 +2,25 @@
 #include <conio.h>
 #include <time.h>
 #include <math.h>
+#include <assert.h>
 typedef (*cb)(int);
-void loop(int N, int K, cb overCB, cb underCB);
+void loop(int N, int K, int L, cb overCB, cb underCB);
 void under(int L);
 void over(int L);
 
 int main(void)
 {
     srand(time(NULL));
-    loop(10, over, under);
+    loop(10, 3, 4, over, under);
     return EXIT_SUCCESS;
 }
 void loop(int N, int K, int L, cb overCB, cb underCB)
 {
     while(!kbhit())
     {
-        int randomN = rand()%(2 * N) - N;
+        int randomN = rand()%(2 * (N - 1)) - (N - 1);
+        assert(randomN != N);
+        assert(randomN != -N);
         if(abs(randomN) < L)
             underCB(randomN);
         if(abs(randomN) > K)
