@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <conio.h>
 #include <time.h>
+#include <math.h>
 typedef (*cb)(int);
 void loop(int N, int K, cb overCB, cb underCB);
 void under(int L);
@@ -17,9 +18,9 @@ void loop(int N, int K, int L, cb overCB, cb underCB)
     while(!kbhit())
     {
         int randomN = rand()%(2 * N) - N;
-        if(randomN < L)
+        if(abs(randomN) < L)
             underCB(randomN);
-        if(randomN > K)
+        if(abs(randomN) > K)
             overCB(randomN);
     }
 }
