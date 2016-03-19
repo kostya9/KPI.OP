@@ -11,7 +11,7 @@ void over(int L);
 int main(void)
 {
     srand(time(NULL));
-    loop(10, 3, 4, over, under);
+    loop(10, 6, 4, over, under);
     return EXIT_SUCCESS;
 }
 void loop(int N, int K, int L, cb overCB, cb underCB)
