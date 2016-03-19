@@ -3,7 +3,9 @@
 
 class Loader {
 	public:
+		/*Creates a Model from Vertex array*/
 		Model loadToVao(GLfloat positions[], GLuint size);
+		/*Cleans VAOs and VBOs, created at dataToVbo and createVAO */
 		void releaseVOs();
 	private:
 		std::vector<GLuint> vaos;

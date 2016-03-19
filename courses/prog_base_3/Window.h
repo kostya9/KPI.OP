@@ -8,9 +8,16 @@ class Window
 		int height;
 		GLFWwindow* window;
 	public:
-		Window(int height = 800, int width = 600);
+		/*Creates a Window default 800x600*/
+		Window(int width = 800, int height= 600);
+		/*Opens a window and configures opengl and glfw for it*/
 		void open();
+		/*Opens a window and clears glfw configurations*/
 		void close();
+		/*Updates the window*/
 		void update();
+		/*Returns glfw pointer to window*/
+		GLFWwindow* getGLFWWindow();
+		/*Adds a callback function to key pressing*/
 		void addCallBack(key_callback callback);
 };

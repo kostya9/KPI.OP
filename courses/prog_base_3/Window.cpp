@@ -25,7 +25,7 @@ void Window::open()
 	// Define the viewport dimensions
 	glViewport(0, 0, width, height);
 	// Setup OpenGL options
-	//glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST); // Fucking Depth Buffer
 }
 
 void Window::close()
@@ -36,6 +36,11 @@ void Window::close()
 void Window::update()
 {
 	glfwSwapBuffers(window);
+}
+
+GLFWwindow * Window::getGLFWWindow()
+{
+	return window;
 }
 
 void Window::addCallBack(key_callback callback)
