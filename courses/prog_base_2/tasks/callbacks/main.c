@@ -5,8 +5,8 @@
 #include <assert.h>
 typedef (*cb)(int);
 void loop(int N, int K, int L, cb overCB, cb underCB);
-void under(int L);
-void over(int L);
+void under(int n);
+void over(int n);
 
 int main(void)
 {
@@ -27,12 +27,12 @@ void loop(int N, int K, int L, cb overCB, cb underCB)
             overCB(randomN);
     }
 }
-void under(int L)
+void under(int n)
 {
     static int n_calls;
     n_calls++;
 }
-void over(int L)
+void over(int n)
 {
     static int n_calls;
     n_calls++;
