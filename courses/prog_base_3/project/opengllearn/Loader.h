@@ -4,16 +4,19 @@
 
 class Loader {
 	public:
-		/*Creates a Model from Vertex array*/
-		Model loadToVao(GLfloat positions[], GLuint size_pos, GLuint indices[], GLuint size_ind);
+		/*Creates a Model and binds it ti Vertex Array Object(VAO)*/
+		/*WARNING Texture coordinate system origin(0, 0) is at TOP LEFT*/
+		Model loadToVao(GLfloat positions[], GLuint size_pos, GLuint indices[], GLuint size_ind, GLfloat textureCoorinates[], GLuint size_tex);
+		GLuint loadTexture(GLchar * path);
 		/*Cleans VAOs and VBOs, created at dataToVbo and createVAO */
-		void releaseVOs();
+		void  releaseVOs();
 	private:
 		std::vector<GLuint> vaos;
 		std::vector<GLuint> vbos;
+		std::vector<GLuint> textures;
 		GLuint createVAO();
-		/*Storing vertices*/
-		void dataToAttributes(GLint attribNum, GLfloat data[], GLuint size);
+		/*Binds some data to attributes of an VAO*/
+		void dataToAttributes(GLint attribNum, GLuint coordinateSize, GLfloat data[], GLuint size);
 		/*Storing vertices using indices*/
 		void bindIndicesBuffer(GLuint indices[], GLuint size);
 };	

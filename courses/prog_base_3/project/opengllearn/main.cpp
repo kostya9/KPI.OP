@@ -13,6 +13,7 @@ int main()
 	StaticShader shader = StaticShader();
 	Loader loader = Loader();
 	Renderer renderer = Renderer();
+
 	GLfloat vertices[] = {	-0.5f, 0.5f, 0.0f,	// Vertex 0
 							-0.5f, -0.5f, 0.0f,	// Vertex 1
 							0.5f, -0.5f, 0.0f,	// Vertex 2
@@ -21,7 +22,15 @@ int main()
 	GLuint indices[] = {0, 1, 3,	// Left Triangle
 						3, 1, 2		// Right Triangle
 	};
-	Model quad = loader.loadToVao(vertices, arr_size(vertices), indices, arr_size(indices));
+	GLfloat textureCoords[] = {
+		0.0f, 0.0f,
+		0.0f, 1.0f,
+		1.0f, 1.0f,
+		1.0f, 0.0f
+	};
+	Model quad = loader.loadToVao(vertices, arr_size(vertices), indices, arr_size(indices), textureCoords, arr_size(textureCoords));
+	Texture texture = Texture(loader.loadTexture("textures/container.jpg"));
+	TexturedModel texturedModel = TexturedModel(quad, texture);
 	key_callback kb = key_callback_exit;
 	window.addCallBack(kb);
 	curWindow = &window;
@@ -29,7 +38,7 @@ int main()
 	{
 		renderer.prepare();
 		shader.use();
-		renderer.render(quad);
+		renderer.render(texturedModel);
 		shader.unUse();
 		window.update();
 	}

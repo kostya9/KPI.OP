@@ -20,6 +20,7 @@
 #include <glm/glm.hpp> // vector and matrices thing
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+//Debug shit. gDebbugger is pretty cooler.
 static void bindVAO(GLuint id)
 {
 	//puts("Bound VAO");

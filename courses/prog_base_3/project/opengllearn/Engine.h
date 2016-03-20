@@ -5,3 +5,5 @@
 #include "Renderer.h"
 #include "Shader.h"
 #include "StaticShader.h"
+#include "Texture.h"
+#include "TexturedModel.h"

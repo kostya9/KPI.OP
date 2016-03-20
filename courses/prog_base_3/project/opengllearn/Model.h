@@ -6,6 +6,7 @@ class Model
 		GLuint vaoID;
 		GLuint vertexCount;
 	public:
+		Model() {};// copy requires default constructor for some reason
 		/*Creates a model from a VAO(Vertex Array Object) linked to it and count of it's vertices*/
 		Model(GLuint vaoID, GLuint vertexCount)
 		{
