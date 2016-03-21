@@ -75,6 +75,7 @@ Shader::Shader(const GLchar * vertexPath, const GLchar * fragmentPath)
 	// Delete the shaders as they're linked into our program now and no longer necessery
 	glDeleteShader(vertex);
 	glDeleteShader(fragment);
+	//getAllUniformLocations(); Do this for each derived class. Pure virtual for constructors - bad thing to do
 
 }
 
@@ -88,10 +89,30 @@ void Shader::deleteShader()
 	glDeleteShader(programID);
 }
 
-void Shader::bindAttribute(GLuint attrib, const GLchar * varName)
+void Shader::loadFloat(GLuint location, GLfloat value)
 {
-	glBindAttribLocation(programID, attrib, varName);
+	glUniform1f(location, value);
 }
+
+void Shader::loadVector(GLuint location, glm::vec3 vec) // 3D
+{
+	glUniform3f(location, vec.x, vec.y, vec.z);
+}
+
+void Shader::loadBool(GLuint location, bool value)
+{
+	GLfloat toLoad = 0;
+	if (value)
+		toLoad = 1;
+	loadFloat(location, toLoad);
+}
+
+void Shader::loadMatrix(GLuint location, glm::mat4 mat)
+{
+	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
+}
+
+
 
 // Uses the current shader
 
@@ -102,4 +123,9 @@ void Shader::use()
 void Shader::unUse()
 {
 	glUseProgram(0);
+}
+
+GLuint Shader::getUniformLocation(GLchar * unformName)
+{
+	return glGetUniformLocation(programID, unformName);
 }

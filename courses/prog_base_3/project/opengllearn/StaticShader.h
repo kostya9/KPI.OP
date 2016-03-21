@@ -1,14 +1,15 @@
 #pragma once
-#include "Shader.h"
 #include "MainHeaders.h"
+#include "Shader.h"
 class StaticShader : public Shader
 {
+	private:
+		GLuint location_transofrmationMatrix;
 	public:
-		StaticShader() : Shader("shaders/vertex.sh", "shaders/fragment.sh") {} // Actually just constatnt paths
+		StaticShader(); // Actually just constatnt paths // EDITED
+		void loadTransformationMatrix(glm::mat4 matrix);
 	protected:
-		virtual void bindAttributes() override
-		{
-			bindAttribute(0, "position");
-			bindAttribute(1, "textureCoordinate");
-		}
+		virtual void bindAttributes() override;
+		virtual void getAllUniformLocations() override;
+
 };

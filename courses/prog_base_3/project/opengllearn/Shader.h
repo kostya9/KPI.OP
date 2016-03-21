@@ -20,8 +20,17 @@ class Shader
 		void use();
 		void unUse();
 	protected:
-		virtual void bindAttributes() {};
-		void bindAttribute(GLuint attrib, const GLchar * varName);
+		GLuint getUniformLocation(GLchar * unformName);
+		virtual void getAllUniformLocations() = 0;
+		virtual void bindAttributes() = 0;
+		void loadFloat(GLuint location, GLfloat value);
+		void loadVector(GLuint location, glm::vec3 vec);
+		void loadBool(GLuint location, bool value);
+		void loadMatrix(GLuint location, glm::mat4 mat);
+		void inline bindAttribute(GLuint attrib, const GLchar * varName)
+		{
+			glBindAttribLocation(programID, attrib, varName);
+		}
 
 };
 

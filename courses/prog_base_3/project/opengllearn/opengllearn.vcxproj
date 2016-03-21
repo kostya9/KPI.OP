@@ -169,6 +169,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="StaticShader.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="main.cpp" />
