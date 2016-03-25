@@ -32,8 +32,8 @@ static void get_last_error__setAtNotExistingIndex__ERROR_INCORRECT_DIMENSIONS(vo
     const int test_arr[3][3] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
     matrix_t * matrix = matrix_new(3, 3, test_arr);
     matrix_set_el(matrix, 4, 4, 3);
-    int actual = matrix_gat_last_error();
-    int expected = ERROR_INCORRECT_DIMENSIONS;
+    int actual = matrix_get_last_error();
+    int expected = MATRIX_ERROR_INCORRECT_DIMENSIONS;
     matrix_free(matrix);
     assert_int_equal(actual, expected);
 }

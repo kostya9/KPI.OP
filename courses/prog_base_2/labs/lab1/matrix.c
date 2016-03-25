@@ -4,7 +4,7 @@
 #include "matrix.h"
 #include "vector.h"
 
-static enum MATRIX_STATUS status = OK;
+static enum MATRIX_STATUS status = MATRIX_OK;
 
 struct matrix_s{
     size_t rows;
@@ -24,7 +24,7 @@ matrix_t * matrix_new(size_t rows, size_t columns, const int arr[rows][columns])
     matrix_t * out = malloc(sizeof(struct matrix_s));
     if(out == NULL)
     {
-        status = ERROR_NO_MEMORY;
+        status = MATRIX_ERROR_NO_MEMORY;
         return NULL;
     }
     size_t size = rows * columns;
@@ -33,24 +33,24 @@ matrix_t * matrix_new(size_t rows, size_t columns, const int arr[rows][columns])
     out->matrix = malloc(sizeof(int) * size);
     if(out->matrix == NULL)
     {
-        status = ERROR_NO_MEMORY;
+        status = MATRIX_ERROR_NO_MEMORY;
         return NULL;
     }
     memcpy(out->matrix, arr, sizeof(int) * size);
 
-    status = OK;
+    status = MATRIX_OK;
     return out;
 }
 matrix_t * matrix_multiply(matrix_t * m1, matrix_t * m2)
 {
     if(m1 == NULL || m2 == NULL)
     {
-        status = ERROR_NO_MEMORY;
+        status = MATRIX_ERROR_NO_MEMORY;
         return NULL;
     }
     if(m1->columns != m2->rows)
     {
-        status = ERROR_INCORRECT_DIMENSIONS;
+        status = MATRIX_ERROR_INCORRECT_DIMENSIONS;
         return NULL;
     }
 
@@ -70,14 +70,14 @@ matrix_t * matrix_multiply(matrix_t * m1, matrix_t * m2)
         }
     matrix_t * result = matrix_new(row_count_1, col_count_2, multi);
 
-    status = OK;
+    status = MATRIX_OK;
     return result;
 }
 matrix_t * matrix_add(matrix_t * m1, matrix_t * m2)
 {
     if(m1->rows != m2->rows || m1->columns != m2->columns)
     {
-        status = ERROR_INCORRECT_DIMENSIONS;
+        status = MATRIX_ERROR_INCORRECT_DIMENSIONS;
         return NULL;
     }
 
@@ -88,7 +88,7 @@ matrix_t * matrix_add(matrix_t * m1, matrix_t * m2)
         add[i] = m1->matrix[i] + m2->matrix[i];
     }
 
-    status = OK;
+    status = MATRIX_OK;
     return matrix_new(m1->rows, m1->columns, add);
 
 }
@@ -96,7 +96,7 @@ void matrix_print(matrix_t * m)
 {
     if(m == NULL)
     {
-        status = ERROR_NULL_PTR;
+        status = MATRIX_ERROR_NULL_PTR;
         return;
     }
     int row_count = m->rows;
@@ -109,24 +109,24 @@ void matrix_print(matrix_t * m)
         }
         puts("");
     }
-    status = OK;
+    status = MATRIX_OK;
 }
 void matrix_free(matrix_t * m)
 {
     if(m == NULL)
     {
-        status = ERROR_NULL_PTR;
+        status = MATRIX_ERROR_NULL_PTR;
         return;
     }
     free(m->matrix);
     free(m);
-    status = OK;
+    status = MATRIX_OK;
 }
 matrix_t * matrix_transpose(matrix_t * m)
 {
     if(m == NULL)
     {
-        status = ERROR_NULL_PTR;
+        status = MATRIX_ERROR_NULL_PTR;
         return NULL;
     }
     size_t rows_count = m->rows;
@@ -143,7 +143,7 @@ matrix_t * matrix_multiply_elwise(matrix_t * m1, matrix_t * m2)
 {
     if(m1->rows != m2->rows || m1->columns != m2->columns)
     {
-        status = ERROR_INCORRECT_DIMENSIONS;
+        status = MATRIX_ERROR_INCORRECT_DIMENSIONS;
         return NULL;
     }
 
@@ -159,37 +159,37 @@ void matrix_set_el(matrix_t * m, int row, int column, int value)
 {
     if(m == NULL)
     {
-        status = ERROR_NULL_PTR;
+        status = MATRIX_ERROR_NULL_PTR;
         return;
     }
     int row_correct = row < m->rows && row >= 0;
     int column_correct = column < m->columns && column >= 0;
     if(row_correct == 0 || column_correct == 0)
     {
-        status = ERROR_INCORRECT_DIMENSIONS;
+        status = MATRIX_ERROR_INCORRECT_DIMENSIONS;
         return;
     }
     m->matrix[row * m->columns + column] = value;
-    status = OK;
+    status = MATRIX_OK;
 }
 int matrix_get_el(matrix_t * m, int row, int column)
 {
     if(m == NULL)
     {
-        status = ERROR_NULL_PTR;
+        status = MATRIX_ERROR_NULL_PTR;
         return;
     }
     int row_correct = row < m->rows && row >= 0;
     int column_correct = column < m->columns && column >= 0;
     if(row_correct == 0 || column_correct == 0)
     {
-        status = ERROR_INCORRECT_DIMENSIONS;
+        status = MATRIX_ERROR_INCORRECT_DIMENSIONS;
         return;
     }
-    status = OK;
+    status = MATRIX_OK;
     return m->matrix[row * m->columns + column];
 }
-MATRIX_STATUS matrix_gat_last_error()
+MATRIX_STATUS matrix_get_last_error()
 {
     return status;
 }
@@ -202,12 +202,12 @@ matrix_t * matrix_multiply_vector(matrix_t * m, vector_t * vec)
 {
     if(m == NULL || vec == NULL)
     {
-        status = ERROR_NULL_PTR;
+        status = MATRIX_ERROR_NULL_PTR;
         return NULL;
     }
     if(m->columns != vector_get_size(vec))
     {
-        status = ERROR_INCORRECT_DIMENSIONS;
+        status = MATRIX_ERROR_INCORRECT_DIMENSIONS;
         return NULL;
     }
     int vec_size = vector_get_size(vec);
@@ -218,5 +218,6 @@ matrix_t * matrix_multiply_vector(matrix_t * m, vector_t * vec)
         for(int j = 0; j < m->columns; j++)
             arr[i] += vector_get_el(vec, j) * matrix_get_el(m, i, j);
     }
+    status =  MATRIX_OK;
     return matrix_new(vec_size, 1, arr);
 }
