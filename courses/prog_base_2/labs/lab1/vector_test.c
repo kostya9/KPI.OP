@@ -7,7 +7,6 @@
 #include "matrix.h"
 #include "vector.h"
 
-// unit-test function
 static void get_intArray_2AtPosition1(void **state)
 {
     const int test_arr[3] = {1, 2, 3};
@@ -40,6 +39,16 @@ static void multiply_vector__intArray__4AtPosition1(void **state)
     vector_free(vector2);
     assert_int_equal(actual, expected);
 }
+static void get_last_error__setAtNotExistingIndex__ERROR_INCORRECT_DIMENSIONS(void **state)
+{
+    const int test_arr[3] = {1, 2, 3};
+    vector_t * vector = vector_new(3, test_arr);
+    vector_set_el(vector, 4, 3);
+    int actual = vector_get_last_error();
+    int expected = VECTOR_ERROR_INCORRECT_DIMENSIONS;
+    vector_free(vector);
+    assert_int_equal(actual, expected);
+}
 void vector_test() {
     puts("Testing vectors on vector \n\t1\n\t2\n\t3\n...");
     const struct CMUnitTest tests[] =
@@ -47,6 +56,7 @@ void vector_test() {
         cmocka_unit_test(get_intArray_2AtPosition1),
         cmocka_unit_test(set_intArraySet3AtPosition1_3AtPosition1),
         cmocka_unit_test(multiply_vector__intArray__4AtPosition1),
+        cmocka_unit_test(get_last_error__setAtNotExistingIndex__ERROR_INCORRECT_DIMENSIONS),
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }

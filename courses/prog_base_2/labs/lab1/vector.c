@@ -98,3 +98,12 @@ void vector_free(vector_t * vec)
     free(vec);
     status = VECTOR_OK;
 }
+VECTOR_STATUS vector_get_last_error()
+{
+    return status;
+}
+const char * vector_strstatus(VECTOR_STATUS status)
+{
+    static const char * strstatus = {"OK", "ERROR_INCORRECT_DIMENSIONS", "ERROR_NULL_PTR", "ERROR_NO_MEMORY"};
+    return strstatus[status];
+}

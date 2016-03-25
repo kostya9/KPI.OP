@@ -6,6 +6,7 @@ vector_t * vector_new(int size, const int values[]); // COLUMN VECTOR
 void vector_set_el(vector_t * vec, int index, int value);
 int vector_get_el(vector_t * vec, int index);
 int vector_get_size(vector_t * vec);
-
+VECTOR_STATUS vector_get_last_error();
+const char * vector_strstatus(VECTOR_STATUS status);
 vector_t * vector_multiply_vector(vector_t * vec1, vector_t * vec2); // ELEMENTWISE
 void vector_free(vector_t * vec);
