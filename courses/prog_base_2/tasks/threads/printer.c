@@ -51,9 +51,9 @@ void printer_stop(printer_t * printer)
     if(printer->is_active == 0)
         return;
     printer->is_active = 0;
-    printer->mutex = NULL;
     thread_terminate(printer->thread);
     thread_free(printer->thread);
+    printer->thread = NULL;
 }
 void printer_free(printer_t * printer)
 {
