@@ -13,10 +13,10 @@ typedef struct printer_s
     mutex_t * mutex;
 } printer_s;
 
-printer_t * printer_new(const char * str)
+printer_t * printer_new(const char * str, mutex_t * mutex)
 {
     printer_s * printer = malloc(sizeof(struct printer_s));
-    printer->mutex = NULL;
+    printer->mutex = mutex;
     printer->str = (char *)malloc((strlen(str) + 1) * sizeof(char));
     strcpy(printer->str, str);
     return printer;
@@ -41,10 +41,6 @@ void printer_set_string(printer_t * printer, const char * str)
 }
 void printer_start(printer_t * printer)
 {
-    static mutex_t * mutex;
-    if(mutex == NULL)
-        mutex = mutex_new();
-    printer->mutex = mutex;
     if(printer->is_active == 1)
         return;
     printer->is_active = 1;
