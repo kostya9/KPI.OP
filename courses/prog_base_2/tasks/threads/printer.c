@@ -5,20 +5,18 @@
 #include "libthread/mutex.h"
 #include "libthread/thread.h"
 #define TIMES 10
-static mutex_t* mutex;
-
 typedef struct printer_s
 {
     int is_active;
     char * str;
     thread_t * thread;
+    mutex_t * mutex;
 } printer_s;
 
 printer_t * printer_new(const char * str)
 {
-    if(mutex == NULL)
-        mutex = mutex_new();
     printer_s * printer = malloc(sizeof(struct printer_s));
+    printer->mutex = NULL;
     printer->str = (char *)malloc((strlen(str) + 1) * sizeof(char));
     strcpy(printer->str, str);
     return printer;
@@ -28,12 +26,12 @@ static void * printer_print(void * args)
     printer_t * printer = (printer_t *)args;
     while(printer->is_active)
     {
-        mutex_lock(mutex);
+        mutex_lock(printer->mutex);
         for(int i = 0; i < TIMES; i++)
         {
             puts(printer->str);
         }
-        mutex_unlock(mutex);
+        mutex_unlock(printer->mutex);
     }
 }
 void printer_set_string(printer_t * printer, const char * str)
@@ -43,6 +41,10 @@ void printer_set_string(printer_t * printer, const char * str)
 }
 void printer_start(printer_t * printer)
 {
+    static mutex_t * mutex;
+    if(mutex == NULL)
+        mutex = mutex_new();
+    printer->mutex = mutex;
     if(printer->is_active == 1)
         return;
     printer->is_active = 1;
@@ -53,6 +55,7 @@ void printer_stop(printer_t * printer)
     if(printer->is_active == 0)
         return;
     printer->is_active = 0;
+    printer->mutex = NULL;
     thread_free(printer->thread);
 }
 void printer_free(printer_t * printer)
