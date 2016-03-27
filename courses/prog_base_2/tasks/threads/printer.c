@@ -19,7 +19,7 @@ printer_t * printer_new(const char * str)
     if(mutex == NULL)
         mutex = mutex_new();
     printer_s * printer = malloc(sizeof(struct printer_s));
-    printer->str = (char *)malloc(strlen(str) * sizeof(char));
+    printer->str = (char *)malloc((strlen(str) + 1) * sizeof(char));
     strcpy(printer->str, str);
     return printer;
 }
@@ -34,7 +34,6 @@ static void * printer_print(void * args)
             puts(printer->str);
         }
         mutex_unlock(mutex);
-        Sleep(1);
     }
 }
 void printer_set_string(printer_t * printer, const char * str)
