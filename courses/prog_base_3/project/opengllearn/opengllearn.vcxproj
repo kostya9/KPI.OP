@@ -157,6 +157,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="Maths.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="StaticShader.h" />
     <ClInclude Include="Shader.h" />

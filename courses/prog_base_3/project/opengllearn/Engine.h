@@ -7,3 +7,4 @@
 #include "StaticShader.h"
 #include "Texture.h"
 #include "TexturedModel.h"
+#include "Entity.h"

@@ -34,12 +34,16 @@ int main()
 	key_callback kb = key_callback_exit;
 	window.addCallBack(kb);
 	curWindow = &window;
+
+	Entity entity = Entity(texturedModel, glm::vec3(0.0f, 0.0f, 0.0f), 0.0f, 0.0f, 0.0f, 1.0f);
+
+
 	while (!glfwWindowShouldClose(window.getGLFWWindow()))
 	{
+		//entity.increasePosition(0.0f, 0.0f, 0.01f);
+		entity.increaseRotation(0.0f, 0.0f, -0.01f);
 		renderer.prepare();
-		shader.use();
-		renderer.render(texturedModel);
-		shader.unUse();
+		renderer.render(entity, shader);
 		window.update();
 	}
 	shader.deleteShader();

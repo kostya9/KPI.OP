@@ -3,10 +3,13 @@
 in vec3 position;
 in vec2 textureCoordinate;
 
-out vec2 out_textureCoordinate;
+out vec3 color;
+out vec2 out_textureCoordinate;	
+
+uniform mat4 transformationMatrix;
 
 void main(void)
 {
-	gl_Position = vec4(position, 1.0f);
+	gl_Position = transformationMatrix * vec4(position, 1.0f);
 	out_textureCoordinate =vec2(textureCoordinate.x, textureCoordinate.y);
 }

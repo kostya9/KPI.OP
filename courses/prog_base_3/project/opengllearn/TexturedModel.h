@@ -8,6 +8,7 @@ class TexturedModel
 		Model model;
 		Texture texture;
 	public:
+		TexturedModel() {}
 		TexturedModel(Model model, Texture texture)
 		{
 			this->model = model; // requires default constructor for some reason
