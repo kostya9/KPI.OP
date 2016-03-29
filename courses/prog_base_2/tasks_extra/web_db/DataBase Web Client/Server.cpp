@@ -1,9 +1,8 @@
 #include "Server.h"
-#define CLRF "\r\n"
 
-Server::Server(int port)
+Server::Server(string ip, int port)
 {
-	this->server = Socket(port);
+	this->server = Socket(ip, port);
 }
 
 void Server::Listen()
@@ -15,12 +14,26 @@ void Server::Listen()
 
 string Server::MessageProccessing(string request)
 {
-	string response = "";
-	response += "HTTP/1.1 200 OK" CLRF;
-	response +=  ("Content-Type: text/html" CLRF);
-	response += (CLRF);
-	response += ("<p> Hello world </p>" CLRF);
-	return response;
+	HTTPRequest httprequest = HTTPRequest(request);
+	if (httprequest.GetType() == GET)
+	{
+		string path = httprequest.GetPath();
+		string response_content;
+		if (path.compare("/") == 0)
+		{
+			string content = ("<p> Hello world </p>");
+			HTTPRequest response = HTTPRequest(HTTP_STATUS_OK, content);
+			return response.ToString();
+		}
+		else // Page Not Found Proccessing
+		{
+			string content = ("<h1>Page not found!</h1>");
+			HTTPRequest response = HTTPRequest(HTTP_STATUS_SERVER_ERROR, content);
+			return response.ToString();
+		}
+	}
+	else
+		return string("ERROR");
 }
 
 void Server::AcceptLoop()
@@ -33,6 +46,7 @@ void Server::AcceptLoop()
 		cout << "CONNECTED LOL :\n " + request + "\n";
 		string response = MessageProccessing(request);
 		client.Send(response);
+		client.Close();
 	}
 	
 

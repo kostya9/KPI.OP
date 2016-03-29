@@ -10,8 +10,16 @@ private:
 	SOCKADDR_IN sin;
 public:
 	Socket() {};
-	Socket(int port);
+	/*~Socket()
+	{
+		closesocket(s);
+	}*/
+	Socket(string ip, int port);
 	Socket(SOCKET server);
+	void Close()
+	{
+		closesocket(s);
+	}
 	int Bind();
 	string Receive();
 	int Send(string msg);

@@ -159,6 +159,7 @@
     <ClInclude Include="WSA.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="HTTPRequest.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="Socket.cpp" />

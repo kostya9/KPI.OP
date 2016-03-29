@@ -7,7 +7,7 @@
 int main()
 {
 	WSA wsa = WSA();
-	Server server = Server(80);
+	Server server = Server("127.0.0.1", 80);
 	server.Listen();
     return 0;	
 }

@@ -1,13 +1,13 @@
 ﻿#define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include "Socket.h"
 
-Socket::Socket(int port)
+Socket::Socket(string ip, int port)
 {
 	SOCKET s;
 	SOCKADDR_IN sin;
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(port);
-	sin.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");// ANY IP <- Server NOPE
+	sin.sin_addr.S_un.S_addr = inet_addr(ip.c_str());// ANY IP <- Server NOPE
 	this->sin = sin;
 	if((s = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET)
 	{
