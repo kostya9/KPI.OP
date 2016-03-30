@@ -7,7 +7,10 @@ Socket::Socket(string ip, int port)
 	SOCKADDR_IN sin;
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(port);
-	sin.sin_addr.S_un.S_addr = inet_addr(ip.c_str());// ANY IP <- Server NOPE
+	if (ip.compare("ANY") != 0)
+		sin.sin_addr.S_un.S_addr = inet_addr(ip.c_str());// ANY IP <- Server NOPE
+	else
+		sin.sin_addr.S_un.S_addr = INADDR_ANY;
 	this->sin = sin;
 	if((s = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET)
 	{

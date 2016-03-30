@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 #include <iostream>
 #define CRLF "\r\n"
 #define BUFFER_SIZE 1000

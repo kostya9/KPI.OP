@@ -1,3 +1,6 @@
+# You have to link everything from \Lib
+#YOu have to get all dlls
+
 ========================================================================
     CONSOLE APPLICATION : DataBase Web Client Project Overview
 ========================================================================

@@ -52,7 +52,7 @@ string HTTPRequest::ToString()
 			response += HTTP_VERSION + string(" ") + to_string(HTTPstatus) + " " + HTTPStatusToString(HTTPstatus) + CRLF;
 			if (content_length == 0)
 				return response;
-			response += "Content length: " + to_string(content_length) + CRLF + CRLF + content;
+			response += "Content-length: " + to_string(content_length) + CRLF + CRLF + content;
 			return response;
 		}break;
 	}
