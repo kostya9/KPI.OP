@@ -1,38 +1,54 @@
 #pragma once
-#include "MainHeaders.h"
-namespace Table
-{
-	enum COLUMN_TYPE {COLUMN_INT, COLUMN_STRING};
-	class Columns
+#include "MainHEaders.h"
+#include <tuple>
+enum COLUMN_TYPE { COLUMN_INT, COLUMN_STRING, COLUMN_ERROR };
+typedef tuple<string, COLUMN_TYPE> column;
+class Columns {
+
+private:
+	vector<column> cols;
+	column FindColByName(string name)
 	{
-		struct column
+		for (column c : cols)
+			if (get<0>(c) == name)
+				return c;
+		throw out_of_range("NameNotAColumn");
+	}
+public:
+	Columns(vector<column> cols)
+	{
+		this->cols = cols;
+	}
+	COLUMN_TYPE GetColumnType(int index)
+	{
+		column c;
+		try
 		{
-			string name;
-			COLUMN_TYPE type;
-		};
-	private:
-		vector <column> columns;
-	public:
-		string GetColumnName(int index)
-		{
-			return columns.at(index).name;
+			c = cols.at(index);
 		}
-		COLUMN_TYPE GetColumnType(int index)
+		catch (int e)
 		{
-			return columns.at(index).type;
+			return COLUMN_ERROR;
 		}
-		COLUMN_TYPE GetColumnType(string name)
+		COLUMN_TYPE tp = get<1>(c);
+		return tp;
+	}
+	string GetColumnName(int index)
+	{
+		column c;
+		try
 		{
-			for (column c : columns)
-				if (name == c.name)
-					return c.type;
+			c = cols.at(index);
 		}
-		int GetIndexByName(string name)
+		catch (int e)
 		{
-			int i = 0;
-			while (columns.at(i).name != name)
-				i++;
-			return i;
+			return "NULL";
 		}
-	};
-}
+		string tp = get<0>(c);
+		return tp;
+	}
+	int GetCount()
+	{
+		return cols.size();
+	}
+};
