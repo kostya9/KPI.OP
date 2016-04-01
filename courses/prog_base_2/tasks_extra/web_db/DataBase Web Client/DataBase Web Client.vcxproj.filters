@@ -60,6 +60,9 @@
     <ClInclude Include="Table.h">
       <Filter>Header Files\DB</Filter>
     </ClInclude>
+    <ClInclude Include="HTMLBuilder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

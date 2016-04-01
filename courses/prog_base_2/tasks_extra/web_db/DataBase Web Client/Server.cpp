@@ -1,5 +1,7 @@
 #include "Server.h"
-
+#include "DBConnection.h"
+#include "Table.h"
+#include "HTMLBuilder.h"
 Server::Server(string ip, int port)
 {
 	this->server = Socket(ip, port);
@@ -21,8 +23,14 @@ string Server::MessageProccessing(string request)
 		string response_content;
 		if (path.compare("/") == 0)
 		{
-			string content = ("<p> Hello world </p>");
+			string UID = string("web");
+			string PWD = string("heyyoudon'tlookatthis");
+			DBConnection * db = new DBConnection(UID, PWD);
+			Table * table = db->GetTableFromDBTable("webdata.myTable");
+			string content = HTMLBuilder::BuildHTMLTableFromDBTable(table);
 			HTTPRequest response = HTTPRequest(HTTP_STATUS_OK, content);
+			delete db;
+			delete table;
 			return response.ToString();
 		}
 		else // Page Not Found Proccessing

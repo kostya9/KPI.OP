@@ -22,9 +22,19 @@ public:
 	{
 		return values.at(index);
 	}
+	int GetInt(int index)
+	{
+		int * val = (int *)GetValue(index);
+		return *val;
+	}
+	string GetString(int index)
+	{
+		string * val = (string *)GetValue(index);
+		return *val;
+	}
 	~Row()
 	{
-		puts("Fuck you row");
+		puts("Bye you row");
 		int i = 0;
 		for (void * value : values)
 		{

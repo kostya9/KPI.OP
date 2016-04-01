@@ -33,7 +33,7 @@ class Table
 		}
 		~Table()
 		{
-			puts("Fuck you table");
+			puts("Bye you table");
 			for (Row * r : rows)
 				delete r;
 			delete cols;

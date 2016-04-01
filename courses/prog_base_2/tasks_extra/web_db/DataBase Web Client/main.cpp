@@ -11,11 +11,11 @@ using namespace std;
 using namespace sql;
 int main()
 {
-	/*WSA wsa = WSA();
+	WSA wsa = WSA();
 	Server server = Server("192.168.233.4", 80);
 	server.Listen();
-	return 0;*/
-	string UID = string("web");
+	return 0;
+	/*string UID = string("web");
 	string PWD = string("heyyoudon'tlookatthis");
 	DBConnection * db = new DBConnection(UID, PWD);
 	Table * table = db->GetTableFromDBTable("webdata.myTable");
@@ -33,14 +33,13 @@ int main()
 			{
 				case COLUMN_STRING:
 				{
-					string * cur_str_p = (string *)row->GetValue(k); // Strange Behaviour here. Something like memory deallocation. YEP IT WAS TRUE. But fixed
-					string cur_str = *cur_str_p;
+					//string * cur_str_p = (string *)row->GetValue(k); // Strange Behaviour here. Something like memory deallocation. YEP IT WAS TRUE. But fixed
+					string cur_str = row->GetString(k);
 					printf("%20s", cur_str.c_str());
 				}break;
 				case COLUMN_INT:
 				{
-					int * cur_int_p = (int *)row->GetValue(k);
-					int cur_int = *cur_int_p;
+					int cur_int = row->GetInt(k);
 					printf("%3i", cur_int);
 				}break;
 			}
@@ -50,6 +49,6 @@ int main()
 	}
 
 	delete table;
-	delete db;
+	delete db;*/
 	_getch();
 }

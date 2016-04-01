@@ -160,6 +160,7 @@
   <ItemGroup>
     <ClInclude Include="Columns.h" />
     <ClInclude Include="DBConnection.h" />
+    <ClInclude Include="HTMLBuilder.h" />
     <ClInclude Include="MainHeaders.h" />
     <ClInclude Include="HTTPRequest.h" />
     <ClInclude Include="Row.h" />

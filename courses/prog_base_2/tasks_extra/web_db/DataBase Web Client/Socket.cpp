@@ -54,7 +54,7 @@ int Socket::Send(string msg)
 {
 	int err = send(s, msg.c_str(), msg.length(), NO_FLAGS_SET);
 	if (err < 0)
-		puts("Send is fucked up");
+		puts("Send is Byeed up");
 	return err;
 }
 
