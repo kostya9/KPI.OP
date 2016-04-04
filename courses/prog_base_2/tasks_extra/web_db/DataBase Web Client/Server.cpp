@@ -45,12 +45,13 @@ string Server::MessageProccessing(string request)
 		string PWD = string("heyyoudon'tlookatthis");
 		string path = httprequest.GetPath();
 		string response_content;
+		string home_link = " <a href=\"\\\">HOME</a></br> ";
 		if (path.compare("/") == 0)
 		{
 			DBConnection * db = new DBConnection(UID, PWD);
 			vector<string> table_names = db->GetTableNames(string(DATABASE_NAME));
 			string content = HTMLBuilder::BuildTableNames(table_names);
-			HTTPRequest response = HTTPRequest(HTTP_STATUS_OK, content);
+			HTTPRequest response = HTTPRequest(HTTP_STATUS_OK, home_link + content);
 			delete db;
 			return response.ToString();
 		}
@@ -63,7 +64,7 @@ string Server::MessageProccessing(string request)
 			if (table == NULL)
 				return string("INCORRECT TABLE");
 			string content = HTMLBuilder::BuildHTMLTableFromDBTable(table);
-			HTTPRequest response = HTTPRequest(HTTP_STATUS_OK, content);
+			HTTPRequest response = HTTPRequest(HTTP_STATUS_OK, home_link + content);
 			delete db;
 			delete table;
 			return response.ToString();
@@ -80,7 +81,7 @@ string Server::MessageProccessing(string request)
 			if (table == NULL)
 				return string("INCORRECT TABLE");
 			string content = HTMLBuilder::BuildHTMLTableFromDBTable(table);
-			HTTPRequest response = HTTPRequest(HTTP_STATUS_OK, content);
+			HTTPRequest response = HTTPRequest(HTTP_STATUS_OK, home_link + content);
 			delete db;
 			delete table;
 			return response.ToString();
@@ -115,7 +116,7 @@ string Server::MessageProccessing(string request)
 			string table_name = GetParamValue(path, "table");
 			Table * table = db->GetTableFromDBTable(table_name);
 			string content = HTMLBuilder::BuildFormNewEntry(table);
-			HTTPRequest response = HTTPRequest(HTTP_STATUS_OK, content);
+			HTTPRequest response = HTTPRequest(HTTP_STATUS_OK, home_link + content);
 			delete db;
 			delete table;
 			return response.ToString();
@@ -156,7 +157,7 @@ string Server::MessageProccessing(string request)
 			Table * table = db->GetTableFromDBTable(table_name);
 			string key = GetParamValue(path, string("key"));
 			string content = HTMLBuilder::BuildFormEditEntry(table, table->GetKey(), key);
-			HTTPRequest response = HTTPRequest(HTTP_STATUS_OK, content);
+			HTTPRequest response = HTTPRequest(HTTP_STATUS_OK, home_link + content);
 			delete db;
 			delete table;
 			return response.ToString();
@@ -164,7 +165,7 @@ string Server::MessageProccessing(string request)
 		else // Page Not Found Proccessing
 		{
 			string content = ("<h1>Page not found!</h1>");
-			HTTPRequest response = HTTPRequest(HTTP_STATUS_SERVER_ERROR, content);
+			HTTPRequest response = HTTPRequest(HTTP_STATUS_SERVER_ERROR, home_link + content);
 			return response.ToString();
 		}
 	}
