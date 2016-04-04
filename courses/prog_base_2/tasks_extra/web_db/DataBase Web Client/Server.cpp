@@ -16,6 +16,24 @@ void Server::Listen()
 	int listen = server.Listen();
 	AcceptLoop();
 }
+string Server::GetParamValue(string path, string param_name)
+{
+	char * name_del = "?&=";
+	const char * param_name_c_str = param_name.c_str();
+	char buffer[BUFFER_SIZE];
+	strcpy(buffer, path.c_str());
+	char * pos = strtok(buffer, name_del); // BEFOR ?
+	pos = strtok(NULL, name_del); // AFTER First
+	while ( (pos = strtok(NULL, name_del)) != NULL)
+	{
+		char * name = strtok(NULL, name_del);
+		if(strcmp(pos, param_name_c_str) == 0)
+		{
+			return string(name);
+		}
+	}
+	return string("");
+}
 
 string Server::MessageProccessing(string request)
 {
@@ -23,12 +41,12 @@ string Server::MessageProccessing(string request)
 	int pos;
 	if (httprequest.GetType() == GET)
 	{
+		string UID = string("web");
+		string PWD = string("heyyoudon'tlookatthis");
 		string path = httprequest.GetPath();
 		string response_content;
 		if (path.compare("/") == 0)
 		{
-			string UID = string("web");
-			string PWD = string("heyyoudon'tlookatthis");
 			DBConnection * db = new DBConnection(UID, PWD);
 			vector<string> table_names = db->GetTableNames(string(DATABASE_NAME));
 			string content = HTMLBuilder::BuildTableNames(table_names);
@@ -36,17 +54,10 @@ string Server::MessageProccessing(string request)
 			delete db;
 			return response.ToString();
 		}
-		else if ((pos = path.find("table=")) != string::npos)
+		else if ((pos = path.find("?get")) != string::npos)
 		{
-			char * del = "=&? \n";
-			char * s = &path[0] + pos;
-			char * tok;
-			tok = strtok(s, del);
-			tok = strtok(NULL, del);
-			string tableName = string(tok);
+			string tableName = GetParamValue(path, "table");
 			//Connect to databse
-			string UID = string("web");
-			string PWD = string("heyyoudon'tlookatthis");
 			DBConnection * db = new DBConnection(UID, PWD);
 			Table * table = db->GetTableFromDBTable(string(DATABASE_NAME) + "." + tableName);
 			if (table == NULL)
@@ -58,6 +69,57 @@ string Server::MessageProccessing(string request)
 			return response.ToString();
 
 		}
+		else if ((pos = path.find("?delete")) != string::npos)
+		{
+			DBConnection * db = new DBConnection(UID, PWD);
+			string table_name = GetParamValue(path, "table");
+			int key = stoi(GetParamValue(path, "key"));
+			db->DeleteRow(table_name, key);
+			//Connect to databse
+			Table * table = db->GetTableFromDBTable(table_name);
+			if (table == NULL)
+				return string("INCORRECT TABLE");
+			string content = HTMLBuilder::BuildHTMLTableFromDBTable(table);
+			HTTPRequest response = HTTPRequest(HTTP_STATUS_OK, content);
+			delete db;
+			delete table;
+			return response.ToString();
+		}
+		else if ((pos = path.find("?insert")) != string::npos)
+		{
+			DBConnection * db = new DBConnection(UID, PWD);
+			string table_name = GetParamValue(path, "table");
+			Table * table = db->GetTableFromDBTable(table_name);
+			vector<string> vals_vec;
+			vector <string> cols_vec;
+			Columns *cols = table->GetColumns();
+			int column_count = cols->GetCount();
+			for (int i = 0; i < cols->GetCount(); i++)
+			{
+				string get_val = GetParamValue(path, cols->GetColumnName(i));
+				string col = cols->GetColumnName(i);
+				vals_vec.push_back(get_val);
+				cols_vec.push_back(col);
+			}
+			db->InsertRow(table_name, cols_vec, vals_vec);
+			int i = table_name.find(".");
+			HTTPRequest response = HTTPRequest(HTTP_REDIRECT, string("Location"), string("\?get&table=") +	&table_name[i + 1]);
+			delete db;
+			delete table;
+				return response.ToString();
+
+		}
+		else if ((pos = path.find("?form_new")) != string::npos)
+		{
+			DBConnection * db = new DBConnection(UID, PWD);
+			string table_name = GetParamValue(path, "table");
+			Table * table = db->GetTableFromDBTable(table_name);
+			string content = HTMLBuilder::BuildFormNewEntry(table);
+			HTTPRequest response = HTTPRequest(HTTP_STATUS_OK, content);
+			delete db;
+			delete table;
+			return response.ToString();
+		}
 		else // Page Not Found Proccessing
 		{
 			string content = ("<h1>Page not found!</h1>");
@@ -68,6 +130,8 @@ string Server::MessageProccessing(string request)
 	else
 		return string("ERROR");
 	}
+
+
 
 void Server::AcceptLoop()
 {

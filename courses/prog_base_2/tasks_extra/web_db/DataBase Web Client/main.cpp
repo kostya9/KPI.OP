@@ -7,48 +7,14 @@
 #include "Table.h"
 #include <stdio.h>
 #include <conio.h>
+#include "Server.h"
 using namespace std;
 using namespace sql;
 int main()
 {
 	WSA wsa = WSA();
-	Server server = Server("192.168.233.4", 80);
+	Server server = Server("127.0.0.1", 80);
 	server.Listen();
-	return 0;
-	/*string UID = string("web");
-	string PWD = string("heyyoudon'tlookatthis");
-	DBConnection * db = new DBConnection(UID, PWD);
-	Table * table = db->GetTableFromDBTable("webdata.myTable");
-	Columns * cols = table->GetColumns();
-	int columns_count = table->GetColumnsCount();
-	int rows_count = table->GetRowsCount();
-	for (int i = 0; i < rows_count; i++)
-	{
-		Row * row = table->GetRow(i);
-		for (int k = 0; k < columns_count; k++)
-		{
-			puts(cols->GetColumnName(k).c_str());
-			COLUMN_TYPE type = cols->GetColumnType(k);
-			switch (type)
-			{
-				case COLUMN_STRING:
-				{
-					//string * cur_str_p = (string *)row->GetValue(k); // Strange Behaviour here. Something like memory deallocation. YEP IT WAS TRUE. But fixed
-					string cur_str = row->GetString(k);
-					printf("%20s", cur_str.c_str());
-				}break;
-				case COLUMN_INT:
-				{
-					int cur_int = row->GetInt(k);
-					printf("%3i", cur_int);
-				}break;
-			}
-			puts("");
-		}
-		puts("");
-	}
-
-	delete table;
-	delete db;*/
 	_getch();
+	return 0;
 }

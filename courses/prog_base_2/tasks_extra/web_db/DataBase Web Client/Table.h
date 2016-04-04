@@ -12,17 +12,24 @@ class Table
 		Columns * cols;
 		vector <Row *> rows;
 	public:
+		// KEY ONLY INT BY NOW. HARDCODED THINGY
 		Table(Columns * cols, vector <Row *> rows, string column_primary_key, string name)
 		{
 			this->name = name;
 			this->cols = cols;
 			this->rows = rows;
+			this->column_primary_key = column_primary_key;
 		}
 		Table(Columns * cols, vector <Row *> rows, string column_primary_key)
 		{
 			this->name = string("Name is Not Set");
 			this->cols = cols;
 			this->rows = rows;
+			this->column_primary_key = column_primary_key;
+		}
+		string GetKey()
+		{
+			return column_primary_key;
 		}
 		string GetName()
 		{

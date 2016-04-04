@@ -3,7 +3,7 @@
 #define URI_CAPACITY 100
 #define CONTENT_CAPACITY 300
 #define HTTP_VERSION "HTTP/1.1"
-enum HTTP_STATUS {HTTP_STATUS_OK = 200, HTTP_STATUS_SERVER_ERROR = 500};
+enum HTTP_STATUS {HTTP_STATUS_OK = 200, HTTP_STATUS_SERVER_ERROR = 500, HTTP_REDIRECT= 302};
 enum MESSAGE_TYPE {REQUEST, RESPONSE};
 enum REQUEST_TYPE {GET, SET, POST, REQUEST_ERROR};
 class HTTPRequest
@@ -14,6 +14,8 @@ class HTTPRequest
 		HTTP_STATUS HTTPstatus;
 		string host;
 		string path;
+		string header;
+		string header_content;
 		size_t content_length;
 		string content;
 		REQUEST_TYPE GetRequestTypeFromRequest(string request);
@@ -25,6 +27,15 @@ class HTTPRequest
 			this->msg_type = RESPONSE;
 			this->HTTPstatus = HTTPstatus;
 			this->content = content;
+			this->content_length = content.length();
+		}
+		HTTPRequest(HTTP_STATUS HTTPstatus, string header, string header_content)
+		{
+			this->msg_type = RESPONSE;
+			this->header = header;
+			this->header_content = header_content;
+			this->HTTPstatus = HTTPstatus;
+			this->content = string("");
 			this->content_length = content.length();
 		}
 		HTTPRequest(string request)

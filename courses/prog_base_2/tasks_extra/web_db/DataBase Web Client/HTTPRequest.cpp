@@ -50,6 +50,8 @@ string HTTPRequest::ToString()
 		{
 			string response = "";
 			response += HTTP_VERSION + string(" ") + to_string(HTTPstatus) + " " + HTTPStatusToString(HTTPstatus) + CRLF;
+			if(header.length() != 0)
+				response += header + ":" + header_content;
 			if (content_length == 0)
 				return response;
 			response += "Content-length: " + to_string(content_length) + CRLF + CRLF + content;

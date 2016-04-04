@@ -58,7 +58,7 @@ int get_array(int * output, int size, char * address, SOCKET * psocket)
     }
     return position;
 }
-int sort(int * arr, int size)
+int sort(int arr[], int size)
 {
     for(int sorted = 1; sorted < size; sorted++)
     {

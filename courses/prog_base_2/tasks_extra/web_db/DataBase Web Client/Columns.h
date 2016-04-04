@@ -3,6 +3,7 @@
 #include <tuple>
 enum COLUMN_TYPE { COLUMN_INT, COLUMN_STRING, COLUMN_ERROR };
 typedef tuple<string, COLUMN_TYPE> column;
+using namespace std;
 class Columns {
 
 private:
@@ -18,6 +19,15 @@ public:
 	Columns(vector<column> cols)
 	{
 		this->cols = cols;
+	}
+	int GetColumnIndex(string name)
+	{
+		for (int i = 0; i < cols.size(); i++)
+		{
+			if (get<0>(cols.at(i)) == name)
+				return i;
+		}
+		return -1;
 	}
 	COLUMN_TYPE GetColumnType(int index)
 	{

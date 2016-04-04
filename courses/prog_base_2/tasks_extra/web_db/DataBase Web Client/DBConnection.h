@@ -10,7 +10,6 @@ using namespace sql;
 using namespace std;
 class DBConnection
 {
-	enum SQLTypeId { VARCHAR = 13, INTEGER = 5, CHAR = 11};
 	private:
 		Connection * con;
 	public:
@@ -20,12 +19,49 @@ class DBConnection
 			driver = get_driver_instance();
 			con = driver->connect("tcp://127.0.0.1:3306", UID.c_str(), password.c_str());
 		}
+		void InsertRow(string table_name, vector<string> cols, vector<string> vals)
+		{
+			Statement *stmt = con->createStatement();
+			ResultSet  *res;
+			ResultSetMetaData * res_meta;
+			string query = "INSERT INTO " + table_name + "( ";
+			for (int i = 0; i < cols.size(); i++)
+			{
+				if (i != 0)
+					query += ",";
+				query += cols.at(i);
+			}
+			query += ") VALUES (";
+			for (int i = 0; i < vals.size(); i++)
+			{
+				if (i != 0)
+					query += ",";
+				query += "\"" + vals.at(i) + "\"";
+			}
+			query += ");";
+			try
+			{
+				res = stmt->executeQuery(query);
+			}
+			catch (SQLException &e)
+			{
+				cout << " QUERY : " + query + "\n";
+				cout << "# ERR: SQLException in " << __FILE__;
+				cout << "(" << __FUNCTION__ << ") on line " << __LINE__ << endl;
+				/* what() (derived from std::runtime_error) fetches error message */
+				cout << "# ERR: " << e.what();
+				cout << " (MySQL error code: " << e.getErrorCode();
+				cout << ", SQLState: " << e.getSQLState() << " )" << endl;
+				return;
+			}
+		}
+		// KEY ONLY INT BY NOW. HARDCODED THINGY
 		string GetPrimaryKey(string tableName)
 		{
 			Statement *stmt = con->createStatement();
 			ResultSet  *res;
 			ResultSetMetaData * res_meta;
-			string query = "SHOW INDEX FROM " + tableName ;
+			string query = "SHOW INDEX FROM " + tableName;
 			res = stmt->executeQuery(query);
 			res_meta = res->getMetaData();
 			res->next();
@@ -40,13 +76,12 @@ class DBConnection
 		{
 			vector <Row *> rows_vec;
 			vector <column> cols_vec;
-
 			Statement *stmt = con->createStatement();
 			ResultSet  *res;
 			ResultSetMetaData * res_meta;
 			try
 			{
-				res = stmt->executeQuery("SELECT * FROM " + tableName);
+				res = stmt->executeQuery("SELECT * FROM " + tableName + " LIMIT 100");
 			}
 			catch (sql::SQLException &e)
 			{
@@ -61,14 +96,14 @@ class DBConnection
 				int typeId = res_meta->getColumnType(i + 1);
 				switch (typeId)
 				{
-				case VARCHAR: case CHAR:
+				case DataType::VARCHAR: case DataType::CHAR:
 					{
 						COLUMN_TYPE type = COLUMN_STRING;
 						string column_name = res_meta->getColumnName(i + 1);
 						column c = column(column_name, type);
 						cols_vec.push_back(c);
 					}break;
-					case INTEGER:
+				case DataType::INTEGER: case DataType::SMALLINT: case DataType::MEDIUMINT: case DataType::BIGINT:
 					{
 						COLUMN_TYPE type = COLUMN_INT;
 						SQLString sql_Str = res_meta->getColumnName(i + 1);
@@ -136,6 +171,30 @@ class DBConnection
 				tables_vec.push_back(str_cur);
 			}
 			return tables_vec;
+		}
+		void DeleteRow(string table, int key)
+		{
+			string key_primary_name = this->GetPrimaryKey(table);
+			Statement *stmt = con->createStatement();
+			ResultSet  *res = NULL;
+			string query = "DELETE FROM " + table + 
+				" WHERE " + key_primary_name + "='" + to_string(key) + "'";
+			try
+			{
+				res = stmt->executeQuery(query);
+			}
+			catch (SQLException &e)
+			{
+				cout << "# ERR: SQLException in " << __FILE__;
+				cout << "(" << __FUNCTION__ << ") on line " << __LINE__ << endl;
+				/* what() (derived from std::runtime_error) fetches error message */
+				cout << "# ERR: " << e.what();
+				cout << " (MySQL error code: " << e.getErrorCode();
+				cout << ", SQLState: " << e.getSQLState() << " )" << endl;
+			}
+			delete stmt;
+			if(res != NULL)
+				delete res;
 		}
 		
 		void Close()

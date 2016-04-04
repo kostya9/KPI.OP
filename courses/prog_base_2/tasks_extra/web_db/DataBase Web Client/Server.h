@@ -8,6 +8,7 @@ class Server
 private:
 	Socket server;
 	string MessageProccessing(string request);
+	string GetParamValue(string path, string param_name);
 	void AcceptLoop();
 public:
 	Server(string ip, int port);

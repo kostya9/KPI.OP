@@ -34,7 +34,7 @@ public:
 	}
 	~Row()
 	{
-		puts("Bye you row");
+		//puts("Bye you row");
 		int i = 0;
 		for (void * value : values)
 		{
