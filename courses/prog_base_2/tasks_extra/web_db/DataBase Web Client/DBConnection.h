@@ -13,7 +13,7 @@ class DBConnection
 	private:
 		Connection * con;
 	public:
-		DBConnection(string UID, string password)// Local thingy
+		DBConnection(string UID, string password)// Local DB 
 		{
 			Driver *driver;
 			driver = get_driver_instance();
@@ -171,6 +171,35 @@ class DBConnection
 				tables_vec.push_back(str_cur);
 			}
 			return tables_vec;
+		}
+		void UpdateRow(string table_name, string key,string key_column, vector<string> cols, vector<string> vals)
+		{
+			Statement *stmt = con->createStatement();
+			ResultSet  *res;
+			ResultSetMetaData * res_meta;
+			string query = "UPDATE  " + table_name + " SET ";
+			for (int i = 0; i < cols.size(); i++)
+			{
+				if (i != 0)
+					query += ",";
+				query += cols.at(i) + "=\"" + vals.at(i) + "\"";
+			}
+			query += "WHERE " + key_column + "=\"" + key + "\";";
+			try
+			{
+				res = stmt->executeQuery(query);
+			}
+			catch (SQLException &e)
+			{
+				cout << " QUERY : " + query + "\n";
+				cout << "# ERR: SQLException in " << __FILE__;
+				cout << "(" << __FUNCTION__ << ") on line " << __LINE__ << endl;
+				/* what() (derived from std::runtime_error) fetches error message */
+				cout << "# ERR: " << e.what();
+				cout << " (MySQL error code: " << e.getErrorCode();
+				cout << ", SQLState: " << e.getSQLState() << " )" << endl;
+				return;
+			}
 		}
 		void DeleteRow(string table, int key)
 		{

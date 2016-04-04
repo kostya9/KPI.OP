@@ -36,9 +36,40 @@ class HTMLBuilder
 			html_form += "</body></html>";
 			return html_form;
 		}
-		static string BuildFormEditEntry(Table * table)
+		static string BuildFormEditEntry(Table * table, string key_column, string key_value)
 		{
-			
+			string html_form = "";
+			html_form += "<html><body>";
+			html_form += " <form method=\"get\"> ";
+			html_form += "<input type=\"hidden\" name=\"edit\">";
+			html_form += "<input type=\"hidden\" name=\"key\" value=\"" + key_value + "\">";
+			html_form += "<input type=\"hidden\" name=\"table\" value=\"" + table->GetName() + "\">";
+			Columns *cols = table->GetColumns();
+			int column_count = cols->GetCount();
+			for (int i = 0; i < column_count; i++)
+			{
+				string cur_column = cols->GetColumnName(i);
+				if (cur_column == key_column)
+					continue;
+				html_form += cur_column + "</br>";
+				html_form += " <input type=";
+				switch (cols->GetColumnType(i))
+				{
+				case COLUMN_INT:
+				{
+					html_form += "\"number\"";
+				}break;
+				case COLUMN_STRING:
+				{
+					html_form += "\"text\"";
+				}break;
+				}
+				html_form += " name=\"" + cur_column + "\" > </br>";
+			}
+			html_form += " <input type=\"submit\" value=\"Submit\"> ";
+			html_form += " </form> ";
+			html_form += "</body></html>";
+			return html_form;
 		}
 		static string BuildTableNames(vector<string> names)
 		{
@@ -99,7 +130,7 @@ class HTMLBuilder
 				html_table += "</a>";
 				html_table += "</td>";
 				html_table += "<td>";
-				html_table += "<a href=\"\\?edit&table=" + table->GetName() + "&key=" + to_string(cur_key) + "\">"; //LINK TO TABLES
+				html_table += "<a href=\"\\?form_edit&table=" + table->GetName() + "&key=" + to_string(cur_key) + "\">"; //LINK TO TABLES
 				html_table += "edit";
 				html_table += "</a>";
 				html_table += "</td>";

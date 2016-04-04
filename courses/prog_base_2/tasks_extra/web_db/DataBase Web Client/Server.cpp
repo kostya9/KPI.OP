@@ -120,6 +120,47 @@ string Server::MessageProccessing(string request)
 			delete table;
 			return response.ToString();
 		}
+		else if ((pos = path.find("?edit")) != string::npos)
+		{
+			DBConnection * db = new DBConnection(UID, PWD);
+			string table_name = GetParamValue(path, string("table"));
+			string key = GetParamValue(path, string("key"));
+			string key_column = db->GetPrimaryKey(table_name);
+			Table * table = db->GetTableFromDBTable(table_name);
+			vector<string> vals_vec;
+			vector <string> cols_vec;
+			Columns *cols = table->GetColumns();
+			int column_count = cols->GetCount();
+			for (int i = 0; i < cols->GetCount(); i++)
+			{
+				if (cols->GetColumnName(i) == table->GetKey())
+					continue;
+				string get_val = GetParamValue(path, cols->GetColumnName(i));
+				string col = cols->GetColumnName(i);
+				
+				vals_vec.push_back(get_val);
+				cols_vec.push_back(col);
+			}
+			db->UpdateRow(table_name, key, key_column, cols_vec, vals_vec);
+			delete db;
+			delete table;
+			int i = table_name.find(".");
+			HTTPRequest response = HTTPRequest(HTTP_REDIRECT, string("Location"), string("\?get&table=") + &table_name[i + 1]);
+			return response.ToString();
+			
+		}
+		else if ((pos = path.find("?form_edit")) != string::npos)
+		{
+			DBConnection * db = new DBConnection(UID, PWD);
+			string table_name = GetParamValue(path, "table");
+			Table * table = db->GetTableFromDBTable(table_name);
+			string key = GetParamValue(path, string("key"));
+			string content = HTMLBuilder::BuildFormEditEntry(table, table->GetKey(), key);
+			HTTPRequest response = HTTPRequest(HTTP_STATUS_OK, content);
+			delete db;
+			delete table;
+			return response.ToString();
+		}
 		else // Page Not Found Proccessing
 		{
 			string content = ("<h1>Page not found!</h1>");
