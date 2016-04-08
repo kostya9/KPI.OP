@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<designers>
+    <designer>
+        <name>Joy</name>
+        <surname>De France</surname>
+        <department company="OpenCV">CV(computer vision)</department>
+        <motto>gr8 b8 m8 i r8 8/8</motto>
+        <experienceYears>20</experienceYears>
+        <statistics>
+            <averagePolygons>12234.56</averagePolygons>
+            <averageVertices>92187654.06</averageVertices>
+            <hireDate>2001-03-07</hireDate>
+        </statistics>
+    </designer>
+    <designer>
+        <name>Bob</name>
+        <surname>Fury</surname>
+        <department company="OpenCV">Modeling</department>
+        <motto>I'm a cool guy Kappa</motto>
+        <experienceYears>3</experienceYears>
+        <statistics>
+            <averagePolygons>321.56</averagePolygons>
+            <averageVertices>1099.16</averageVertices>
+            <hireDate>2015-12-31</hireDate>
+        </statistics>
+    </designer>
+    <designer>
+        <name>Beyling</name>
+        <surname>Zergovichenskiy</surname>
+        <department company="Stark Enterprise">Winter prediction</department>
+        <motto>Winter is coming... at some point</motto>
+        <experienceYears>5</experienceYears>
+        <statistics>
+            <averagePolygons>2341.56</averagePolygons>
+            <averageVertices>787614.50</averageVertices>
+            <hireDate>2011-05-30</hireDate>
+        </statistics>
+    </designer>
+    <designer>
+        <name>Jayna</name>
+        <surname>Archmagevich</surname>
+        <department company="The Craft of War the 3rd">Ice in battle usage </department>
+        <motto>I silently believe Arthas was right</motto>
+        <experienceYears>60</experienceYears>
+        <statistics>
+            <averagePolygons>2141.56</averagePolygons>
+            <averageVertices>123614.50</averageVertices>
+            <hireDate>1990-04-12</hireDate>
+        </statistics>
+    </designer>
+</designers>

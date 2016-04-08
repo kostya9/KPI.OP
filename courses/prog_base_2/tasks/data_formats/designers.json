@@ -1,0 +1,62 @@
+[
+    {
+        "name" : "Joy",
+        "surname" : "De France",
+        "department" : {
+            "company" : "OpenCV",
+            "name" : "CV(computer vision)"
+        },
+        "motto" : "gr8 b8 m8 i r8 8/8",
+        "experienceYears" : 20,
+        "statistics" : {
+            "averagePolygons" : 12234.56,
+            "averageVertices" : 92187654.06,
+            "hireDate" : "2001-03-07"
+        }
+    },
+    {
+        "name" : "Bob",
+        "surname" : "Fury",
+        "department" : {
+            "company" : "OpenCV",
+            "name" : "Modeling"
+        },
+        "motto" : "I'm a cool guy Kappa",
+        "experienceYears" : 3,
+        "statistics" : {
+            "averagePolygons" : 321.56,
+            "averageVertices" : 1099.16,
+            "hireDate" : "2015-09-20"
+        }
+    },
+    {
+        "name" : "Beyling",
+        "surname" : "Zergovichenskiy",
+        "department" : {
+            "company" : "Stark Enterprise",
+            "name" : "Winter prediction"
+        },
+        "motto" : "Winter is coming... at some point",
+        "experienceYears" : 5,
+        "statistics" : {
+            "averagePolygons" : 2341.56,
+            "averageVertices" : 787614.50,
+            "hireDate" : "2011-05-30"
+        }
+    },
+    {
+        "name" : "Jayna",
+        "surname" : "Archmagevich",
+        "department" : {
+            "company" : "The Craft of War the 3rd",
+            "name" : "Ice in battle usage"
+        },
+        "motto" : "I silently believe Arthas was right",
+        "experienceYears" : 60,
+        "statistics" : {
+            "averagePolygons" : 2341.56,
+            "averageVertices" : 787614.50,
+            "hireDate" : "1990-04-12"
+        }
+    }
+]
