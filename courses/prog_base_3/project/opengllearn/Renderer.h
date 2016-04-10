@@ -6,13 +6,29 @@
 #include "Entity.h"
 class Renderer
 {
+private:
+	const GLfloat FOV = 70.0f;
+	const GLfloat NEAR_PLANE = 0.1f;
+	const GLfloat FAR_PLANE = 1000.0f;
+	glm::mat4 projectionMatrix;
+	void createProjectionMatrix()
+	{
+		projectionMatrix = glm::perspective(FOV, 1.0f, NEAR_PLANE, FAR_PLANE);
+	}
 	public:
+		Renderer(StaticShader shader)
+		{
+			createProjectionMatrix();
+			shader.use();
+			shader.loadProjectionMatrix(projectionMatrix);
+			shader.unUse();
+		}
 		/*Prepares the window for drawing the next frame*/
 		void prepare()
 		{
 			glfwPollEvents();
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			glClearColor(1.0f, 0.0f, 0.0f, 1.0f); // RED 
+			glClearColor(0.0f, 0.5f, 0.5f, 1.0f); // RED 
 		}
 		/*Renders(draws) a model to the screen*/
 		void render(Entity entity, StaticShader shader)
@@ -27,6 +43,7 @@ class Renderer
 			glEnableVertexAttribArray(1); // Texture
 			glm::mat4 transformationMatrix = Maths::createTransformationMatrix(entity.position, entity.rotX, entity.rotY, entity.rotZ, entity.scale);
 			shader.loadTransformationMatrix(transformationMatrix);
+			//shader.loadProjectionMatrix(projectionMatrix);
 
 			//glDrawArrays(GL_TRIANGLES, 0, model.getVertexCount()); // This draws from vertices
 			glActiveTexture(GL_TEXTURE0); // sampler2D thingy
