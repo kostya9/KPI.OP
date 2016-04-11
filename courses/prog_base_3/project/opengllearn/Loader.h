@@ -1,13 +1,15 @@
 #pragma once
 #include "Model.h"
 #include "MainHeaders.h"
-
+#include "TexturedModel.h"
+using namespace std;
 class Loader {
 	public:
 		/*Creates a Model and binds it ti Vertex Array Object(VAO)*/
 		/*WARNING Texture coordinate system origin(0, 0) is at TOP LEFT*/
 		Model loadToVao(GLfloat positions[], GLuint size_pos, GLuint indices[], GLuint size_ind, GLfloat textureCoorinates[], GLuint size_tex);
 		GLuint loadTexture(GLchar * path);
+		vector<TexturedModel> objToModel(string path);
 		/*Cleans VAOs and VBOs, created at dataToVbo and createVAO */
 		void  releaseVOs();
 	private:

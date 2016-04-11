@@ -1,6 +1,7 @@
 ﻿#include "MainHeaders.h"
 #include "Engine.h"
 #include "Keyboard.h"
+#include "cstdio"
 const GLuint WIDTH = 800, HEIGHT = 600;
 void key_callback_exit(GLFWwindow* window, int key, int scancode, int action, int mode);
 #define arr_size(a) sizeof(a)/sizeof(a[0])
@@ -95,13 +96,20 @@ int main()
 		23,21,22
 
 	};
+
 	Model quad = loader.loadToVao(vertices, arr_size(vertices), indices, arr_size(indices), textureCoords, arr_size(textureCoords));
 	Texture texture = Texture(loader.loadTexture("textures/container.jpg"));
 	TexturedModel texturedModel = TexturedModel(quad, texture);
 	key_callback kb = key_callback_exit;
 	window.addCallBack(kb);
 	curWindow = &window;
-
+	vector<TexturedModel> models = loader.objToModel("../opengllearn/models/nanosuit/nanosuit.obj");
+	//vector<TexturedModel> models = loader.objToModel("../opengllearn/models/stall.obj");
+	vector<Entity> entities;
+	for (TexturedModel model : models)
+	{
+		entities.push_back(Entity(model, glm::vec3(0.0f, 0.0f, 0.0f), 0.0f, 0.0f, 0.0f, 1.0f));
+	}
 	Entity entity = Entity(texturedModel, glm::vec3(0.0f, 0.0f, -5.0f), 0.0f, 0.0f, 0.0f, 1.0f);
 	Camera camera = Camera();
 
@@ -114,6 +122,10 @@ int main()
 		shader.unUse();
 		renderer.prepare();
 		renderer.render(entity, shader);
+		for (Entity en : entities)
+		{
+			renderer.render(en, shader);
+		}
 		window.update();
 		camera.move();
 	}

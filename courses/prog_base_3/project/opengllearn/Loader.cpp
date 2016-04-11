@@ -1,4 +1,8 @@
 #include "Loader.h"
+#include "TexturedModel.h"
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 Model Loader::loadToVao(GLfloat positions[],  GLuint size_pos, GLuint indices[], GLuint size_ind, GLfloat textureCoorinates[], GLuint size_tex)
 {
@@ -61,6 +65,89 @@ void Loader::bindIndicesBuffer(GLuint indices[], GLuint size)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboID);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * size, indices, GL_STATIC_DRAW);// TODO should we unbind?
 	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); // Why shouldn't we do this?
+}
+TexturedModel processMesh(aiMesh* mesh, const aiScene* scene, string directory)
+{
+	Loader loader = Loader();
+	string texturePath;
+	Texture texture;
+	vector<GLfloat> vertices;
+	vector<GLfloat> texturesCoords;
+	vector<GLuint> indices;
+	// Vertices
+	for (int vID = 0; vID < mesh->mNumVertices; vID++)
+	{
+		GLfloat x = mesh->mVertices[vID].x;
+		GLfloat y = mesh->mVertices[vID].y;
+		GLfloat z = mesh->mVertices[vID].z;
+		vertices.push_back(x);
+		vertices.push_back(y);
+		vertices.push_back(z);
+		GLfloat textX, textY;
+		if (mesh->mTextureCoords[0]) // Does the mesh contain texture coordinates?
+		{
+			textX = mesh->mTextureCoords[0][vID].x;
+			textY = mesh->mTextureCoords[0][vID].y;
+		}
+		else
+		{
+			textX = 0;
+			textY = 0;
+		}
+		texturesCoords.push_back(textX);
+		texturesCoords.push_back(textY);
+	}
+	for (GLuint i = 0; i < mesh->mNumFaces; i++)
+	{
+		aiFace face = mesh->mFaces[i];
+		for (GLuint j = 0; j < face.mNumIndices; j++)
+			indices.push_back(face.mIndices[j]);
+	}
+	if (mesh->mMaterialIndex >= 0)
+	{
+		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+		aiString str;
+		material->GetTexture(aiTextureType_DIFFUSE, 0, &str);
+		string fullPath = directory + "/" + string(str.C_Str());
+		//fullPath = string("../opengllearn/models/stallTexture.png"); // HARDCODED 
+		texture = Texture(loader.loadTexture((GLchar*)(fullPath.c_str())));
+	}
+	Model model = loader.loadToVao(&vertices[0], vertices.size(), &indices[0], indices.size(), &texturesCoords[0], texturesCoords.size());
+	TexturedModel textModel = TexturedModel(model, texture);
+	return textModel;
+}
+vector<TexturedModel> processNode(aiNode* node, const aiScene* scene, string directory)
+{
+	vector <TexturedModel> models;
+	for (GLuint i = 0; i < node->mNumMeshes; i++)
+	{
+		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+		models.push_back(processMesh(mesh, scene, directory));
+	}
+	// Then do the same for each of its children
+	for (GLuint i = 0; i < node->mNumChildren; i++)
+	{
+		vector<TexturedModel> newModels = processNode(node->mChildren[i], scene, directory);
+		models.insert(models.begin(), newModels.begin(), newModels.end());
+	}
+	return models;
+}
+vector<TexturedModel> Loader::objToModel(string path)
+{
+	vector <TexturedModel> models;
+	Assimp::Importer import;
+	const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+
+	if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+	{
+		cout << "ERROR::ASSIMP::" << import.GetErrorString() << endl;
+		return models;
+	}
+	string directory = path.substr(0, path.find_last_of('/'));
+
+	vector <TexturedModel> newModels = processNode(scene->mRootNode, scene, directory);
+	models.insert(models.begin(), newModels.begin(), newModels.end());
+	return models;
 }
 
 void Loader::releaseVOs()
