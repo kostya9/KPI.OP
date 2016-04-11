@@ -2,22 +2,22 @@
 class Keyboard
 {
 private:
-	bool key_pressed[255];
+	bool key_pressed[1000];
 public:
 	Keyboard()
 	{
-		for (int i = 0; i < 255; i++)
+		for (int i = 0; i < 1000; i++)
 			key_pressed[i] = false;
 	}
-	void keyPress(char key)
+	void keyPress(int key)
 	{
 		key_pressed[key] = true;
 	}
-	void keyRelease(char key)
+	void keyRelease(int key)
 	{
 		key_pressed[key] = false;
 	}
-	bool isKeyPressed(char key)
+	bool isKeyPressed(int key)
 	{
 		return key_pressed[key];
 	}

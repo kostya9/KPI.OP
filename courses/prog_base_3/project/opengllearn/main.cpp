@@ -108,20 +108,23 @@ int main()
 	vector<Entity> entities;
 	for (TexturedModel model : models)
 	{
-		entities.push_back(Entity(model, glm::vec3(0.0f, 0.0f, 0.0f), 0.0f, 0.0f, 0.0f, 1.0f));
+		entities.push_back(Entity(model, glm::vec3(0.0f, -10.0f, 0.0f), 0.0f, 0.0f, 0.0f, 1.0f));
 	}
 	Entity entity = Entity(texturedModel, glm::vec3(0.0f, 0.0f, -5.0f), 0.0f, 0.0f, 0.0f, 1.0f);
+	entities.push_back(entity);
 	Camera camera = Camera();
 
 	while (!glfwWindowShouldClose(window.getGLFWWindow()))
 	{
 		//entity.increasePosition(0.0f, 0.0f, -0.0001f);
-		entity.increaseRotation(-0.04f, -0.04f, 0);
+		for (Entity & en: entities)
+		{
+			en.increaseRotation(0.0f, 0.04f, 0.0f);
+		}
 		shader.use();
 		shader.loadViewMatrix(camera);
 		shader.unUse();
 		renderer.prepare();
-		renderer.render(entity, shader);
 		for (Entity en : entities)
 		{
 			renderer.render(en, shader);
@@ -137,36 +140,16 @@ int main()
 }
 void key_callback_exit(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
-	if (key == GLFW_KEY_W)
-	{
-		if (action == GLFW_PRESS)
-			keyboard->keyPress('w');
-		else if (action == GLFW_RELEASE)
-			keyboard->keyRelease('w');
-	}
-	else if (key == GLFW_KEY_S)
-	{
-		if (action == GLFW_PRESS)
-			keyboard->keyPress('s');
-		else if (action == GLFW_RELEASE)
-			keyboard->keyRelease('s');
-	}
-	else if (key == GLFW_KEY_D)
-	{
-		if (action == GLFW_PRESS)
-			keyboard->keyPress('d');
-		else if (action == GLFW_RELEASE)
-			keyboard->keyRelease('d');
-	}
-	else if (key == GLFW_KEY_A)
-	{
-		if (action == GLFW_PRESS)
-			keyboard->keyPress('a');
-		else if (action == GLFW_RELEASE)
-			keyboard->keyRelease('a');
-	}
-	else if (key == GLFW_KEY_ESCAPE)
+	if (key == GLFW_KEY_ESCAPE)
 	{
 		glfwSetWindowShouldClose(window, GL_TRUE);
+		return;
 	}
+
+	if (key < 255 && isalpha(key))
+		key = tolower(key);
+	if (action == GLFW_PRESS)
+		keyboard->keyPress(key);
+	else if (action == GLFW_RELEASE)
+		keyboard->keyRelease(key);
 }

@@ -2,6 +2,8 @@
 #include "MainHeaders.h"
 #include "Keyboard.h"
 extern Keyboard * keyboard;
+#define TURNSTEP 0.002f
+#define MOVESTEP 0.008f
 class Camera
 {
 private:
@@ -12,13 +14,21 @@ public:
 	void move()
 	{
 		if (keyboard->isKeyPressed('w'))
-			moveForward(0.02f);
+			moveForward(MOVESTEP);
 		if (keyboard->isKeyPressed('s'))
-			moveForward(-0.02f);
+			moveForward(-MOVESTEP);
 		if (keyboard->isKeyPressed('d'))
-			moveLeft(-0.02f);
+			moveLeft(-MOVESTEP);
 		if (keyboard->isKeyPressed('a'))
-			moveLeft(0.02f);
+			moveLeft(MOVESTEP);
+		if (keyboard->isKeyPressed(328)) // NUMPAD
+			pitch(-TURNSTEP);
+		if (keyboard->isKeyPressed(322))
+			pitch(+TURNSTEP);
+		if (keyboard->isKeyPressed(324))
+			yaw(-TURNSTEP);
+		if (keyboard->isKeyPressed(326))
+			yaw(+TURNSTEP);
 		glm::normalize(mOrientation);
 	}
 	void pitch(float pitchRadians) {
