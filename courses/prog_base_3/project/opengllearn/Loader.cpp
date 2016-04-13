@@ -4,13 +4,15 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-Model Loader::loadToVao(GLfloat positions[],  GLuint size_pos, GLuint indices[], GLuint size_ind, GLfloat textureCoorinates[], GLuint size_tex)
+Model Loader::loadToVao(GLfloat positions[],  GLuint size_pos, GLuint indices[], GLuint size_ind, 
+						GLfloat textureCoorinates[], GLuint size_tex, GLfloat normals[], GLuint size_normals)
 {
 	GLuint vaoID = createVAO();
 	bindVAO(vaoID);
 	bindIndicesBuffer(indices, size_ind);
 	dataToAttributes(0, 3, positions, size_pos);
 	dataToAttributes(1, 2, textureCoorinates, size_tex);
+	dataToAttributes(2, 3, normals, size_normals);
 	unBindVAO();
 	return Model(vaoID, size_ind);
 }
@@ -66,6 +68,18 @@ void Loader::bindIndicesBuffer(GLuint indices[], GLuint size)
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * size, indices, GL_STATIC_DRAW);// TODO should we unbind?
 	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); // Why shouldn't we do this?
 }
+
+
+void Loader::releaseVOs()
+{
+	for(GLuint v : vaos)
+		glDeleteVertexArrays(1, &v);
+	for(GLuint v : vbos)
+		glDeleteBuffers(1, &v);
+	for (GLuint v : textures)
+		glDeleteTextures(1, &v);
+}
+
 TexturedModel processMesh(aiMesh* mesh, const aiScene* scene, string directory)
 {
 	Loader loader = Loader();
@@ -73,16 +87,26 @@ TexturedModel processMesh(aiMesh* mesh, const aiScene* scene, string directory)
 	Texture texture;
 	vector<GLfloat> vertices;
 	vector<GLfloat> texturesCoords;
+	vector<GLfloat> normals;
 	vector<GLuint> indices;
 	// Vertices
 	for (int vID = 0; vID < mesh->mNumVertices; vID++)
 	{
-		GLfloat x = mesh->mVertices[vID].x;
-		GLfloat y = mesh->mVertices[vID].y;
-		GLfloat z = mesh->mVertices[vID].z;
-		vertices.push_back(x);
-		vertices.push_back(y);
-		vertices.push_back(z);
+		// Vertices
+		GLfloat x_vertex = mesh->mVertices[vID].x;
+		GLfloat y_vertex = mesh->mVertices[vID].y;
+		GLfloat z_vertex = mesh->mVertices[vID].z;
+		vertices.push_back(x_vertex);
+		vertices.push_back(y_vertex);
+		vertices.push_back(z_vertex);
+		// Normal vectors
+		GLfloat x_normal = mesh->mNormals[vID].x;
+		GLfloat y_normal = mesh->mNormals[vID].y;
+		GLfloat z_normal = mesh->mNormals[vID].z;
+		normals.push_back(x_normal);
+		normals.push_back(y_normal);
+		normals.push_back(z_normal);
+		//Texture coordinates
 		GLfloat textX, textY;
 		if (mesh->mTextureCoords[0]) // Does the mesh contain texture coordinates?
 		{
@@ -112,7 +136,8 @@ TexturedModel processMesh(aiMesh* mesh, const aiScene* scene, string directory)
 		//fullPath = string("../opengllearn/models/stallTexture.png"); // HARDCODED 
 		texture = Texture(loader.loadTexture((GLchar*)(fullPath.c_str())));
 	}
-	Model model = loader.loadToVao(&vertices[0], vertices.size(), &indices[0], indices.size(), &texturesCoords[0], texturesCoords.size());
+	Model model = loader.loadToVao(&vertices[0], vertices.size(), &indices[0], indices.size(), 
+								   &texturesCoords[0], texturesCoords.size(), &normals[0], normals.size());
 	TexturedModel textModel = TexturedModel(model, texture);
 	return textModel;
 }
@@ -148,14 +173,4 @@ vector<TexturedModel> Loader::objToModel(string path)
 	vector <TexturedModel> newModels = processNode(scene->mRootNode, scene, directory);
 	models.insert(models.begin(), newModels.begin(), newModels.end());
 	return models;
-}
-
-void Loader::releaseVOs()
-{
-	for(GLuint v : vaos)
-		glDeleteVertexArrays(1, &v);
-	for(GLuint v : vbos)
-		glDeleteBuffers(1, &v);
-	for (GLuint v : textures)
-		glDeleteTextures(1, &v);
 }

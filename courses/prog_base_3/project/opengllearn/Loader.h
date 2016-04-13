@@ -7,7 +7,8 @@ class Loader {
 	public:
 		/*Creates a Model and binds it ti Vertex Array Object(VAO)*/
 		/*WARNING Texture coordinate system origin(0, 0) is at TOP LEFT*/
-		Model loadToVao(GLfloat positions[], GLuint size_pos, GLuint indices[], GLuint size_ind, GLfloat textureCoorinates[], GLuint size_tex);
+		Model loadToVao(GLfloat positions[], GLuint size_pos, GLuint indices[], GLuint size_ind, 
+						GLfloat textureCoorinates[], GLuint size_tex, GLfloat normals[], GLuint size_normals);
 		GLuint loadTexture(GLchar * path);
 		vector<TexturedModel> objToModel(string path);
 		/*Cleans VAOs and VBOs, created at dataToVbo and createVAO */

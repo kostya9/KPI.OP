@@ -2,17 +2,21 @@
 #include "MainHeaders.h"
 #include "Shader.h"
 #include "Camera.h"
+#include "Light.h"
 class StaticShader : public Shader
 {
 	private:
 		GLuint location_transofrmationMatrix;
 		GLuint location_projectionMatrix;
 		GLuint location_viewMatrix;
+		GLuint location_lightPosition;
+		GLuint location_lightColor;
 	public:
 		StaticShader(); // Actually just constatnt paths // EDITED
 		void loadTransformationMatrix(glm::mat4 matrix);
 		void loadProjectionMatrix(glm::mat4 matrix);
 		void loadViewMatrix(Camera camera);
+		void loadLight(Light light);
 	protected:
 		virtual void bindAttributes() override;
 		virtual void getAllUniformLocations() override;

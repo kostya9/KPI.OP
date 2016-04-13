@@ -18,7 +18,7 @@ int main()
 	Loader loader = Loader();
 	Renderer renderer = Renderer(shader);
 
-	GLfloat vertices[] = {
+	/*GLfloat vertices[] = {
 		-0.5f,0.5f,-0.5f,
 		-0.5f,-0.5f,-0.5f,
 		0.5f,-0.5f,-0.5f,
@@ -99,19 +99,25 @@ int main()
 
 	Model quad = loader.loadToVao(vertices, arr_size(vertices), indices, arr_size(indices), textureCoords, arr_size(textureCoords));
 	Texture texture = Texture(loader.loadTexture("textures/container.jpg"));
-	TexturedModel texturedModel = TexturedModel(quad, texture);
+	TexturedModel texturedModel = TexturedModel(quad, texture);*/
 	key_callback kb = key_callback_exit;
 	window.addCallBack(kb);
 	curWindow = &window;
-	vector<TexturedModel> models = loader.objToModel("../opengllearn/models/nanosuit/nanosuit.obj");
-	//vector<TexturedModel> models = loader.objToModel("../opengllearn/models/stall.obj");
+	//vector<TexturedModel> models = loader.objToModel("../opengllearn/models/nanosuit/nanosuit.obj");
+	vector<TexturedModel> models = loader.objToModel("../opengllearn/models/stall/stall.obj");
 	vector<Entity> entities;
-	for (TexturedModel model : models)
-	{
-		entities.push_back(Entity(model, glm::vec3(0.0f, -10.0f, 0.0f), 0.0f, 0.0f, 0.0f, 1.0f));
-	}
-	Entity entity = Entity(texturedModel, glm::vec3(0.0f, 0.0f, -5.0f), 0.0f, 0.0f, 0.0f, 1.0f);
-	entities.push_back(entity);
+	vector<Entity> lightBulb;
+	glm::vec3 lightPos = glm::vec3(5.0f, 3.0f, -8.0f);
+		for (TexturedModel model : models)
+		{
+			entities.push_back(Entity(model, glm::vec3(0.0f, -2.0f, -13.0f), 0.0f, 0.0f, 0.0f, 1.0f));
+			lightBulb.push_back(Entity(model, lightPos, 0.0f, 0.0f, 0.0f, 0.05f));
+		}
+	/*Entity entity = Entity(texturedModel, glm::vec3(0.0f, 0.0f, -5.0f), 0.0f, 0.0f, 0.0f, 1.0f);
+	entities.push_back(entity);*/
+	int light_brightness = 1;
+	Light light = Light(lightPos, glm::vec3(light_brightness, light_brightness, light_brightness));
+	entities.insert(entities.end(), lightBulb.begin(), lightBulb.end());
 	Camera camera = Camera();
 
 	while (!glfwWindowShouldClose(window.getGLFWWindow()))
@@ -121,14 +127,17 @@ int main()
 		{
 			en.increaseRotation(0.0f, 0.04f, 0.0f);
 		}
+		//GLfloat curLight = (glm::sin(glfwGetTime()) + 1) * 3;
+		//light.setColor(glm::vec3(curLight, curLight, curLight));
 		shader.use();
 		shader.loadViewMatrix(camera);
-		shader.unUse();
+		shader.loadLight(light);
 		renderer.prepare();
 		for (Entity en : entities)
 		{
 			renderer.render(en, shader);
 		}
+		shader.unUse();
 		window.update();
 		camera.move();
 	}
