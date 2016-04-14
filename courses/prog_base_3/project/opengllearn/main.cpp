@@ -103,11 +103,11 @@ int main()
 	key_callback kb = key_callback_exit;
 	window.addCallBack(kb);
 	curWindow = &window;
-	//vector<TexturedModel> models = loader.objToModel("../opengllearn/models/nanosuit/nanosuit.obj");
-	vector<TexturedModel> models = loader.objToModel("../opengllearn/models/stall/stall.obj");
+	vector<TexturedModel> models = loader.objToModel("../opengllearn/models/nanosuit/nanosuit.obj");
+	//vector<TexturedModel> models = loader.objToModel("../opengllearn/models/stall/stall.obj");
 	vector<Entity> entities;
 	vector<Entity> lightBulb;
-	glm::vec3 lightPos = glm::vec3(5.0f, 3.0f, -8.0f);
+	glm::vec3 lightPos = glm::vec3(0.0f, 0, -9.0f);
 		for (TexturedModel model : models)
 		{
 			entities.push_back(Entity(model, glm::vec3(0.0f, -2.0f, -13.0f), 0.0f, 0.0f, 0.0f, 1.0f));
@@ -115,7 +115,7 @@ int main()
 		}
 	/*Entity entity = Entity(texturedModel, glm::vec3(0.0f, 0.0f, -5.0f), 0.0f, 0.0f, 0.0f, 1.0f);
 	entities.push_back(entity);*/
-	int light_brightness = 1;
+	float light_brightness = 3.0f;
 	Light light = Light(lightPos, glm::vec3(light_brightness, light_brightness, light_brightness));
 	entities.insert(entities.end(), lightBulb.begin(), lightBulb.end());
 	Camera camera = Camera();
@@ -127,8 +127,8 @@ int main()
 		{
 			en.increaseRotation(0.0f, 0.04f, 0.0f);
 		}
-		//GLfloat curLight = (glm::sin(glfwGetTime()) + 1) * 3;
-		//light.setColor(glm::vec3(curLight, curLight, curLight));
+		GLfloat curLight = (glm::sin(glfwGetTime()) + 1) * 3;
+		light.setColor(glm::vec3(curLight, curLight, curLight));
 		shader.use();
 		shader.loadViewMatrix(camera);
 		shader.loadLight(light);
