@@ -1,0 +1,24 @@
+# depslib dependency file v1.0
+1460762559 source:d:\projects\cb\lab2main\dynamic.c
+	"dynamic.h"
+	<stdlib.h>
+	<windows.h>
+
+1460762553 d:\projects\cb\lab2main\dynamic.h
+	"queue.h"
+	<windows.h>
+
+1460762815 d:\projects\cb\lab2static\queue.h
+	<limits.h>
+	<stdlib.h>
+
+1460762553 source:d:\projects\cb\lab2main\dynamic.h
+	"queue.h"
+	<windows.h>
+
+1460763541 source:d:\projects\cb\lab2main\main.c
+	<limits.h>
+	"queue.h"
+	"dynamic.h"
+	<stdio.h>
+

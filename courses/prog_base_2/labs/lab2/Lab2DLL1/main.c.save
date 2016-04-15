@@ -1,0 +1,9 @@
+#include "queue.h"
+int condition(queue_t * queue)
+{
+    return (queue_peek(queue) < 0);
+}
+void modification(queue_t * queue)
+{
+    int el = queue_d
+}
