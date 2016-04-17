@@ -42,6 +42,15 @@ static void error_page_no_id(char * buffer)
                     strlen(message), message
             );
 }
+static void error_page_illegal_arguments(char * buffer)
+{
+    char * message = "|ERROR ILLEGAL ARGUMENTS|\nCheck that name/surname/motto/company/department string length is less than 100\n"
+                    "Check the format of the hireDate and that averageVertices, averagePolygons are floats, experienceYears is an integer";
+    sprintf(buffer, "HTTP/1.1 200 OK\r\n"
+                    "Content-length:%zu\r\n\r\n%s",
+                    strlen(message), message
+            );
+}
 static int message_proccess(char * output, size_t output_size, char * input, size_t input_size,
                              designer_s * designers, size_t * des_count)
 {
@@ -99,45 +108,101 @@ static int message_proccess(char * output, size_t output_size, char * input, siz
             return 0;
         }
         designer_s * designer = designer_get_designer_by_id(id, designers, *des_count);
+        if(designer == NULL)
+        {
+            error_page_no_id(output);
+            return 0;
+        }
         for(int i = 0; i < req.formLength; i++)
         {
             if(strcmp(req.form[i].key, "name") == 0)
             {
+                if(strlen(req.form[i].value) > STRING_LENGTH_MAX)
+                {
+                    error_page_illegal_arguments(output);
+                    return 0;
+                }
                 strcpy(designer->name, req.form[i].value);
             }
             else if(strcmp(req.form[i].key, "surname") == 0)
             {
+                if(strlen(req.form[i].value) > STRING_LENGTH_MAX)
+                {
+                    error_page_illegal_arguments(output);
+                    return 0;
+                }
                 strcpy(designer->surname, req.form[i].value);
             }
             else if(strcmp(req.form[i].key, "motto") == 0)
             {
+                if(strlen(req.form[i].value) > STRING_LENGTH_MAX)
+                {
+                    error_page_illegal_arguments(output);
+                    return 0;
+                }
                 strcpy(designer->motto, req.form[i].value);
             }
             else if(strcmp(req.form[i].key, "experienceYears") == 0)
             {
-                designer->experienceYears = atoi(req.form[i].value);
+                int val;
+                int status = sscanf(req.form[i].value, "%i", &val);
+                if(status < 1)
+                {
+                    error_page_illegal_arguments(output);
+                    return 0;
+                }
+                designer->experienceYears = val;
             }
             else if(strcmp(req.form[i].key, "company") == 0)
             {
+                if(strlen(req.form[i].value) > STRING_LENGTH_MAX)
+                {
+                    error_page_illegal_arguments(output);
+                    return 0;
+                }
                 strcpy(designer->dep.company, req.form[i].value);
             }
             else if(strcmp(req.form[i].key, "department") == 0)
             {
+                if(strlen(req.form[i].value) > STRING_LENGTH_MAX)
+                {
+                    error_page_illegal_arguments(output);
+                    return 0;
+                }
                 strcpy(designer->dep.name, req.form[i].value);
             }
             else if(strcmp(req.form[i].key, "averagePolygons") == 0)
             {
-                designer->stats.averagePolygons = atof(req.form[i].value);
+                float val;
+                int status = sscanf(req.form[i].value, "%f", &val);
+                if(status < 1)
+                {
+                    error_page_illegal_arguments(output);
+                    return 0;
+                }
+                designer->stats.averagePolygons = val;
             }
             else if(strcmp(req.form[i].key, "averageVertices") == 0)
             {
-                designer->stats.averageVertices = atof(req.form[i].value);
+                float val;
+                int status = sscanf(req.form[i].value, "%f", &val);
+                if(status < 1)
+                {
+                    error_page_illegal_arguments(output);
+                    return 0;
+                }
+                designer->stats.averageVertices = val;
             }
             else if(strcmp(req.form[i].key, "hireDate") == 0)
             {
                 struct tm hire_time;
                 memset(&hire_time, 0, sizeof(struct tm));
-                sscanf(req.form[i].value, "%i-%i-%i", &(hire_time.tm_year), &(hire_time.tm_mon), &(hire_time.tm_mday));
+                int status = sscanf(req.form[i].value, "%i-%i-%i", &(hire_time.tm_year), &(hire_time.tm_mon), &(hire_time.tm_mday));
+                if(status < 3)
+                {
+                    error_page_illegal_arguments(output);
+                    return 0;
+                }
                 hire_time.tm_year -= 1900;
                 hire_time.tm_mon -= 1;
                 designer->stats.hireDate = mktime(&hire_time);
@@ -145,7 +210,7 @@ static int message_proccess(char * output, size_t output_size, char * input, siz
         }
         designer_array_to_xml_string(buffer, arr_len(buffer), designers, *des_count);
         sprintf(output, "HTTP/1.1 200 OK\r\n"
-            "Content-length:%zu\r\n\r\n%s",
+            "Content-length:%zu\r\n\r\nPOST SUCCEEDED\n%s",
             strlen(buffer), buffer
         );
         return 0;
@@ -153,6 +218,7 @@ static int message_proccess(char * output, size_t output_size, char * input, siz
     }
     else if(strcmp(req.method, "DELETE") == 0)
     {
+        int prev_des_count = des_count;
         if(strstr(req.uri, "/designers/") > 0)
         {
             int id;
@@ -165,8 +231,13 @@ static int message_proccess(char * output, size_t output_size, char * input, siz
             (*des_count) = delete_designer(designers, *des_count, id);
         }
         designer_array_to_xml_string(buffer, arr_len(buffer), designers, *des_count);
+        if(prev_des_count == des_count)
+        {
+            error_page_no_id(output);
+            return 0;
+        }
         sprintf(output, "HTTP/1.1 200 OK\r\n"
-            "Content-length:%zu\r\n\r\n%s",
+            "Content-length:%zu\r\n\r\DELETE SUCCEEDED\n%s",
             strlen(buffer), buffer
         );
         return 0;

@@ -1,8 +1,8 @@
 #pragma once
 #include <stdlib.h>
 #include <time.h>
-#define STRING_LENGTH_MAX 100
-#define MOTTO_LENGTH_MAX 100
+#define STRING_LENGTH_MAX 50
+#define MOTTO_LENGTH_MAX 50
 struct department{
     char company[STRING_LENGTH_MAX];
     char name[STRING_LENGTH_MAX];
