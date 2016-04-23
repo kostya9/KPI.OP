@@ -26,6 +26,7 @@ int main(void)
             print_designer(designers + i);
         }
     }
+    free(designers);
     des_db_delete(db);
     return EXIT_SUCCESS;
 }
