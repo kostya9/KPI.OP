@@ -1,9 +1,10 @@
 #pragma once
 #include "MainHeaders.h"
 #include "Keyboard.h"
+#include "Window.h"
 extern Keyboard * keyboard;
-#define TURNSTEP 0.002f
-#define MOVESTEP 0.008f
+#define TURNSTEP 2.0f
+#define MOVESTEP 1.0f
 class Camera
 {
 private:
@@ -14,21 +15,21 @@ public:
 	void move()
 	{
 		if (keyboard->isKeyPressed('w'))
-			moveForward(MOVESTEP);
+			moveForward(MOVESTEP * Window::getDeltaTime());
 		if (keyboard->isKeyPressed('s'))
-			moveForward(-MOVESTEP);
+			moveForward(-MOVESTEP* Window::getDeltaTime());
 		if (keyboard->isKeyPressed('d'))
-			moveLeft(-MOVESTEP);
+			moveLeft(-MOVESTEP * Window::getDeltaTime());
 		if (keyboard->isKeyPressed('a'))
-			moveLeft(MOVESTEP);
+			moveLeft(MOVESTEP * Window::getDeltaTime());
 		if (keyboard->isKeyPressed(328)) // NUMPAD
-			pitch(-TURNSTEP);
+			pitch(-TURNSTEP * Window::getDeltaTime());
 		if (keyboard->isKeyPressed(322))
-			pitch(+TURNSTEP);
+			pitch(+TURNSTEP * Window::getDeltaTime());
 		if (keyboard->isKeyPressed(324))
-			yaw(-TURNSTEP);
+			yaw(-TURNSTEP * Window::getDeltaTime());
 		if (keyboard->isKeyPressed(326))
-			yaw(+TURNSTEP);
+			yaw(+TURNSTEP * Window::getDeltaTime());
 		glm::normalize(mOrientation);
 	}
 	void pitch(float pitchRadians) {
@@ -80,7 +81,10 @@ public:
 	void moveUp(float movement) {
 		mPosition += getUp() * movement;
 	}
-
+	glm::vec3 getPosition()
+	{
+		return mPosition;
+	}
 	glm::mat4 getViewMatrix() const {
 		glm::mat4 viewMatrix = glm::mat4_cast(mOrientation);
 		viewMatrix = glm::translate(viewMatrix, -mPosition);

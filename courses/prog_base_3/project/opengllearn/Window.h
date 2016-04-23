@@ -4,20 +4,24 @@ typedef void (*key_callback)(GLFWwindow* window, int key, int scancode, int acti
 class Window
 {
 	private:
-		int width;
-		int height;
-		GLFWwindow* window;
+		static int width;
+		static int height;
+		static GLfloat lastFrameTime;
+		static GLfloat deltaTime;
+		static GLFWwindow* window;
 	public:
 		/*Creates a Window default 800x600*/
-		Window(int width = 800, int height= 600);
 		/*Opens a window and configures opengl and glfw for it*/
-		void open();
+		static void open();
 		/*Closes a window and clears glfw configurations*/
-		void close();
+		static void close();
 		/*Updates the window*/
-		void update();
+		static void update();
+		static GLfloat getDeltaTime();
 		/*Returns glfw pointer to window*/
-		GLFWwindow* getGLFWWindow();
+		static GLFWwindow* getGLFWWindow();
 		/*Adds a callback function to key pressing*/
-		void addCallBack(key_callback callback);
+		static void addCallBack(key_callback callback);
+		static int getWidth() { return width; }
+		static int getHeight() { return height; };
 };

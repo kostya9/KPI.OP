@@ -9,11 +9,12 @@ class Renderer
 private:
 	const GLfloat FOV = 70.0f;
 	const GLfloat NEAR_PLANE = 0.1f;
-	const GLfloat FAR_PLANE = 1000.0f;
+	const GLfloat FAR_PLANE = 100.0f;
 	glm::mat4 projectionMatrix;
 	void createProjectionMatrix()
 	{
 		projectionMatrix = glm::perspective(FOV, 1.0f, NEAR_PLANE, FAR_PLANE);
+		//projectionMatrix = glm::ortho(0.0f, (float)Window::getHeight(), 0.0f, (float)Window::getWidth()/*, NEAR_PLANE, FAR_PLANE*/);
 	}
 	public:
 		Renderer(StaticShader shader)

@@ -21,6 +21,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 //Debug shit. gDebbugger is pretty cooler.
+typedef unsigned int uint;
 static void bindVAO(GLuint id)
 {
 	//puts("Bound VAO");

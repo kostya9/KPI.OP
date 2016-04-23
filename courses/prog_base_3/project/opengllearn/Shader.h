@@ -21,8 +21,8 @@ class Shader
 		void unUse();
 	protected:
 		GLuint getUniformLocation(GLchar * unformName);
-		virtual void getAllUniformLocations() = 0;
-		virtual void bindAttributes() = 0;
+		virtual void getAllUniformLocations() {};
+		virtual void bindAttributes() {};
 		void loadFloat(GLuint location, GLfloat value);
 		void loadVector(GLuint location, glm::vec3 vec);
 		void loadBool(GLuint location, bool value);

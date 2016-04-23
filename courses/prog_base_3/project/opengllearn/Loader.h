@@ -3,6 +3,7 @@
 #include "MainHeaders.h"
 #include "TexturedModel.h"
 using namespace std;
+// TODO: change arrays to vectors
 class Loader {
 	public:
 		/*Creates a Model and binds it ti Vertex Array Object(VAO)*/

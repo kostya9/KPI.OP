@@ -16,20 +16,32 @@
     <Filter Include="Engine">
       <UniqueIdentifier>{8a693f30-d903-4676-af5f-84f31b8f3a62}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Entities">
-      <UniqueIdentifier>{f3b52fe4-0df6-42c1-9b33-d4f1ba190af9}</UniqueIdentifier>
+    <Filter Include="Game">
+      <UniqueIdentifier>{512e758c-e48b-4e8c-9681-3efac62211ef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Model">
-      <UniqueIdentifier>{8cb8e79a-1aca-4a1e-8d1b-b6ac6f9040af}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Control">
+    <Filter Include="Engine\Control">
       <UniqueIdentifier>{30e8fcbd-7581-40c9-932a-f36372d52cf6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Render">
+    <Filter Include="Engine\Entities">
+      <UniqueIdentifier>{f3b52fe4-0df6-42c1-9b33-d4f1ba190af9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Model">
+      <UniqueIdentifier>{8cb8e79a-1aca-4a1e-8d1b-b6ac6f9040af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Render">
       <UniqueIdentifier>{51fe261b-c4e9-474a-9669-be3be86797b1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shader">
+    <Filter Include="Engine\Shader">
       <UniqueIdentifier>{c73625cf-0d69-44b4-ab0f-e02fab2c697e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\GameObjects">
+      <UniqueIdentifier>{dd6e97e6-a220-4e2a-ba0d-14307636ba60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Font">
+      <UniqueIdentifier>{2035195b-011b-4a87-8429-a60ecf7a120e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Shader\fonts">
+      <UniqueIdentifier>{21f47dbe-ee5c-4fdd-be9a-f2d4a14a8529}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -40,19 +52,19 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Model.h">
-      <Filter>Model</Filter>
+      <Filter>Engine\Model</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
-      <Filter>Shader</Filter>
+      <Filter>Engine\Shader</Filter>
     </ClInclude>
     <ClInclude Include="StaticShader.h">
-      <Filter>Shader</Filter>
+      <Filter>Engine\Shader</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
-      <Filter>Model</Filter>
+      <Filter>Engine\Model</Filter>
     </ClInclude>
     <ClInclude Include="TexturedModel.h">
-      <Filter>Model</Filter>
+      <Filter>Engine\Model</Filter>
     </ClInclude>
     <ClInclude Include="Maths.h">
       <Filter>Header Files</Filter>
@@ -61,25 +73,43 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="Entity.h">
-      <Filter>Entities</Filter>
+      <Filter>Engine\Entities</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>Entities</Filter>
+      <Filter>Engine\Entities</Filter>
     </ClInclude>
     <ClInclude Include="Loader.h">
-      <Filter>Render</Filter>
+      <Filter>Engine\Render</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
-      <Filter>Render</Filter>
+      <Filter>Engine\Render</Filter>
     </ClInclude>
     <ClInclude Include="Window.h">
-      <Filter>Render</Filter>
+      <Filter>Engine\Render</Filter>
     </ClInclude>
     <ClInclude Include="Keyboard.h">
-      <Filter>Control</Filter>
+      <Filter>Engine\Control</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
-      <Filter>Entities</Filter>
+      <Filter>Engine\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Game\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Game\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Field.h">
+      <Filter>Game\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>Engine\Font</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -87,26 +117,41 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Loader.cpp">
-      <Filter>Render</Filter>
+      <Filter>Engine\Render</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
-      <Filter>Shader</Filter>
+      <Filter>Engine\Shader</Filter>
     </ClCompile>
     <ClCompile Include="StaticShader.cpp">
-      <Filter>Shader</Filter>
+      <Filter>Engine\Shader</Filter>
     </ClCompile>
     <ClCompile Include="Window.cpp">
-      <Filter>Render</Filter>
+      <Filter>Engine\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Game\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Game\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Engine\Font</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="shaders\fragment.sh">
-      <Filter>Shader</Filter>
+      <Filter>Engine\Shader</Filter>
     </None>
     <None Include="shaders\vertex.sh">
-      <Filter>Shader</Filter>
+      <Filter>Engine\Shader</Filter>
     </None>
     <None Include="ClassDiagram.cd" />
+    <None Include="shaders\fonts\fragment.sh">
+      <Filter>Engine\Shader\fonts</Filter>
+    </None>
+    <None Include="shaders\fonts\vertex.sh">
+      <Filter>Engine\Shader\fonts</Filter>
+    </None>
   </ItemGroup>
 </Project>

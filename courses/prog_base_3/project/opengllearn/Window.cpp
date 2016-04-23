@@ -1,13 +1,15 @@
 #include "Window.h"
 
-Window::Window(int height, int width)
-{
-	this->height = height;
-	this->width = width;
-}
-
+int Window::width = 800;
+int Window::height = 600;
+GLfloat Window::lastFrameTime;
+GLfloat Window::deltaTime;
+GLFWwindow* Window::window;
 void Window::open()
 {
+	// TODO : WIndow width, height and FOV adjustments
+	/*Window::height = height;
+	Window::width = width;*/
 	// Init GLFW
 	glfwInit();
 	// Set all the required options for GLFW
@@ -26,6 +28,7 @@ void Window::open()
 	glViewport(0, 0, width, height);
 	// Setup OpenGL options
 	glEnable(GL_DEPTH_TEST); // Fucking Depth Buffer
+	lastFrameTime = glfwGetTime();
 }
 
 void Window::close()
@@ -36,6 +39,14 @@ void Window::close()
 void Window::update()
 {
 	glfwSwapBuffers(window);
+	GLfloat curFrameTime = glfwGetTime();
+	deltaTime = curFrameTime - lastFrameTime;
+	lastFrameTime = curFrameTime;
+}
+
+GLfloat Window::getDeltaTime()
+{
+	return deltaTime;
 }
 
 GLFWwindow * Window::getGLFWWindow()

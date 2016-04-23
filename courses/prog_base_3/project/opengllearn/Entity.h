@@ -1,7 +1,7 @@
 #pragma once
 #include "MainHeaders.h"
 #include "Engine.h"
-class Entity
+struct Entity
 {
 	public:
 		TexturedModel model;
@@ -16,6 +16,15 @@ class Entity
 			this->rotY = rotY;
 			this->rotZ = rotZ;
 			this->scale = scale;
+		}
+		Entity(TexturedModel model)
+		{
+			this->model = model;
+			this->position = glm::vec3(0.0f, 0.0f, 0.0f);
+			this->rotX = 0.0f;
+			this->rotY = 0.0f;
+			this->rotZ = 0.0f;
+			this->scale = 1.0f;
 		}
 		void increasePosition(GLfloat dx, GLfloat dy, GLfloat dz)
 		{
