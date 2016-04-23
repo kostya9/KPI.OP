@@ -23,7 +23,7 @@ static int checkRC(des_db_t * self, int rc)
     status = DB_OK;
     return 0;
 }
-static void fill_designer(sqlite3_stmt * stmt, designer * des)
+static void fill_designer(sqlite3_stmt * stmt, designer_t * des)
 {
     int id = sqlite3_column_int(stmt, 0);
     const unsigned char * name = sqlite3_column_text(stmt, 1);
@@ -84,7 +84,7 @@ int des_db_rows_count(des_db_t * self)
     return count;
 }
 
-void des_db_add_designer(des_db_t * self, designer * des)
+void des_db_add_designer(des_db_t * self, designer_t * des)
 {
     int rc  = 0;
     sqlite3_stmt * stmt;
@@ -128,10 +128,10 @@ void des_db_add_designer(des_db_t * self, designer * des)
     return;
 }
 
-designer * des_db_get_designer(des_db_t * self, unsigned int id)
+designer_t * des_db_get_designer(des_db_t * self, unsigned int id)
 {
     int rc  = 0;
-    designer * des = NULL;
+    designer_t * des = NULL;
     sqlite3_stmt * stmt;
     char * sql = "SELECT  * FROM "TABLE_NAME" "
                  "WHERE Id = ?";
@@ -144,7 +144,7 @@ designer * des_db_get_designer(des_db_t * self, unsigned int id)
     if(checkRC(self, rc))
         goto fin;
     sqlite3_step(stmt);
-    des = malloc(sizeof(designer));
+    des = malloc(sizeof(designer_t));
     des->id = id;
     fill_designer(stmt, des);
     fin:
@@ -152,7 +152,7 @@ designer * des_db_get_designer(des_db_t * self, unsigned int id)
     return des;
 }
 
-void des_db_update_designer(des_db_t * self, designer * des)
+void des_db_update_designer(des_db_t * self, designer_t * des)
 {
     int rc  = 0;
     sqlite3_stmt * stmt;
@@ -217,12 +217,12 @@ void des_db_delete_designer(des_db_t * self, unsigned int id)
     return;
 }
 
-designer * des_db_get_filtered_designers(des_db_t * self, int websitesCount, float salary, size_t * pcount)
+designer_t * des_db_get_filtered_designers(des_db_t * self, int websitesCount, float salary, size_t * pcount)
 {
     int rc = 0;
     int count = 0;
     int proccessed_count = 0;
-    designer * designers = NULL;
+    designer_t * designers = NULL;
     sqlite3_stmt * stmt;
     char * sql_select = "SELECT * FROM "TABLE_NAME" "
                  "WHERE ProjectCount > ? AND Salary < ? ;";
@@ -245,7 +245,7 @@ designer * des_db_get_filtered_designers(des_db_t * self, int websitesCount, flo
     count = sqlite3_column_int(stmt, 0);
     sqlite3_finalize(stmt);
 
-    designers = malloc(sizeof(designer) * count);
+    designers = malloc(sizeof(designer_t) * count);
     // Get the designers themself
     rc = sqlite3_prepare_v2(self->db, sql_select, strlen(sql_select), &stmt, NULL);
     if(checkRC(self, rc))
