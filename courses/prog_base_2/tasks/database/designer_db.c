@@ -157,7 +157,7 @@ void des_db_update_designer(des_db_t * self, designer * des)
     int rc  = 0;
     sqlite3_stmt * stmt;
     char * sql = "UPDATE  "TABLE_NAME" "
-                "SET Name = ?, Surname = ?, averageVertices = ?, Experience = ?, Salary = ?, ProjectsCount = ?, HireDate = ? "
+                "SET Name = ?, Surname = ?, averageVertices = ?, Experience = ?, Salary = ?, ProjectCount = ?, HireDate = ? "
                  "WHERE Id = ?;";
     if(checkRC(self, rc))
         goto fin;
