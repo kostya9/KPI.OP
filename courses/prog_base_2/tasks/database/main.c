@@ -35,7 +35,7 @@ void one_record_test(des_db_t * db)
     print_des_count(db);
     struct tm tm_time = {.tm_mday = 20, .tm_mon = 4 - 1, .tm_year = 2012 - 1900};
     time_t time = mktime(&tm_time);
-    designer des1 = {.id = 3, .name = "Peter", .surname = "Bayleish", .averageVertices = 3.14, .experience = 10, .hireDate = time};
+    designer des1 = {.id = 3, .name = "Peter", .surname = "Bayleish", .averageVertices = 3.14, .experience = 10, .hireDate = time, .salary = 1005.00, .projectsCount = 100};
     puts("\nAdding a record ... ");
     des_db_add_designer(db, &des1);
 
