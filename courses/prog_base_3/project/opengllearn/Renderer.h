@@ -29,7 +29,7 @@ private:
 		{
 			glfwPollEvents();
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			glClearColor(0.6784f, 0.792f, 0.99f, 1.0f); // RED 
+			glClearColor(0.6784f, 0.792f, 0.99f, 1.0f); // LIGHT BLUE 
 		}
 		/*Renders(draws) a model to the screen*/
 		void render(Entity entity, StaticShader shader)

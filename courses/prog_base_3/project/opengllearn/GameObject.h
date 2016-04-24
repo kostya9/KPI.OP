@@ -20,7 +20,7 @@ public:
 	void scale(GLfloat times);
 	void setPosition(glm::fvec3 position);
 	virtual void move(float speed, glm::fvec3 dPos)  {};
-	void render(Renderer * renderer, StaticShader shader);
+	virtual void render(Renderer * renderer, StaticShader shader);
 	static vector <GameObject*> getObjects();
 	~GameObject();
 };

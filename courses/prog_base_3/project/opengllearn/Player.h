@@ -1,20 +1,41 @@
 #pragma once
 #include "MainHeaders.h"
 #include "GameObject.h"
+#define _USE_MATH_DEFINES
+#include <math.h>
 // TODO : to implement interface functions
-#define RUN_SPEED 10.0f
+#define RUN_SPEED 1.f
 #define TURN_SPEED 20.002f
 extern Keyboard * keyboard;
 class Player : public GameObject
 {
 	private:
-		uint energy;
-		GLfloat curSpeed = 0;
-		GLfloat curTurnSpeed = 0;
+		GLfloat energy;
+		enum MOVEMENT { LEFT, FORWARD, RIGHT, BACKWARD, NO } mov;
+		glm::vec3 dest;
+		//GLfloat curSpeed = 0;
+		//GLfloat curTurnSpeed = 0;
 		Camera & cam;
 	public:
 		Player(vector <Entity> entities, glm::fvec3 position, Camera & c) : GameObject(entities, position), cam(c)
-		{};
+		{
+			energy = 1.0f;
+			float delta = 10.0f;
+			mov = NO;
+			cam.setPosition(position);
+			cam.moveForward(-delta);
+			cam.moveUp(delta);
+			cam.pitch(M_PI / 4);
+		}
+		void render(Renderer * renderer, StaticShader shader)
+		{
+			GLfloat dy = 0.2 * glm::sin(glfwGetTime());
+			glm::vec3 prevPos = this->position;
+			this->setPosition(glm::vec3(position.x, position.y + dy, position.z));
+			GameObject::render(renderer, shader);
+			this->setPosition(prevPos);
+
+		}
 		void changeEnergy(int dEnergy);
 		void move();
 };

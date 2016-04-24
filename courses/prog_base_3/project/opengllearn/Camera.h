@@ -32,6 +32,10 @@ public:
 			yaw(+TURNSTEP * Window::getDeltaTime());
 		glm::normalize(mOrientation);
 	}
+	void setPosition(glm::fvec3 pos)
+	{
+		mPosition = pos;
+	}
 	void pitch(float pitchRadians) {
 		rotate(pitchRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 	}

@@ -6,9 +6,6 @@
 
 Font::Font(GLchar * fileName) : shader(vertPath, fragPath)
 {
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(Window::getWidth()), 0.0f, static_cast<GLfloat>(Window::getHeight()));
 	shader.use();
 	glUniformMatrix4fv(glGetUniformLocation(shader.getProgramId(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
@@ -87,7 +84,9 @@ Font::Font(GLchar * fileName) : shader(vertPath, fragPath)
 
 void Font::renderText(Renderer * renderer, GLchar * text, glm::fvec2 position, glm::fvec3 color, GLfloat scale)
 {
-
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	shader.use();
 	glUniform3f(glGetUniformLocation(shader.getProgramId(), "textColor"), color.x, color.y, color.z);
@@ -128,7 +127,7 @@ void Font::renderText(Renderer * renderer, GLchar * text, glm::fvec2 position, g
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	shader.unUse();
-	//glDisable(GL_CULL_FACE);
-	//glDisable(GL_BLEND);
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_BLEND);
 
 }

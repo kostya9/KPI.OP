@@ -30,24 +30,27 @@ int main()
 	Window::addCallBack(kb);
 
 
-	vector<TexturedModel> models = loader.objToModel("../opengllearn/models/nanosuit/nanosuit.obj");
+	//vector<TexturedModel> models = loader.objToModel("../opengllearn/models/nanosuit/nanosuit.obj");
 	//vector<TexturedModel> models = loader.objToModel("../opengllearn/models/stall/stall.obj");
+	vector<TexturedModel> models = loader.objToModel("../opengllearn/models/playerBall/playerBall.obj");
 	vector<Entity> entities;
 	for (TexturedModel model : models)
 			entities.push_back(Entity(model));
-	GameObject * go = new GameObject(entities, glm::vec3(0.0f,0.0f,-20.0f));
 	glm::vec3 lightPos = glm::vec3(0.0f, 2.0f, 0.0f);
 	Camera camera = Camera();
-	camera.moveUp(3.0f);
-	camera.pitch(M_PI / 2.0f);
+	//camera.moveUp(5.0f);
+	//camera.moveForward(-5.0f);
+	//camera.pitch(M_PI / 4.0f);
+	//camera.yaw(M_PI / 4.0f);
 	//Player * player = new Player(player_e, glm::vec3(0.0f, 0.0f, -3.0f), camera);
 		/*Entity entity = Entity(texturedModel, glm::vec3(0.0f, 0.0f, -5.0f), 0.0f, 0.0f, 0.0f, 1.0f);
 	entities.push_back(entity);*/
 	Field * field = new Field(&loader, 81, glm::vec3(0.0f, 0.0f, 0.0f));
 	Font * font = new Font("fonts/Open_sans/OpenSans-Regular.ttf");
+	Player * player = new Player(entities, glm::vec3(0.0f, 0.5f, 1.0f), camera);
 	
 	//field->rotate(glm::vec3(0.0f, 90.0f, 0.0f));
-	float light_brightness = 0.7f;
+	float light_brightness = .5f;
 	Light light = Light(lightPos, glm::vec3(light_brightness, light_brightness, light_brightness));
 	float timePrev = glfwGetTime();
 	//field->scale(3);
@@ -64,11 +67,13 @@ int main()
 		shader.loadLight(light);
 		renderer.prepare();
 		field->render(&renderer, shader);
-		go->render(&renderer, shader);
+		player->render(&renderer, shader);
+		//go->render(&renderer, shader);
 		font->renderText(&renderer, debugInfo, glm::ivec2(12, 43), glm::vec3(0.1f, 0.1f, 0.1f), 1.0f);
 		shader.unUse();
 		Window::update();
-		camera.move();
+		player->move();
+		//camera.move();
 	}
 	shader.deleteShader();
 	loader.releaseVOs();
