@@ -9,7 +9,7 @@
 #include <math.h>
 #include "Field.h"
 #include "Font.h"
-
+#include "Wall.h"
 
 const GLuint WIDTH = 800, HEIGHT = 600;
 void key_callback_exit(GLFWwindow* window, int key, int scancode, int action, int mode);
@@ -30,25 +30,12 @@ int main()
 	Window::addCallBack(kb);
 
 
-	//vector<TexturedModel> models = loader.objToModel("../opengllearn/models/nanosuit/nanosuit.obj");
-	//vector<TexturedModel> models = loader.objToModel("../opengllearn/models/stall/stall.obj");
-	vector<TexturedModel> models = loader.objToModel("../opengllearn/models/playerBall/playerBall.obj");
-	vector<Entity> entities;
-	for (TexturedModel model : models)
-			entities.push_back(Entity(model));
 	glm::vec3 lightPos = glm::vec3(0.0f, 2.0f, 0.0f);
 	Camera camera = Camera();
-	//camera.moveUp(5.0f);
-	//camera.moveForward(-5.0f);
-	//camera.pitch(M_PI / 4.0f);
-	//camera.yaw(M_PI / 4.0f);
-	//Player * player = new Player(player_e, glm::vec3(0.0f, 0.0f, -3.0f), camera);
-		/*Entity entity = Entity(texturedModel, glm::vec3(0.0f, 0.0f, -5.0f), 0.0f, 0.0f, 0.0f, 1.0f);
-	entities.push_back(entity);*/
 	Field * field = new Field(&loader, 81, glm::vec3(0.0f, 0.0f, 0.0f));
 	Font * font = new Font("fonts/Open_sans/OpenSans-Regular.ttf");
-	Player * player = new Player(entities, glm::vec3(0.0f, 0.5f, 1.0f), camera);
-	
+	Player * player = new Player(&loader, glm::vec3(0.0f, 0.5f, 1.0f), camera);
+	Wall * wall = new Wall(&loader, glm::vec3(0.0f, 0.01f, 0.0f));
 	//field->rotate(glm::vec3(0.0f, 90.0f, 0.0f));
 	float light_brightness = .5f;
 	Light light = Light(lightPos, glm::vec3(light_brightness, light_brightness, light_brightness));
@@ -59,15 +46,20 @@ int main()
 	while (!glfwWindowShouldClose(Window::getGLFWWindow()))
 	{
 		//entity.increasePosition(0.0f, 0.0f, -0.0001f);
-		//GLfloat curLight = (glm::sin(glfwGetTime()) + 1) * 3;
+		GLfloat hole = glm::sin(glfwGetTime());
+		if (hole > 0.5)
+			wall->showHole();
+		else
+			wall->hideHole();
 		//light.setColor(glm::vec3(curLight, curLight, curLight));
-		sprintf(debugInfo, "X : %3.2f, Y : %3.2f, Z : %3.2f", camera.getPosition().x, camera.getPosition().y, camera.getPosition().z);
+		sprintf(debugInfo, "X : %3.2f, Y : %3.2f, Z : %3.2f", player->getPosition().x, player->getPosition().y, player->getPosition().z);
 		shader.use();
 		shader.loadViewMatrix(camera);
 		shader.loadLight(light);
 		renderer.prepare();
 		field->render(&renderer, shader);
 		player->render(&renderer, shader);
+		wall->render(&renderer, shader);
 		//go->render(&renderer, shader);
 		font->renderText(&renderer, debugInfo, glm::ivec2(12, 43), glm::vec3(0.1f, 0.1f, 0.1f), 1.0f);
 		shader.unUse();
@@ -75,6 +67,9 @@ int main()
 		player->move();
 		//camera.move();
 	}
+	delete field;
+	delete font;
+	delete player;
 	shader.deleteShader();
 	loader.releaseVOs();
 	Window::close();

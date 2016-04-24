@@ -111,6 +111,9 @@
     <ClInclude Include="Font.h">
       <Filter>Engine\Font</Filter>
     </ClInclude>
+    <ClInclude Include="Wall.h">
+      <Filter>Game\GameObjects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -136,6 +139,12 @@
     </ClCompile>
     <ClCompile Include="Font.cpp">
       <Filter>Engine\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="Field.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Wall.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -16,9 +16,10 @@ public:
 	GameObject();
 	void hideObject();
 	void showObject();
+	glm::fvec3 getPosition() { return position; }
 	void rotate(glm::fvec3 rotation);
 	void scale(GLfloat times);
-	void setPosition(glm::fvec3 position);
+	virtual void setPosition(glm::fvec3 position);
 	virtual void move(float speed, glm::fvec3 dPos)  {};
 	virtual void render(Renderer * renderer, StaticShader shader);
 	static vector <GameObject*> getObjects();

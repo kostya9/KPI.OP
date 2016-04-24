@@ -1,6 +1,6 @@
 #include "Field.h"
 
-inline Field::Field(Loader * loader, GLuint size, glm::vec3 position) : GameObject()
+Field::Field(Loader * loader, GLuint size, glm::vec3 position) : GameObject()
 {
 	this->size = size;
 	this->position = position;

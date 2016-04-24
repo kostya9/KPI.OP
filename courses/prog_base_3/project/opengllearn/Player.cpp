@@ -1,5 +1,19 @@
 #include "Player.h"
 #include "math.h"
+Player::Player(Loader * loader, glm::fvec3 position, Camera & c) : GameObject(entities, position), cam(c)
+{
+	vector<TexturedModel> models = loader->objToModel("../opengllearn/models/playerBall/playerBall.obj");
+
+	for (TexturedModel model : models)
+		entities.push_back(Entity(model));
+	energy = 1.0f;
+	float delta = 3.0f;
+	mov = NO;
+	cam.setPosition(position);
+	cam.moveForward(-delta);
+	cam.moveUp(delta);
+	cam.pitch(M_PI / 4);
+}
 void Player::move()
 {
 	if (mov == NO)

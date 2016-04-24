@@ -17,16 +17,7 @@ class Player : public GameObject
 		//GLfloat curTurnSpeed = 0;
 		Camera & cam;
 	public:
-		Player(vector <Entity> entities, glm::fvec3 position, Camera & c) : GameObject(entities, position), cam(c)
-		{
-			energy = 1.0f;
-			float delta = 10.0f;
-			mov = NO;
-			cam.setPosition(position);
-			cam.moveForward(-delta);
-			cam.moveUp(delta);
-			cam.pitch(M_PI / 4);
-		}
+		Player(Loader * loader, glm::fvec3 position, Camera & c);
 		void render(Renderer * renderer, StaticShader shader)
 		{
 			GLfloat dy = 0.2 * glm::sin(glfwGetTime());
