@@ -1,0 +1,38 @@
+# depslib dependency file v1.0
+1457731264 source:c:\users\devincube\desktop\repos\codeblocks\libthread\thread.c
+	"thread.h"
+	<windows.h>
+
+1457731481 c:\users\devincube\desktop\repos\codeblocks\libthread\thread.h
+
+1457731830 source:c:\users\devincube\desktop\repos\codeblocks\libthread\mutex.c
+	<stdlib.h>
+	<windows.h>
+	"mutex.h"
+
+1457731584 c:\users\devincube\desktop\repos\codeblocks\libthread\mutex.h
+
+1457733257 source:/home/devincube/projects/CoursesRepo/courses/prog_base_2/practice/threads/module/libthread/libthread_windows.c
+	<windows.h>
+	"thread.h"
+	"mutex.h"
+
+1457733257 /home/devincube/projects/CoursesRepo/courses/prog_base_2/practice/threads/module/libthread/thread.h
+
+1457733257 /home/devincube/projects/CoursesRepo/courses/prog_base_2/practice/threads/module/libthread/mutex.h
+
+1457734865 source:c:\users\devincube\desktop\repos\coursesrepo\courses\prog_base_2\practice\threads\module\libthread\libthread_linux.c
+	<stdlib.h>
+	<pthread.h>
+	"thread.h"
+	"mutex.h"
+
+1457731481 c:\users\devincube\desktop\repos\coursesrepo\courses\prog_base_2\practice\threads\module\libthread\thread.h
+
+1457731584 c:\users\devincube\desktop\repos\coursesrepo\courses\prog_base_2\practice\threads\module\libthread\mutex.h
+
+1457732859 source:c:\users\devincube\desktop\repos\coursesrepo\courses\prog_base_2\practice\threads\module\libthread\libthread_windows.c
+	<windows.h>
+	"thread.h"
+	"mutex.h"
+

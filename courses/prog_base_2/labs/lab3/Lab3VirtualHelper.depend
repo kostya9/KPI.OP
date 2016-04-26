@@ -1,0 +1,82 @@
+# depslib dependency file v1.0
+1461691717 source:d:\projects\cb\lab3virtualhelper\list.c
+	"list.h"
+	<stdlib.h>
+	<malloc.h>
+
+1461691759 d:\projects\cb\lab3virtualhelper\list.h
+	<stdlib.h>
+
+1461692353 source:d:\projects\cb\lab3virtualhelper\main.c
+	"user.h"
+	"event.h"
+	<windows.h>
+	<stdio.h>
+	<malloc.h>
+	<conio.h>
+	"stack_test.h"
+
+1461692933 source:d:\projects\cb\lab3virtualhelper\event.c
+	"event.h"
+	"libthread\mutex.h"
+	"libthread\thread.h"
+	"stack.h"
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<time.h>
+	<malloc.h>
+
+1461689215 d:\projects\cb\lab3virtualhelper\event.h
+	"user.h"
+	<time.h>
+	<stdlib.h>
+
+1461688026 d:\projects\cb\lab3virtualhelper\user.h
+
+1460726090 d:\projects\cb\lab3virtualhelper\libthread\mutex.h
+
+1460726090 d:\projects\cb\lab3virtualhelper\libthread\thread.h
+
+1460726090 source:d:\projects\cb\lab3virtualhelper\libthread\libthread_windows.c
+	<windows.h>
+	"thread.h"
+	"mutex.h"
+
+1461688100 source:d:\projects\cb\lab3virtualhelper\user.c
+	"user.h"
+	<malloc.h>
+	<string.h>
+
+1461692027 source:d:\projects\cb\lab3virtualhelper\list_test.c
+	"list_test.h"
+	<stdlib.h>
+	<stdarg.h>
+	<stddef.h>
+	<setjmp.h>
+	<cmocka.h>
+	"list.h"
+
+1461691323 d:\projects\cb\lab3virtualhelper\list_test.h
+
+1424096216 c:\program files (x86)\cmocka\include\cmocka.h
+
+1461692950 d:\projects\cb\lab3virtualhelper\stack.h
+	<stdlib.h>
+
+1461692357 d:\projects\cb\lab3virtualhelper\stack_test.h
+
+1461692951 source:d:\projects\cb\lab3virtualhelper\stack.c
+	"stack.h"
+	<stdlib.h>
+	<malloc.h>
+
+1461692936 source:d:\projects\cb\lab3virtualhelper\stack_test.c
+	"stack_test.h"
+	<stdlib.h>
+	<stdarg.h>
+	<stddef.h>
+	<setjmp.h>
+	<cmocka.h>
+	"stack.h"
+
