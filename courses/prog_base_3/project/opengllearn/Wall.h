@@ -16,5 +16,6 @@ class Wall : public GameObject
 		COLLISION_STATUS isMovementColliding(glm::fvec3 positionFrom, glm::fvec3 positionDest);
 		void showHole(WallHole::HOLE_DIRECTION direction);
 		void hideHole();
+		~Wall();
 
 };

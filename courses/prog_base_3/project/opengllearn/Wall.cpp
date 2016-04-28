@@ -46,6 +46,11 @@ void Wall::hideHole()
 	hole->makeInvisible();
 }
 
+Wall::~Wall()
+{
+	delete hole;
+}
+
 Wall::COLLISION_STATUS Wall::isMovementColliding(glm::fvec3 positionFrom, glm::fvec3 positionDest)
 {
 	GLfloat distanceToWall = glm::length2(this->getPosition() - positionDest);

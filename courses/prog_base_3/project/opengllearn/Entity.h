@@ -26,11 +26,13 @@ struct Entity
 			this->rotZ = 0.0f;
 			this->scale = 1.0f;
 		}
+		void increasePosition(glm::fvec3 position)
+		{
+			this->position += position;
+		}
 		void increasePosition(GLfloat dx, GLfloat dy, GLfloat dz)
 		{
-			position.x += dx;
-			position.y += dy;
-			position.z += dz;
+			increasePosition(glm::fvec3(dx, dy, dz));
 		}
 		void increaseRotation(GLfloat dx, GLfloat dy, GLfloat dz)
 		{
