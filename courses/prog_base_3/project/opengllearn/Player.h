@@ -17,11 +17,11 @@ class Player : public GameObject
 		//GLfloat curSpeed = 0;
 		//GLfloat curTurnSpeed = 0;
 		Camera & cam;
-		void checkCollisionStatus(GameObjectManager * manager);
-		void checkInputKeys();
+		Wall * getColliderIfAHole(GameObjectManager * manager);
+		Player::MOVEMENT_STATE_CODE getMovementStateFromInputKeys();
 		glm::fvec3 getMovementVector();
 		void setSineHeightPosition();
-		void moveModel();
+		void moveModel(Wall * wall);
 	public:
 		Player(Loader * loader, glm::fvec3 position, Camera & c);
 		void render(Renderer * renderer, StaticShader shader);

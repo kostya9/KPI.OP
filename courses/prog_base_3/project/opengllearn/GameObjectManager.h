@@ -9,7 +9,7 @@ class GameObjectManager
 		vector<GameObject *> objects;
 		vector <Wall *> walls;
 	public:
-		Wall::COLLISION_STATUS isMovementColliding(glm::fvec3 positionFrom, glm::fvec3 positionDest); // Wall collision
+		Wall::COLLISION_STATUS isMovementColliding(glm::fvec3 positionFrom, glm::fvec3 positionDest, Wall ** collider); // Wall collision
 		void renderAll(Renderer * renderer, StaticShader shader);
 		void addObject(Wall * wall);
 		void addObject(GameObject * object);

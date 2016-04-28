@@ -30,6 +30,11 @@ void StaticShader::loadLight(Light light)
 	loadVector(location_lightPosition, light.getPosition());
 }
 
+void StaticShader::loadAlpha(GLfloat alpha)
+{
+	loadFloat(location_alpha, alpha);
+}
+
 void StaticShader::bindAttributes() // DO NOT INLINE THIS AND ATTRIBUTE
 {
 	Shader::bindAttribute(0, "position");
@@ -44,4 +49,5 @@ void StaticShader::getAllUniformLocations()
 	location_viewMatrix = this->getUniformLocation("viewMatrix");
 	location_lightPosition = this->getUniformLocation("lightPosition");
 	location_lightColor = this->getUniformLocation("lightColor");
+	location_alpha = this->getUniformLocation("alpha");
 }

@@ -3,6 +3,7 @@
 in vec3 position;
 in vec2 textureCoordinates;
 in vec3 normal;	
+in vec4 color;
 
 out vec2 out_textureCoordinates;
 out vec3 surfaceNormal;
@@ -12,7 +13,6 @@ out vec3 toCameraVector;
 uniform mat4 transformationMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
-
 uniform vec3 lightPosition;
 
 void main(void)

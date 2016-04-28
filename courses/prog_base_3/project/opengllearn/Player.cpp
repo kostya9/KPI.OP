@@ -9,6 +9,7 @@ Player::Player(Loader * loader, glm::fvec3 position, Camera & c) : GameObject(en
 	energy = 1.0f;
 	float delta = 3.0f;
 	moveState = MOVE_NO;
+	dest = glm::vec3(0.0f, 0.0f, 0.0f);
 	cam.setPosition(position);
 	cam.moveForward(-delta);
 	cam.moveUp(delta);
@@ -29,16 +30,23 @@ void Player::render(Renderer * renderer, StaticShader shader)
 }
 void Player::move(GameObjectManager * manager)
 {
+	static Wall * wall = nullptr;
 	if (moveState == MOVE_NO)
 	{
-		checkInputKeys();
-		checkCollisionStatus(manager);
+		moveState = getMovementStateFromInputKeys();
+		if (moveState == MOVE_NO)
+			return;
+
+		wall = getColliderIfAHole(manager);
+		if (wall != nullptr)
+			wall->setAlpha(0.5f);
+
 		return;
 	}
-	moveModel();
+	moveModel(wall);
 }
 
-void Player::moveModel()
+void Player::moveModel(Wall * wall)
 {
 	glm::fvec3 movement = Player::getMovementVector();
 	for (Entity & e : entities)
@@ -47,6 +55,8 @@ void Player::moveModel()
 		this->position += movement;
 		if (moveState == MOVE_NO)
 		{
+			if(wall != nullptr)
+				wall->setAlpha(1.0f);
 			this->setPosition(dest);
 			return;
 		}
@@ -112,45 +122,50 @@ void Player::setSineHeightPosition()
 	this->setPosition(glm::vec3(position.x, position.y + dy, position.z));
 }
 
-void Player::checkInputKeys()
+Player::MOVEMENT_STATE_CODE Player::getMovementStateFromInputKeys()
 {
+	MOVEMENT_STATE_CODE state = MOVE_NO;
 	if (keyboard->isKeyPressed('w'))
 	{
 		dest = glm::vec3(this->position.x, this->position.y, glm::round(this->position.z - 1));
-		moveState = MOVE_FORWARD;
+		state = MOVE_FORWARD;
 	}
 	else if (keyboard->isKeyPressed('s'))
 	{
 		dest = glm::vec3((this->position.x), this->position.y, glm::round(this->position.z + 1));
-		moveState = MOVE_BACKWARD;
+		state = MOVE_BACKWARD;
 	}
 	else if (keyboard->isKeyPressed('a'))
 	{
 		dest = glm::vec3(glm::round(this->position.x - 1), this->position.y, this->position.z);
-		moveState = MOVE_LEFT;
+		state = MOVE_LEFT;
 	}
 	else if (keyboard->isKeyPressed('d'))
 	{
 		dest = glm::vec3(glm::round(this->position.x + 1), this->position.y, this->position.z);
-		moveState = MOVE_RIGHT;
+		state = MOVE_RIGHT;
 	}
-	else
-		return;
+	return state;
 }
-void Player::checkCollisionStatus(GameObjectManager * manager)
+Wall * Player::getColliderIfAHole(GameObjectManager * manager)
 {
 	if (manager != nullptr)
 	{
-		Wall::COLLISION_STATUS status = manager->isMovementColliding(this->position, dest);
+		Wall * wall;
+		Wall::COLLISION_STATUS status = manager->isMovementColliding(this->position, dest, &wall);
 		if (status == Wall::COLLISION_TRUE)
 		{
 			moveState = MOVE_NO;
-			return;
+			return nullptr;
 		}
 		else if (status == Wall::COLLISION_HOLE)
 		{
 			dest += (dest - this->position);
-			return;
+			dest.x = glm::round(dest.x);
+			dest.z = glm::round(dest.z);
+			return wall;
 		}
+		else
+			return nullptr;
 	}
 }

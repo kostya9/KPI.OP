@@ -54,12 +54,17 @@ bool GameObject::getVisibility()
 	return show;
 }
 
+void GameObject::setAlpha(GLfloat alpha)
+{
+	this->alpha = alpha;
+}
+
 void GameObject::render(Renderer * renderer, StaticShader shader)
 {
 	if(show)
 		for (Entity en : entities)
 		{
-			renderer->render(en, shader);
+			renderer->render(en, shader, alpha/**/);
 		}
 }
 

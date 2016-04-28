@@ -1,13 +1,17 @@
 #include "GameObjectManager.h"
-Wall::COLLISION_STATUS GameObjectManager::isMovementColliding(glm::fvec3 positionFrom, glm::fvec3 positionDest)
+Wall::COLLISION_STATUS GameObjectManager::isMovementColliding(glm::fvec3 positionFrom, glm::fvec3 positionDest, Wall ** collider)
 {
 
 	for (Wall * wall : walls)
 	{
 		Wall::COLLISION_STATUS status = wall->isMovementColliding(positionFrom, positionDest);
 		if (status != Wall::COLLISION_FALSE)
+		{
+			*collider = wall;
 			return status;
+		}
 	}
+	*collider = nullptr;
 	return Wall::COLLISION_FALSE;
 }
 

@@ -8,10 +8,11 @@ out vec4 out_Color;
 
 uniform sampler2D textureSampler;
 uniform vec3 lightColor;
+uniform float alpha;
 
 void main(void)
 {
-	float ambientStrength = 0.1f; // HARDCODED GENERAL LIGHT
+	float ambientStrength = 1.0f; // HARDCODED GENERAL LIGHT
     vec3 ambient = ambientStrength * lightColor;
 
 	vec3 unitNormal = normalize(surfaceNormal); 
@@ -20,6 +21,6 @@ void main(void)
 	float nDot = dot(unitNormal, unitLightVector);
 	float brigtness = max(nDot, 0.0);
 	vec3 diffuse = brigtness * lightColor;
-	out_Color = vec4(ambient + diffuse, 1.0) * texture(textureSampler, out_textureCoordinates);
+	out_Color = vec4(ambient + diffuse, alpha) * texture(textureSampler, out_textureCoordinates);
 
 }

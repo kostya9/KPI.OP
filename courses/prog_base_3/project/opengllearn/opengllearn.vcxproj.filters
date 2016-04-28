@@ -43,6 +43,18 @@
     <Filter Include="Engine\Shader\fonts">
       <UniqueIdentifier>{21f47dbe-ee5c-4fdd-be9a-f2d4a14a8529}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\GameObjects\GameObject">
+      <UniqueIdentifier>{00c62e4c-9461-42d2-b803-a00682ab8e34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\GameObjects\Wall">
+      <UniqueIdentifier>{9667194c-24d7-48dd-b5b2-640199ed9466}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\GameObjects\Field">
+      <UniqueIdentifier>{5bc97152-0d4d-4407-9efc-d12b06409a49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\GameObjects\Player">
+      <UniqueIdentifier>{52ff4855-da1d-44d0-bf9f-982af5a5455c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -99,26 +111,26 @@
     <ClInclude Include="Settings.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Game\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Game\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Field.h">
-      <Filter>Game\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="Font.h">
       <Filter>Engine\Font</Filter>
     </ClInclude>
-    <ClInclude Include="Wall.h">
-      <Filter>Game\GameObjects</Filter>
+    <ClInclude Include="GameObject.h">
+      <Filter>Game\GameObjects\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="GameObjectManager.h">
-      <Filter>Game\GameObjects</Filter>
+      <Filter>Game\GameObjects\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Wall.h">
+      <Filter>Game\GameObjects\Wall</Filter>
+    </ClInclude>
+    <ClInclude Include="Field.h">
+      <Filter>Game\GameObjects\Field</Filter>
     </ClInclude>
     <ClInclude Include="WallHole.h">
-      <Filter>Game\GameObjects</Filter>
+      <Filter>Game\GameObjects\Wall</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Game\GameObjects\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -134,29 +146,29 @@
     <ClCompile Include="Window.cpp">
       <Filter>Engine\Render</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Game\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Game\GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="Font.cpp">
       <Filter>Engine\Font</Filter>
-    </ClCompile>
-    <ClCompile Include="Field.cpp">
-      <Filter>Game\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Wall.cpp">
-      <Filter>Game\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Game\GameObjects\GameObject</Filter>
+    </ClCompile>
     <ClCompile Include="GameObjectManager.cpp">
-      <Filter>Game\GameObjects</Filter>
+      <Filter>Game\GameObjects\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Wall.cpp">
+      <Filter>Game\GameObjects\Wall</Filter>
+    </ClCompile>
+    <ClCompile Include="Field.cpp">
+      <Filter>Game\GameObjects\Field</Filter>
     </ClCompile>
     <ClCompile Include="WallHole.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Game\GameObjects\Wall</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Game\GameObjects\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

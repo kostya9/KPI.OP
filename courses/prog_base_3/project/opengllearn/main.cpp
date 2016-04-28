@@ -34,9 +34,9 @@ int main()
 	Window::addCallBack(kb);
 	GameObjectManager * manager = new GameObjectManager();
 
-	Camera camera = Camera();
 	Font * font = new Font("fonts/Open_sans/OpenSans-Regular.ttf");
-
+	
+	Camera camera = Camera();
 	Field * field = new Field(&loader, 81, glm::vec3(0.0f, 0.0f, 0.0f));
 	Player * player = new Player(&loader, glm::vec3(0.0f, 0.5f, 1.0f), camera);
 	Wall * wall = new Wall(&loader, glm::vec3(0.0f, 0.01f, 0.0f));
@@ -67,20 +67,21 @@ int main()
 		player->move(manager);
 		//camera.move();
 	}
+
 	delete manager;
 	delete font;
 	shader.deleteShader();
 	loader.releaseVOs();
 	Window::close();
 	delete keyboard;
-	_getch();
 	return 0;
 }
+
 
 void setSineHoleAppearance(Wall * wall)
 {
 	GLfloat hole = glm::sin(glfwGetTime());
-	if (hole > 0.5)
+	if (hole > 0.1)
 		wall->showHole(WallHole::HOLE_DIRECTION_Z);
 	else
 		wall->hideHole();

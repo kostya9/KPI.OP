@@ -30,6 +30,12 @@ void Wall::setPosition(glm::fvec3 position)
 	hole->setPosition(position);
 }
 
+void Wall::setAlpha(GLfloat alpha)
+{
+	GameObject::setAlpha(alpha);
+	hole->setAlpha(alpha);
+}
+
 WallHole::HOLE_DIRECTION Wall::getHoleDirection()
 {
 	return hole->getDirection();

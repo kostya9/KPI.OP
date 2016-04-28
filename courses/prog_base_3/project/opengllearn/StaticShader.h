@@ -11,12 +11,14 @@ class StaticShader : public Shader
 		GLuint location_viewMatrix;
 		GLuint location_lightPosition;
 		GLuint location_lightColor;
+		GLuint location_alpha;
 	public:
 		StaticShader(); // Actually just constatnt paths // EDITED
 		void loadTransformationMatrix(glm::mat4 matrix);
 		void loadProjectionMatrix(glm::mat4 matrix);
 		void loadViewMatrix(Camera camera);
 		void loadLight(Light light);
+		void loadAlpha(GLfloat alpha);
 	protected:
 		virtual void bindAttributes() override;
 		virtual void getAllUniformLocations() override;
