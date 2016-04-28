@@ -49,6 +49,11 @@ void GameObject::setPosition(glm::fvec3 position)
 	}
 }
 
+bool GameObject::getVisibility()
+{
+	return show;
+}
+
 void GameObject::render(Renderer * renderer, StaticShader shader)
 {
 	if(show)

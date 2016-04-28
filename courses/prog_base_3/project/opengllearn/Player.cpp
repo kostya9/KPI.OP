@@ -8,30 +8,63 @@ Player::Player(Loader * loader, glm::fvec3 position, Camera & c) : GameObject(en
 		entities.push_back(Entity(model));
 	energy = 1.0f;
 	float delta = 3.0f;
-	mov = NO;
+	moveState = NO;
 	cam.setPosition(position);
 	cam.moveForward(-delta);
 	cam.moveUp(delta);
+	// DEBUG
+	//cam.yaw(M_PI / 2);
+	//cam.moveLeft(3.0f);
+	//cam.moveForward(-3.0f);
+
 	cam.pitch(M_PI / 4);
 }
-void Player::move()
+void Player::move(GameObjectManager * manager)
 {
-	if (mov == NO)
+	if (moveState == NO)
 	{
 		if (keyboard->isKeyPressed('w'))
-			mov = FORWARD, dest = glm::vec3(this->position.x, this->position.y, glm::round(this->position.z - 1));
+		{
+			dest = glm::vec3(this->position.x, this->position.y, glm::round(this->position.z - 1));
+			moveState = FORWARD;
+		}
 		else if (keyboard->isKeyPressed('s'))
-			mov = BACKWARD, dest = glm::vec3((this->position.x), this->position.y, glm::round(this->position.z + 1));
+		{
+			dest = glm::vec3((this->position.x), this->position.y, glm::round(this->position.z + 1));
+			moveState = BACKWARD;
+		}
 		else if (keyboard->isKeyPressed('a'))
-			mov = LEFT, dest = glm::vec3(glm::round(this->position.x - 1), this->position.y, this->position.z);
+		{
+			dest = glm::vec3(glm::round(this->position.x - 1), this->position.y, this->position.z);
+			moveState = LEFT;
+		}
 		else if (keyboard->isKeyPressed('d'))
-			mov = RIGHT, dest = glm::vec3(glm::round(this->position.x + 1), this->position.y, this->position.z);
+		{
+			dest = glm::vec3(glm::round(this->position.x + 1), this->position.y, this->position.z);
+			moveState = RIGHT;
+		}
+		else
+			return;
+		if (manager != nullptr)
+		{
+			Wall::COLLISION_STATUS status = manager->isMovementColliding(this->position, dest);
+			if (status == Wall::COLLISION_TRUE)
+			{
+				moveState = NO;
+				return;
+			}
+			else if (status == Wall::COLLISION_HOLE)
+			{
+				dest += (dest - this->position);
+				return;
+			}
+		}
 		return;
 	}
 	GLfloat precision = 0.005;
 	GLfloat dx = 0;
 	GLfloat dz = 0;
-	switch (mov)
+	switch(moveState)
 	{
 		case FORWARD:
 		{
@@ -41,7 +74,7 @@ void Player::move()
 			if (deltaDist < precision)
 			{
 				dx = dest.z - this->position.z;
-				mov = NO;
+				moveState = NO;
 			}
 		}break;
 		case BACKWARD:
@@ -51,7 +84,7 @@ void Player::move()
 			if (deltaDist < precision)
 			{
 				dx = dest.z - this->position.z;
-				mov = NO;
+				moveState = NO;
 			}
 		}break;
 		case LEFT:
@@ -61,7 +94,7 @@ void Player::move()
 			if (deltaDist < precision)
 			{
 				dx = dest.z - this->position.x;
-				mov = NO;
+				moveState = NO;
 			}
 		}break;
 		case RIGHT:
@@ -71,7 +104,7 @@ void Player::move()
 			if (deltaDist < precision)
 			{
 				dx = dest.x - this->position.x;
-				mov = NO;
+				moveState = NO;
 			}
 		}
 	}
@@ -85,7 +118,7 @@ void Player::move()
 		dz *= Window::getDeltaTime();
 		this->position.x += dx;
 		this->position.z += dz;
-		if (mov == NO)
+		if (moveState == NO)
 		{
 			this->setPosition(dest);
 			return;

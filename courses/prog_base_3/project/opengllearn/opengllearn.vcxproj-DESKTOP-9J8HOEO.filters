@@ -114,14 +114,11 @@
     <ClInclude Include="Wall.h">
       <Filter>Game\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjectManager.h">
-      <Filter>Game\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="WallHole.h">
-      <Filter>Game\GameObjects</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Loader.cpp">
       <Filter>Engine\Render</Filter>
     </ClCompile>
@@ -148,15 +145,6 @@
     </ClCompile>
     <ClCompile Include="Wall.cpp">
       <Filter>Game\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObjectManager.cpp">
-      <Filter>Game\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="WallHole.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

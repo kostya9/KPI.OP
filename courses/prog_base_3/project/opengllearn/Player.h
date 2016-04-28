@@ -1,5 +1,6 @@
 #pragma once
 #include "MainHeaders.h"
+#include "GameObjectManager.h"
 #include "GameObject.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -11,7 +12,7 @@ class Player : public GameObject
 {
 	private:
 		GLfloat energy;
-		enum MOVEMENT { LEFT, FORWARD, RIGHT, BACKWARD, NO } mov;
+		enum MOVEMENT { LEFT, FORWARD, RIGHT, BACKWARD, NO } moveState;
 		glm::vec3 dest;
 		//GLfloat curSpeed = 0;
 		//GLfloat curTurnSpeed = 0;
@@ -28,5 +29,5 @@ class Player : public GameObject
 
 		}
 		void changeEnergy(int dEnergy);
-		void move();
+		void move(GameObjectManager * manager = nullptr);
 };

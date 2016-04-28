@@ -10,6 +10,8 @@
 #include "Field.h"
 #include "Font.h"
 #include "Wall.h"
+#include "WallHole.h"
+#include "GameObjectManager.h"
 
 const GLuint WIDTH = 800, HEIGHT = 600;
 void key_callback_exit(GLFWwindow* window, int key, int scancode, int action, int mode);
@@ -28,7 +30,7 @@ int main()
 	Renderer renderer = Renderer(shader);
 	key_callback kb = key_callback_exit;
 	Window::addCallBack(kb);
-
+	GameObjectManager * manager = new GameObjectManager();
 
 	glm::vec3 lightPos = glm::vec3(0.0f, 2.0f, 0.0f);
 	Camera camera = Camera();
@@ -36,6 +38,9 @@ int main()
 	Font * font = new Font("fonts/Open_sans/OpenSans-Regular.ttf");
 	Player * player = new Player(&loader, glm::vec3(0.0f, 0.5f, 1.0f), camera);
 	Wall * wall = new Wall(&loader, glm::vec3(0.0f, 0.01f, 0.0f));
+	manager->addObject(field);
+	manager->addObject(player);
+	manager->addObject(wall);
 	//field->rotate(glm::vec3(0.0f, 90.0f, 0.0f));
 	float light_brightness = .5f;
 	Light light = Light(lightPos, glm::vec3(light_brightness, light_brightness, light_brightness));
@@ -48,7 +53,7 @@ int main()
 		//entity.increasePosition(0.0f, 0.0f, -0.0001f);
 		GLfloat hole = glm::sin(glfwGetTime());
 		if (hole > 0.5)
-			wall->showHole();
+			wall->showHole(WallHole::HOLE_DIRECTION_Z);
 		else
 			wall->hideHole();
 		//light.setColor(glm::vec3(curLight, curLight, curLight));
@@ -57,19 +62,16 @@ int main()
 		shader.loadViewMatrix(camera);
 		shader.loadLight(light);
 		renderer.prepare();
-		field->render(&renderer, shader);
-		player->render(&renderer, shader);
-		wall->render(&renderer, shader);
+		manager->renderAll(&renderer, shader);
 		//go->render(&renderer, shader);
 		font->renderText(&renderer, debugInfo, glm::ivec2(12, 43), glm::vec3(0.1f, 0.1f, 0.1f), 1.0f);
 		shader.unUse();
 		Window::update();
-		player->move();
+		player->move(manager);
 		//camera.move();
 	}
-	delete field;
+	delete manager;
 	delete font;
-	delete player;
 	shader.deleteShader();
 	loader.releaseVOs();
 	Window::close();
