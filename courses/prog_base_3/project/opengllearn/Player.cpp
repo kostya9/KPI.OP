@@ -1,6 +1,6 @@
 #include "Player.h"
 #include "math.h"
-Player::Player(Loader * loader, glm::fvec3 position, Camera & c) : GameObject(entities, position), cam(c)
+Player::Player(Loader * loader, glm::fvec3 position, Camera * c) : GameObject(entities, position)
 {
 	vector<TexturedModel> models = loader->objToModel("../opengllearn/models/playerBall/playerBall.obj");
 
@@ -10,15 +10,16 @@ Player::Player(Loader * loader, glm::fvec3 position, Camera & c) : GameObject(en
 	float delta = 3.0f;
 	moveState = MOVE_NO;
 	dest = glm::vec3(0.0f, 0.0f, 0.0f);
-	cam.setPosition(position);
-	cam.moveForward(-delta);
-	cam.moveUp(delta);
+	this->cam = c;
+	cam->setPosition(position);
+	cam->moveForward(-delta);
+	cam->moveUp(delta);
 	// DEBUG
 	//cam.yaw(M_PI / 2);
 	//cam.moveLeft(3.0f);
 	//cam.moveForward(-3.0f);
 
-	cam.pitch(M_PI / 4);
+	cam->pitch(M_PI / 4);
 }
 void Player::render(Renderer * renderer, StaticShader shader)
 {
@@ -28,22 +29,30 @@ void Player::render(Renderer * renderer, StaticShader shader)
 	this->setPosition(prevPos);
 
 }
-void Player::move(GameObjectManager * manager)
+Camera * Player::getCamera()
+{
+	return cam;
+}
+Player::PLAYER_MOVE_STATUS Player::move(GameObjectManager * manager)
 {
 	static Wall * wall = nullptr;
 	if (moveState == MOVE_NO)
 	{
 		moveState = getMovementStateFromInputKeys();
 		if (moveState == MOVE_NO)
-			return;
+			return NO_COMMANDS;
 
-		wall = getColliderIfAHole(manager);
-		if (wall != nullptr)
+		Wall::COLLISION_STATUS status = getColliderIfAHole(manager, &wall);
+		if (status == Wall::COLLISION_HOLE)
+		{
 			wall->setAlpha(0.5f);
-
-		return;
+			return COLLISION_UNDETECTED;
+		}
+		if (status == Wall::COLLISION_TRUE)
+			return COLLISION_DETECTED;
 	}
 	moveModel(wall);
+	return COLLISION_UNDETECTED;
 }
 
 void Player::moveModel(Wall * wall)
@@ -147,7 +156,7 @@ Player::MOVEMENT_STATE_CODE Player::getMovementStateFromInputKeys()
 	}
 	return state;
 }
-Wall * Player::getColliderIfAHole(GameObjectManager * manager)
+Wall::COLLISION_STATUS Player::getColliderIfAHole(GameObjectManager * manager, Wall ** wall_out)
 {
 	if (manager != nullptr)
 	{
@@ -156,16 +165,18 @@ Wall * Player::getColliderIfAHole(GameObjectManager * manager)
 		if (status == Wall::COLLISION_TRUE)
 		{
 			moveState = MOVE_NO;
-			return nullptr;
+			*wall_out = nullptr;
+			return status;
 		}
 		else if (status == Wall::COLLISION_HOLE)
 		{
 			dest += (dest - this->position);
 			dest.x = glm::round(dest.x);
 			dest.z = glm::round(dest.z);
-			return wall;
+			*wall_out = wall;
+			return status;
 		}
 		else
-			return nullptr;
+			return status;
 	}
 }

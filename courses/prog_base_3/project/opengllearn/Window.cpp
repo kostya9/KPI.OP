@@ -5,6 +5,7 @@ int Window::height = 600;
 GLfloat Window::lastFrameTime;
 GLfloat Window::deltaTime;
 GLFWwindow* Window::window;
+
 void Window::open()
 {
 	// TODO : WIndow width, height and FOV adjustments

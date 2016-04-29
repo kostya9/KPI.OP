@@ -82,7 +82,7 @@ Font::Font(GLchar * fileName) : shader(vertPath, fragPath)
 	glBindVertexArray(0);
 }
 
-void Font::renderText(Renderer * renderer, GLchar * text, glm::fvec2 position, glm::fvec3 color, GLfloat scale)
+void Font::renderText(GLchar * text, glm::fvec2 position, glm::fvec3 color, GLfloat scale)
 {
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);

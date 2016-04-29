@@ -184,6 +184,7 @@
   <ItemGroup>
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="Font.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="Player.cpp" />

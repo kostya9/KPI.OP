@@ -170,6 +170,9 @@
     <ClCompile Include="Player.cpp">
       <Filter>Game\GameObjects\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

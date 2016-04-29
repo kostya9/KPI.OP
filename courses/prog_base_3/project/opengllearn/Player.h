@@ -11,20 +11,26 @@ extern Keyboard * keyboard;
 class Player : public GameObject
 {
 	private:
-		GLfloat energy;
 		enum MOVEMENT_STATE_CODE { MOVE_LEFT, MOVE_FORWARD, MOVE_RIGHT, MOVE_BACKWARD, MOVE_NO } moveState;
+
+		GLfloat energy;
 		glm::vec3 dest;
-		//GLfloat curSpeed = 0;
-		//GLfloat curTurnSpeed = 0;
-		Camera & cam;
-		Wall * getColliderIfAHole(GameObjectManager * manager);
+		Camera * cam;
+
+		void moveModel(Wall * wall);
+
 		Player::MOVEMENT_STATE_CODE getMovementStateFromInputKeys();
 		glm::fvec3 getMovementVector();
+		Wall::COLLISION_STATUS Player::getColliderIfAHole(GameObjectManager * manager, Wall ** wall);
+		
 		void setSineHeightPosition();
-		void moveModel(Wall * wall);
+
 	public:
-		Player(Loader * loader, glm::fvec3 position, Camera & c);
-		void render(Renderer * renderer, StaticShader shader);
+		enum PLAYER_MOVE_STATUS {NO_COMMANDS, COLLISION_DETECTED, COLLISION_UNDETECTED};
+		Player(Loader * loader, glm::fvec3 position, Camera * c);
 		void changeEnergy(int dEnergy);
-		void move(GameObjectManager * manager = nullptr);
+		Camera * getCamera();
+		PLAYER_MOVE_STATUS move(GameObjectManager * manager = nullptr);
+		void render(Renderer * renderer, StaticShader shader);
+
 };

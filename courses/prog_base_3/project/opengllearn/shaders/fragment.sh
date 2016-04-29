@@ -12,7 +12,7 @@ uniform float alpha;
 
 void main(void)
 {
-	float ambientStrength = 1.0f; // HARDCODED GENERAL LIGHT
+	float ambientStrength = 0.2f; // HARDCODED GENERAL LIGHT
     vec3 ambient = ambientStrength * lightColor;
 
 	vec3 unitNormal = normalize(surfaceNormal); 
