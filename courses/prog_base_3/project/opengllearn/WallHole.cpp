@@ -21,7 +21,7 @@ void WallHole::render(Renderer * renderer, StaticShader shader)
 
 WallHole::VISIBILITY_RETURN_CODE WallHole::makeVisible(HOLE_DIRECTION direction)
 {
-	this->show = false;
+	this->show = true;
 	if (this->direction == direction)
 		return VISIBILITY_DONE_NOTHING;
 
@@ -33,6 +33,6 @@ WallHole::VISIBILITY_RETURN_CODE WallHole::makeVisible(HOLE_DIRECTION direction)
 
 WallHole::VISIBILITY_RETURN_CODE WallHole::makeInvisible()
 {
-	this->show = true;
+	this->show = false;
 	return VISIBILITY_DONE_INVISIBLE;
 }

@@ -30,6 +30,8 @@ void Game::createPlayer(glm::fvec2 position)
 void Game::createWall(glm::fvec2 position)
 {
 	Wall * wall = new Wall(loader, glm::vec3(position.x, 0.01f, position.y));
+	//wall->showHole(WallHole::HOLE_DIRECTION_X);
+	//wall->hideHole();
 	manager->addObject(wall);
 }
 
@@ -48,6 +50,23 @@ Player * Game::getPlayer()
 	return player;
 }
 
+void Game::update()
+{
+	Player::PLAYER_MOVE_STATUS move_status = player->move(manager);
+	if (move_status == Player::COLLISION_DETECTED)
+	{
+		current_error_text = string("Could not move - collision detected");
+	}
+	else if (move_status == Player::COLLISION_UNDETECTED)
+	{
+		current_error_text = string("");
+	}
+	glm::fvec3 newLightPos = player->getPosition();
+	newLightPos.y = 1.5f;
+	newLightPos.z += 2.5f;
+	light->setPosition(newLightPos);
+}
+
 void Game::render()
 {
 	shader->use();
@@ -60,15 +79,7 @@ void Game::render()
 	settings->font->renderText((GLchar *)current_error_text.c_str(), message_error_pos, glm::fvec3(1.0f, 0.1f, 0.1f), 1.0f);
 	//go->render(&renderer, shader);
 	Window::update();
-	Player::PLAYER_MOVE_STATUS move_status = player->move(manager);
-	if (move_status == Player::COLLISION_DETECTED)
-	{
-		current_error_text = string("Could not move - collision detected");
-	}
-	else if (move_status == Player::COLLISION_UNDETECTED)
-	{
-		current_error_text = string("");
-	}
+
 }
 Game::~Game()
 {

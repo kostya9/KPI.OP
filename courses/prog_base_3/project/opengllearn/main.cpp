@@ -16,7 +16,7 @@ int main()
 	keyboard = game->getKeyboard();
 	game->generateField(glm::fvec2(0.0f, 0.0f), 3);
 	game->createPlayer(glm::fvec2(0.0f, 0.0f));
-	game->createLight(1.0f, glm::fvec3(0.0f, 2.0f, 1.0f));
+	game->createLight(1.2f, glm::fvec3(0.0f, 2.0f, 1.0f));
 	game->createWall(glm::fvec2(1.0f, 0.0f));
 
 	Font * font = new Font("fonts/Open_sans/OpenSans-Regular.ttf");
@@ -26,6 +26,7 @@ int main()
 		//setSineHoleAppearance(manager->wall);
 		sprintf(debugInfo, "X : %3.2f, Y : %3.2f, Z : %3.2f", game->getPlayer()->getPosition().x, game->getPlayer()->getPosition().y, game->getPlayer()->getPosition().z);
 		font->renderText(debugInfo, glm::ivec2(12, 43), glm::vec3(0.1f, 0.1f, 0.1f), 1.0f);
+		game->update();
 		game->render();
 	}
 	delete font;

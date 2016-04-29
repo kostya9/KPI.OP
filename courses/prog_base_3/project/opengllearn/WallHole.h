@@ -6,7 +6,6 @@ class WallHole : public GameObject{
 		enum HOLE_DIRECTION { HOLE_DIRECTION_X, HOLE_DIRECTION_Z};
 
 		WallHole(vector<Entity> entities, glm::fvec3 position);
-
 		HOLE_DIRECTION getDirection();
 		void render(Renderer * renderer, StaticShader shader);
 		VISIBILITY_RETURN_CODE makeVisible(HOLE_DIRECTION direction);

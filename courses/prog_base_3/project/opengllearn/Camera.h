@@ -8,8 +8,8 @@ extern Keyboard * keyboard;
 class Camera
 {
 private:
-	glm::vec3 mPosition;
-	glm::quat mOrientation;
+	glm::vec3 position;
+	glm::quat orientation;
 
 public:
 	void move()
@@ -30,11 +30,15 @@ public:
 			yaw(-TURNSTEP * Window::getDeltaTime());
 		if (keyboard->isKeyPressed(326))
 			yaw(+TURNSTEP * Window::getDeltaTime());
-		glm::normalize(mOrientation);
+		glm::normalize(orientation);
+	}
+	glm::fvec3 getPosition()
+	{
+		return this->position;
 	}
 	void setPosition(glm::fvec3 pos)
 	{
-		mPosition = pos;
+		position = pos;
 	}
 	void pitch(float pitchRadians) {
 		rotate(pitchRadians, glm::vec3(1.0f, 0.0f, 0.0f));
@@ -49,7 +53,7 @@ public:
 	}
 
 	void turn(float turnRadians) {
-		glm::quat q = glm::angleAxis(turnRadians, mOrientation * glm::vec3(0.0f, 1.0f, 0.0f));
+		glm::quat q = glm::angleAxis(turnRadians, orientation * glm::vec3(0.0f, 1.0f, 0.0f));
 		rotate(q);
 	}
 
@@ -59,39 +63,35 @@ public:
 	}
 
 	void rotate(const glm::quat& rotation) {
-		mOrientation = rotation * mOrientation;
+		orientation = rotation * orientation;
 	}
 
 	glm::vec3 getForward() const {
-		return glm::conjugate(mOrientation) * glm::vec3(0.0f, 0.0f, -1.0f);
+		return glm::conjugate(orientation) * glm::vec3(0.0f, 0.0f, -1.0f);
 	}
 
 	glm::vec3 getLeft() const {
-		return glm::conjugate(mOrientation) * glm::vec3(-1.0, 0.0f, 0.0f);
+		return glm::conjugate(orientation) * glm::vec3(-1.0, 0.0f, 0.0f);
 	}
 
 	glm::vec3 getUp() const {
-		return glm::conjugate(mOrientation) * glm::vec3(0.0f, 1.0f, 0.0f);
+		return glm::conjugate(orientation) * glm::vec3(0.0f, 1.0f, 0.0f);
 	}
 
 	void moveForward(float movement) {
-		mPosition += getForward() * movement;
+		position += getForward() * movement;
 	}
 
 	void moveLeft(float movement) {
-		mPosition += getLeft() * movement;
+		position += getLeft() * movement;
 	}
 
 	void moveUp(float movement) {
-		mPosition += getUp() * movement;
-	}
-	glm::vec3 getPosition()
-	{
-		return mPosition;
+		position += getUp() * movement;
 	}
 	glm::mat4 getViewMatrix() const {
-		glm::mat4 viewMatrix = glm::mat4_cast(mOrientation);
-		viewMatrix = glm::translate(viewMatrix, -mPosition);
+		glm::mat4 viewMatrix = glm::mat4_cast(orientation);
+		viewMatrix = glm::translate(viewMatrix, -position);
 		return viewMatrix;
 	}
 };

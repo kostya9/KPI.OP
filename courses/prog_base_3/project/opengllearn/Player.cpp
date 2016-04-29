@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "math.h"
+#include <glm/gtx/norm.hpp>
 Player::Player(Loader * loader, glm::fvec3 position, Camera * c) : GameObject(entities, position)
 {
 	vector<TexturedModel> models = loader->objToModel("../opengllearn/models/playerBall/playerBall.obj");
@@ -58,9 +59,10 @@ Player::PLAYER_MOVE_STATUS Player::move(GameObjectManager * manager)
 void Player::moveModel(Wall * wall)
 {
 	glm::fvec3 movement = Player::getMovementVector();
+	movement *= Window::getDeltaTime();
+	this->cam->setPosition(this->cam->getPosition() + movement);		 // Camera managing here
 	for (Entity & e : entities)
 	{
-		movement *= Window::getDeltaTime();
 		this->position += movement;
 		if (moveState == MOVE_NO)
 		{
@@ -72,7 +74,6 @@ void Player::moveModel(Wall * wall)
 		e.increasePosition(movement);
 	}
 }
-
 glm::fvec3 Player::getMovementVector()
 {
 	GLfloat precision = 0.005;

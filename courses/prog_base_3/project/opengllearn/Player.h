@@ -21,8 +21,7 @@ class Player : public GameObject
 
 		Player::MOVEMENT_STATE_CODE getMovementStateFromInputKeys();
 		glm::fvec3 getMovementVector();
-		Wall::COLLISION_STATUS Player::getColliderIfAHole(GameObjectManager * manager, Wall ** wall);
-		
+		Wall::COLLISION_STATUS getColliderIfAHole(GameObjectManager * manager, Wall ** wall);
 		void setSineHeightPosition();
 
 	public:

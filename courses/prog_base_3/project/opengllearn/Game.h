@@ -18,6 +18,7 @@ class Game
 		void createLight(GLfloat brightness, glm::fvec3 position);
 		Keyboard * getKeyboard();
 		Player * getPlayer();
+		void update();
 		void render();
 		~Game();
 	private:
