@@ -16,20 +16,25 @@ class Player : public GameObject
 		GLfloat energy;
 		glm::vec3 dest;
 		Camera * cam;
-
-		void moveModel(Wall * wall);
-
-		Player::MOVEMENT_STATE_CODE getMovementStateFromInputKeys();
-		glm::fvec3 getMovementVector();
-		Wall::COLLISION_STATUS getColliderIfAHole(GameObjectManager * manager, Wall ** wall);
 		void setSineHeightPosition();
+		const GLfloat height = 0.5f;
+		glm::fvec3 getMovementVector();
 
 	public:
 		enum PLAYER_MOVE_STATUS {NO_COMMANDS, COLLISION_DETECTED, COLLISION_UNDETECTED};
 		Player(Loader * loader, glm::fvec3 position, Camera * c);
 		void changeEnergy(int dEnergy);
 		Camera * getCamera();
-		PLAYER_MOVE_STATUS move(GameObjectManager * manager = nullptr);
+		//PLAYER_MOVE_STATUS move(GameObjectManager * manager = nullptr);
 		void render(Renderer * renderer, StaticShader shader);
-
+		bool isMoving();
+		void moveLeft();
+		void moveRight();
+		void moveForward();
+		void moveBackwards();
+		void moveLeft(GLint times);
+		void moveRight(GLint times);
+		void moveForward(GLint times);
+		void moveBackwards(GLint times);
+		void update();
 };

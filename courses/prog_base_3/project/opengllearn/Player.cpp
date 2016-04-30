@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "math.h"
 #include <glm/gtx/norm.hpp>
+#include <windows.h>
 Player::Player(Loader * loader, glm::fvec3 position, Camera * c) : GameObject(entities, position)
 {
 	vector<TexturedModel> models = loader->objToModel("../opengllearn/models/playerBall/playerBall.obj");
@@ -28,12 +29,105 @@ void Player::render(Renderer * renderer, StaticShader shader)
 	setSineHeightPosition();
 	GameObject::render(renderer, shader);
 	this->setPosition(prevPos);
-
+}
+bool Player::isMoving()
+{
+	if (moveState == MOVE_NO)
+		return false;
+	else
+		return true;
+}
+void Player::moveLeft()
+{
+	moveLeft(1);
+}
+void Player::moveRight()
+{
+	moveRight(1);
+}
+void Player::moveForward()
+{
+	moveForward(1);
+}
+void Player::moveBackwards()
+{
+	moveBackwards(1);
+}
+void Player::moveLeft(GLint times)
+{
+	if (this->moveState == MOVE_NO)
+	{
+		this->moveState = MOVE_LEFT;
+		this->dest = this->position + glm::fvec3(-times * 1.0f, 0.0f, 0.0f);
+	}
+}
+void Player::moveRight(GLint times)
+{
+	if (this->moveState == MOVE_NO)
+	{
+		this->moveState = MOVE_RIGHT;
+		this->dest = this->position + glm::fvec3(times * 1.0f, 0.0f, 0.0f);
+	}
+}
+void Player::moveForward(GLint times)
+{
+	if (this->moveState == MOVE_NO)
+	{
+		this->moveState = MOVE_FORWARD;
+		this->dest = this->position + glm::fvec3(0.0f, 0.0f, times * -1.0f);
+	}
+}
+void Player::moveBackwards(GLint times)
+{
+	if (this->moveState == MOVE_NO)
+	{
+		this->moveState = MOVE_BACKWARD;
+		this->dest = this->position + glm::fvec3(0.0f, 0.0f, times * 1.0f);
+	}
+}
+void Player::update()
+{
+	if (moveState != MOVE_NO)
+	{
+		glm::fvec3 movement = getMovementVector();
+		this->position += movement * Window::getDeltaTime();
+		this->position.y = height;
+	}
+}
+glm::fvec3 Player::getMovementVector()
+{
+	GLfloat precision = 0.001;
+	GLfloat deltaDistance = glm::length2(this->dest - this->position);
+	if (deltaDistance < precision)
+	{
+		this->position = this->dest;
+		this->moveState = MOVE_NO;
+		return glm::fvec3();
+	}
+	glm::fvec3 movement = glm::fvec3();
+	switch (moveState)
+	{
+		case MOVE_FORWARD:
+			movement.z = -1.0f;
+		break;
+		case MOVE_BACKWARD:
+			movement.z = 1.0f;
+		break;
+		case MOVE_LEFT:
+			movement.x = -1.0f;
+		break;
+		case MOVE_RIGHT:
+			movement.x = 1.0f;
+		break;
+	}
+	movement.y = 0.0f;
+	return movement;
 }
 Camera * Player::getCamera()
 {
 	return cam;
 }
+/*
 Player::PLAYER_MOVE_STATUS Player::move(GameObjectManager * manager)
 {
 	static Wall * wall = nullptr;
@@ -74,89 +168,13 @@ void Player::moveModel(Wall * wall)
 		e.increasePosition(movement);
 	}
 }
-glm::fvec3 Player::getMovementVector()
-{
-	GLfloat precision = 0.005;
-	GLfloat dx = 0;
-	GLfloat dz = 0;
-	switch (moveState)
-	{
-		case MOVE_FORWARD:
-		{
-			dz = -RUN_SPEED;
-			float deltaDist = fabs(this->position.z - dest.z);
-
-			if (deltaDist < precision)
-			{
-				dx = dest.z - this->position.z;
-				moveState = MOVE_NO;
-			}
-		}break;
-		case MOVE_BACKWARD:
-		{
-			dz = RUN_SPEED;
-			float deltaDist = fabs(this->position.z - dest.z);
-			if (deltaDist < precision)
-			{
-				dx = dest.z - this->position.z;
-				moveState = MOVE_NO;
-			}
-		}break;
-		case MOVE_LEFT:
-		{
-			dx = -RUN_SPEED;
-			float deltaDist = fabs(this->position.x - dest.x);
-			if (deltaDist < precision)
-			{
-				dx = dest.z - this->position.x;
-				moveState = MOVE_NO;
-			}
-		}break;
-		case MOVE_RIGHT:
-		{
-			dx = RUN_SPEED;
-			float deltaDist = fabs(this->position.x - dest.x);
-			if (deltaDist < precision)
-			{
-				dx = dest.x - this->position.x;
-				moveState = MOVE_NO;
-			}
-		}
-	}
-	return glm::fvec3(dx, 0.0f, dz);
-}
-
+*/
 void Player::setSineHeightPosition()
 {
 	GLfloat dy = 0.2 * glm::sin(glfwGetTime());
 	this->setPosition(glm::vec3(position.x, position.y + dy, position.z));
 }
-
-Player::MOVEMENT_STATE_CODE Player::getMovementStateFromInputKeys()
-{
-	MOVEMENT_STATE_CODE state = MOVE_NO;
-	if (keyboard->isKeyPressed('w'))
-	{
-		dest = glm::vec3(this->position.x, this->position.y, glm::round(this->position.z - 1));
-		state = MOVE_FORWARD;
-	}
-	else if (keyboard->isKeyPressed('s'))
-	{
-		dest = glm::vec3((this->position.x), this->position.y, glm::round(this->position.z + 1));
-		state = MOVE_BACKWARD;
-	}
-	else if (keyboard->isKeyPressed('a'))
-	{
-		dest = glm::vec3(glm::round(this->position.x - 1), this->position.y, this->position.z);
-		state = MOVE_LEFT;
-	}
-	else if (keyboard->isKeyPressed('d'))
-	{
-		dest = glm::vec3(glm::round(this->position.x + 1), this->position.y, this->position.z);
-		state = MOVE_RIGHT;
-	}
-	return state;
-}
+/*
 Wall::COLLISION_STATUS Player::getColliderIfAHole(GameObjectManager * manager, Wall ** wall_out)
 {
 	if (manager != nullptr)
@@ -180,4 +198,4 @@ Wall::COLLISION_STATUS Player::getColliderIfAHole(GameObjectManager * manager, W
 		else
 			return status;
 	}
-}
+}*/

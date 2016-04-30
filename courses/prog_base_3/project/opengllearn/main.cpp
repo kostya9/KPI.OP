@@ -25,7 +25,7 @@ int main()
 	{
 		//setSineHoleAppearance(manager->wall);
 		sprintf(debugInfo, "X : %3.2f, Y : %3.2f, Z : %3.2f", game->getPlayer()->getPosition().x, game->getPlayer()->getPosition().y, game->getPlayer()->getPosition().z);
-		font->renderText(debugInfo, glm::ivec2(12, 43), glm::vec3(0.1f, 0.1f, 0.1f), 1.0f);
+		font->renderText(debugInfo, glm::fvec2(100.f, 10.f), glm::fvec3(1.0f, 0.1f, 0.1f), 100.0f);
 		game->update();
 		game->render();
 	}

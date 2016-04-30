@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "PlayerMovementManager.h"
 void window_key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 Game::Game()
 {
@@ -52,15 +53,29 @@ Player * Game::getPlayer()
 
 void Game::update()
 {
-	Player::PLAYER_MOVE_STATUS move_status = player->move(manager);
-	if (move_status == Player::COLLISION_DETECTED)
+	MOVEMENT_STATUS status = PlayerMovementManager::checkInputKeysForMovement(player, manager);
+	Wall * collider = (Wall *)PlayerMovementManager::getLastCollider();
+	if (collider != nullptr)
+	{
+		if (status == MOVE_MOVING_HOLE)
+		{
+			collider->setAlpha(0.8f);
+		}
+		if (player->isMoving() == false)
+		{
+			collider->setAlpha(1.0f);
+		}
+	}
+	if (status == MOVE_NOT_MOVING_COLLISION)
 	{
 		current_error_text = string("Could not move - collision detected");
 	}
-	else if (move_status == Player::COLLISION_UNDETECTED)
+	else if (status != MOVE_NOT_MOVING_NO_COMMANDS)
 	{
 		current_error_text = string("");
 	}
+
+	player->update();
 	glm::fvec3 newLightPos = player->getPosition();
 	newLightPos.y = 1.5f;
 	newLightPos.z += 2.5f;
