@@ -72,9 +72,11 @@ MOVEMENT_STATUS PlayerMovementManager::checkInputKeysForMovement(Player * player
 				player->moveRight(1);
 			return status;
 		}
+		else
+			return MOVE_NOT_MOVING_NO_COMMANDS;
 	}
 	else
-		return MOVE_NOT_MOVING_NO_COMMANDS;
+		return MOVE_MOVING;
 
 }
 
@@ -102,8 +104,8 @@ MOVEMENT_STATUS PlayerMovementManager::tryMove(Player * player, GameObjectManage
 			player->startDamaging(60);
 			return MOVE_MOVING_HOLE;
 		}
-		
-		return MOVE_NOT_MOVING_COLLISION;
+		else
+			return MOVE_NOT_MOVING_COLLISION;
 	}
 	else if (collision_status == Wall::COLLISION_FALSE)
 	{
