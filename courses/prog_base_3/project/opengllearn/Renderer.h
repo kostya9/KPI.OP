@@ -64,6 +64,7 @@ private:
 			glActiveTexture(GL_TEXTURE0); // sampler2D thingy
 			glBindTexture(GL_TEXTURE_2D, texture.getId());
 			glDrawElements(GL_TRIANGLES, model.getVertexCount(), GL_UNSIGNED_INT, 0); // This draws using our bound indices array
+			//glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 			glDisableVertexAttribArray(2);
 			glDisableVertexAttribArray(1);
 			glDisableVertexAttribArray(0);

@@ -20,7 +20,7 @@ class GameObject
 		void showObject();
 		glm::fvec3 getPosition() { return position; }
 		virtual void rotate(glm::fvec3 rotation);
-		void scale(GLfloat times);
+		void setScale(GLfloat times);
 		virtual void setPosition(glm::fvec3 position);
 		bool getVisibility();
 		virtual void setAlpha(GLfloat alpha);

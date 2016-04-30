@@ -19,6 +19,7 @@ class Game
 		Keyboard * getKeyboard();
 		Player * getPlayer();
 		void update();
+		void checkInputKeysAndMovePlayer();
 		void render();
 		~Game();
 	private:

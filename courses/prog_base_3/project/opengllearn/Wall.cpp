@@ -16,6 +16,7 @@ Wall::Wall(Loader * loader, glm::vec3 position)
 
 	this->hole = new WallHole(entitiesHole, position);
 	this->setPosition(position);
+	this->hole->hideObject();
 }
 
 void Wall::render(Renderer * renderer, StaticShader shader)
@@ -34,6 +35,11 @@ void Wall::setAlpha(GLfloat alpha)
 {
 	GameObject::setAlpha(alpha);
 	hole->setAlpha(alpha);
+}
+
+bool Wall::hasHole()
+{
+	return hole->getVisibility();
 }
 
 WallHole::HOLE_DIRECTION Wall::getHoleDirection()

@@ -1,5 +1,8 @@
+#define  _CRT_SECURE_NO_WARNINGS
+
 #include "Game.h"
 #include "PlayerMovementManager.h"
+
 void window_key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 Game::Game()
 {
@@ -50,36 +53,49 @@ Player * Game::getPlayer()
 {
 	return player;
 }
-
 void Game::update()
 {
+	checkInputKeysAndMovePlayer();
+	player->update();
+	glm::fvec3 newLightPos = player->getPosition();
+	newLightPos.y = 1.5f;
+	newLightPos.z += 2.5f;
+	light->setPosition(newLightPos);
+}
+
+void Game::checkInputKeysAndMovePlayer()
+{
+	static GameObject * collider;
+	GameObject * newCollider = PlayerMovementManager::getLastCollider();
+	if (player->isMoving() == false || newCollider != collider)
+	{
+		if (collider != nullptr)
+		{
+			collider->setAlpha(1.f);
+		}
+	}
 	MOVEMENT_STATUS status = PlayerMovementManager::checkInputKeysForMovement(player, manager);
-	Wall * collider = (Wall *)PlayerMovementManager::getLastCollider();
+	collider = PlayerMovementManager::getLastCollider();
+
 	if (collider != nullptr)
 	{
 		if (status == MOVE_MOVING_HOLE)
 		{
 			collider->setAlpha(0.8f);
 		}
-		if (player->isMoving() == false)
-		{
-			collider->setAlpha(1.0f);
-		}
 	}
 	if (status == MOVE_NOT_MOVING_COLLISION)
 	{
 		current_error_text = string("Could not move - collision detected");
 	}
+	else if (status == MOVE_NOT_ENOUGH_ENERGY)
+	{
+		current_error_text = string("Not enough energy");
+	}
 	else if (status != MOVE_NOT_MOVING_NO_COMMANDS)
 	{
 		current_error_text = string("");
 	}
-
-	player->update();
-	glm::fvec3 newLightPos = player->getPosition();
-	newLightPos.y = 1.5f;
-	newLightPos.z += 2.5f;
-	light->setPosition(newLightPos);
 }
 
 void Game::render()
@@ -91,7 +107,12 @@ void Game::render()
 
 	renderer->prepare();
 	manager->renderAll(renderer, *shader);
+
+	char debugInfo[100];
 	settings->font->renderText((GLchar *)current_error_text.c_str(), message_error_pos, glm::fvec3(1.0f, 0.1f, 0.1f), 1.0f);
+	sprintf(debugInfo, "X : %3.2f, Y : %3.2f, Z : %3.2f", getPlayer()->getPosition().x, getPlayer()->getPosition().y, getPlayer()->getPosition().z);
+
+	settings->font->renderText(debugInfo, glm::fvec2(0.f, 0.f), glm::fvec3(1.0f, 0.1f, 0.1f), 1.0f);
 	//go->render(&renderer, shader);
 	Window::update();
 

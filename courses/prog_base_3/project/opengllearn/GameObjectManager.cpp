@@ -7,11 +7,13 @@ Wall::COLLISION_STATUS GameObjectManager::isMovementColliding(glm::fvec3 positio
 		Wall::COLLISION_STATUS status = wall->isMovementColliding(positionFrom, positionDest);
 		if (status != Wall::COLLISION_FALSE)
 		{
-			*collider = wall;
+			if(collider != nullptr)
+				*collider = wall;
 			return status;
 		}
 	}
-	*collider = nullptr;
+	if (collider != nullptr)
+		*collider = nullptr;
 	return Wall::COLLISION_FALSE;
 }
 

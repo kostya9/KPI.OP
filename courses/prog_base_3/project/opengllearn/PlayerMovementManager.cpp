@@ -33,41 +33,45 @@ MOVEMENT_STATUS PlayerMovementManager::tryMoveRight(Player * player, GameObjectM
 
 MOVEMENT_STATUS PlayerMovementManager::checkInputKeysForMovement(Player * player, GameObjectManager * goManager)
 {
-	if (keyboard->isKeyPressed('w'))
+	if (player->isMoving() == false)
 	{
-		MOVEMENT_STATUS status = tryMoveForward(player, goManager);
-		if (status == MOVE_MOVING_HOLE)
-			player->moveForward(2);
-		else if (status == MOVE_MOVING)
-			player->moveForward(1);
-		return status;
-	}
-	else if (keyboard->isKeyPressed('s'))
-	{
-		MOVEMENT_STATUS status = tryMoveBackward(player, goManager);
-		if (status == MOVE_MOVING_HOLE)
-			player->moveBackwards(2);
-		else if (status == MOVE_MOVING)
-			player->moveBackwards(1);
-		return status;
-	}
-	else if (keyboard->isKeyPressed('a'))
-	{
-		MOVEMENT_STATUS status = tryMoveLeft(player, goManager);
-		if (status == MOVE_MOVING_HOLE)
-			player->moveLeft(2);
-		else if (status == MOVE_MOVING)
-			player->moveLeft(1);
-		return status;
-	}
-	else if (keyboard->isKeyPressed('d'))
-	{
-		MOVEMENT_STATUS status = tryMoveRight(player, goManager);
-		if (status == MOVE_MOVING_HOLE)
-			player->moveRight(2);
-		else if (status == MOVE_MOVING)
-			player->moveRight(1);
-		return status;
+		MOVEMENT_STATUS status;
+		if (keyboard->isKeyPressed('w'))
+		{
+			status = tryMoveForward(player, goManager);
+			if (status == MOVE_MOVING_HOLE)
+				player->moveForward(2);
+			else if (status == MOVE_MOVING)
+				player->moveForward(1);
+			return status;
+		}
+		else if (keyboard->isKeyPressed('s'))
+		{
+			MOVEMENT_STATUS status = tryMoveBackward(player, goManager);
+			if (status == MOVE_MOVING_HOLE)
+				player->moveBackwards(2);
+			else if (status == MOVE_MOVING)
+				player->moveBackwards(1);
+			return status;
+		}
+		else if (keyboard->isKeyPressed('a'))
+		{
+			MOVEMENT_STATUS status = tryMoveLeft(player, goManager);
+			if (status == MOVE_MOVING_HOLE)
+				player->moveLeft(2);
+			else if (status == MOVE_MOVING)
+				player->moveLeft(1);
+			return status;
+		}
+		else if (keyboard->isKeyPressed('d'))
+		{
+			MOVEMENT_STATUS status = tryMoveRight(player, goManager);
+			if (status == MOVE_MOVING_HOLE)
+				player->moveRight(2);
+			else if (status == MOVE_MOVING)
+				player->moveRight(1);
+			return status;
+		}
 	}
 	else
 		return MOVE_NOT_MOVING_NO_COMMANDS;
@@ -82,6 +86,23 @@ MOVEMENT_STATUS PlayerMovementManager::tryMove(Player * player, GameObjectManage
 	if (collision_status == Wall::COLLISION_TRUE)
 	{
 		lastCollider = collider;
+		glm::fvec3 movementVec = (destination - playerPosition);
+		if (goManager->isMovementColliding(playerPosition + movementVec, destination + movementVec, nullptr) == Wall::COLLISION_TRUE)
+			return MOVE_NOT_MOVING_COLLISION;
+		if (collider->hasHole() == false)
+		{
+			if (player->canBurnWall() == false)
+				return MOVE_NOT_ENOUGH_ENERGY;
+			if (glm::abs(destination.x - playerPosition.x) > 0.5f)
+			{
+				collider->showHole(WallHole::HOLE_DIRECTION_X);
+			}
+			else
+				collider->showHole(WallHole::HOLE_DIRECTION_Z);
+			player->startDamaging(60);
+			return MOVE_MOVING_HOLE;
+		}
+		
 		return MOVE_NOT_MOVING_COLLISION;
 	}
 	else if (collision_status == Wall::COLLISION_FALSE)

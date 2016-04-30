@@ -23,12 +23,34 @@ Player::Player(Loader * loader, glm::fvec3 position, Camera * c) : GameObject(en
 
 	cam->pitch(M_PI / 4);
 }
+GLfloat Player::getEnergy()
+{
+	return energy;
+}
 void Player::render(Renderer * renderer, StaticShader shader)
 {
 	glm::vec3 prevPos = this->position;
+	this->setScale(energy);
 	setSineHeightPosition();
 	GameObject::render(renderer, shader);
 	this->setPosition(prevPos);
+}
+void Player::startDamaging(GLuint dmgPerSecond)
+{
+	this->dmgPerSecond = dmgPerSecond;
+}
+void Player::stopDamaging()
+{
+	this->dmgPerSecond = 0.0f;
+}
+void Player::addDamage(GLuint dmg)
+{
+	const GLfloat i = 100.f;
+	energy -= (dmg / (dmg + i));
+}
+bool Player::canBurnWall()
+{
+	return getEnergy() > 0.8f;
 }
 bool Player::isMoving()
 {
@@ -87,10 +109,17 @@ void Player::moveBackwards(GLint times)
 }
 void Player::update()
 {
+	addDamage(dmgPerSecond * Window::getDeltaTime());
+	if (this->energy < 1.0f)
+	{
+		this->energy += 0.001f;
+	}
 	if (moveState != MOVE_NO)
 	{
 		glm::fvec3 movement = getMovementVector();
+		glm::fvec3 camPosition = cam->getPosition();
 		this->position += movement * Window::getDeltaTime();
+		this->cam->setPosition(camPosition + movement * Window::getDeltaTime());
 		this->position.y = height;
 	}
 }
@@ -101,6 +130,7 @@ glm::fvec3 Player::getMovementVector()
 	if (deltaDistance < precision)
 	{
 		this->position = this->dest;
+		stopDamaging();
 		this->moveState = MOVE_NO;
 		return glm::fvec3();
 	}

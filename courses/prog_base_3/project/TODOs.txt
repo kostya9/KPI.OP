@@ -1,0 +1,34 @@
+	TODOs features
+
+Getting the field borders - function isInField() or smth
+
+Game menu state
+
+Generate walls on the map(by reading a file or randomly?)
+
+When trying to cross a wall without a hole - cut it in the direction we trying
+
+When cutting energy lowers(tangent function ?)
+
+Forbid cutting while on low energy
+
+Lowering the energy decreases the size of the object(hegiering vice versa)
+
+Generating particles while cutting (or lighting red ??)
+
+Fog of war ?
+
+Fog particles
+
+Drawing a map
+
+White hole - win condition
+
+AI ???
+
+	Refactoring
+Moving game logic out of gameObject classes probably
+
+	Bugs
+
+If a player goes thorhg a wall wich is in front of a second wall forbid!

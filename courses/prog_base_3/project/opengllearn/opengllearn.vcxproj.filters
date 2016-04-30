@@ -135,6 +135,9 @@
     <ClInclude Include="PlayerMovementManager.h">
       <Filter>Game\GameObjects\Player</Filter>
     </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Loader.cpp">
@@ -178,6 +181,9 @@
     </ClCompile>
     <ClCompile Include="PlayerMovementManager.cpp">
       <Filter>Game\GameObjects\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

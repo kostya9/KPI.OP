@@ -13,6 +13,7 @@ class Wall : public GameObject
 		void render(Renderer * renderer, StaticShader shader);
 		void setPosition(glm::fvec3 position);
 		void setAlpha(GLfloat alpha);
+		bool hasHole();
 		WallHole::HOLE_DIRECTION getHoleDirection();
 		COLLISION_STATUS isMovementColliding(glm::fvec3 positionFrom, glm::fvec3 positionDest);
 		void showHole(WallHole::HOLE_DIRECTION direction);

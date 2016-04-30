@@ -32,7 +32,7 @@ void GameObject::rotate(glm::fvec3 rotation)
 	}
 }
 
-void GameObject::scale(GLfloat times)
+void GameObject::setScale(GLfloat times)
 {
 	for (Entity & e : entities)
 	{
