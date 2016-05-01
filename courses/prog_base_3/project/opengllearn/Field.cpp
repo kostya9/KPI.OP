@@ -2,6 +2,9 @@
 
 Field::Field(Loader * loader, GLuint size, glm::vec3 position) : GameObject()
 {
+	if (size % 2 != 1)
+		throw new invalid_argument("Expected an odd number");
+
 	this->size = size;
 	this->position = position;
 	enum SIDE { TOP, RIGHT, BOTTOM, LEFT };
@@ -64,6 +67,16 @@ Field::Field(Loader * loader, GLuint size, glm::vec3 position) : GameObject()
 		}
 
 	}
+}
+
+bool Field::isInField(glm::fvec2 position)
+{
+	bool xInvalidPos = glm::abs(position.x - this->position.x) > size/2.0f;
+	bool zInvalidPos = glm::abs(position.y - this->position.z) > size/2.0f;
+	if (xInvalidPos || zInvalidPos)
+		return false;
+	else
+		return true;
 }
 
 GLuint Field::getSize()

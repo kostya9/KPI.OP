@@ -16,11 +16,14 @@ class Game
 		Game();
 		Keyboard * getKeyboard();
 		Player * getPlayer();
+		Field * getField();
 		void generateField(glm::fvec2 center, GLuint size);
 		void createPlayer(glm::fvec2 position);
 		void createWall(glm::fvec2 position);
 		void createLight(GLfloat brightness, glm::fvec3 position);
 		void update();
+		void changeLightPosition();
+		void endGameIfOutOfField();
 		void checkInputKeysAndMovePlayer();
 		void removeTransparencyIfAlreadyMoved(GameObject * newCollider, GameObject * collider);
 		void updatingErrorMessage(MOVEMENT_STATUS status);

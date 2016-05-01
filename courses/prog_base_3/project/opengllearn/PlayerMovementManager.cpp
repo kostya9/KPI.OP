@@ -93,14 +93,11 @@ MOVEMENT_STATUS PlayerMovementManager::tryMove(Player * player, GameObjectManage
 			return MOVE_NOT_MOVING_COLLISION;
 		if (collider->hasHole() == false)
 		{
+			if (isMovementOffField(goManager, playerPosition, movementVec))
+				return MOVE_NOT_MOVING_COLLISION;
 			if (player->canBurnWall() == false)
 				return MOVE_NOT_ENOUGH_ENERGY;
-			if (glm::abs(destination.x - playerPosition.x) > 0.5f)
-			{
-				collider->showHole(WallHole::HOLE_DIRECTION_X);
-			}
-			else
-				collider->showHole(WallHole::HOLE_DIRECTION_Z);
+			showWall(destination, playerPosition, collider);
 			player->startDamaging(60);
 			return MOVE_MOVING_HOLE;
 		}
@@ -109,6 +106,8 @@ MOVEMENT_STATUS PlayerMovementManager::tryMove(Player * player, GameObjectManage
 	}
 	else if (collision_status == Wall::COLLISION_FALSE)
 	{
+		if (goManager->getField()->isInField(glm::fvec2(destination.x, destination.z)) == false)
+			return MOVE_NOT_MOVING_COLLISION;
 		return MOVE_MOVING;
 	}
 	else if (collision_status == Wall::COLLISION_HOLE)
@@ -118,4 +117,19 @@ MOVEMENT_STATUS PlayerMovementManager::tryMove(Player * player, GameObjectManage
 	}
 	else
 		return MOVE_NOT_MOVING_NO_COMMANDS;
+}
+
+bool PlayerMovementManager::isMovementOffField(GameObjectManager * goManager, glm::fvec3 &playerPosition, glm::fvec3 &movementVec)
+{
+	return goManager->getField()->isInField(glm::fvec2((playerPosition + 2.0f * movementVec).x, (playerPosition + 2.0f * movementVec).z)) == false;
+}
+
+void PlayerMovementManager::showWall(glm::fvec3 &destination, glm::fvec3 &playerPosition, Wall * collider)
+{
+	if (glm::abs(destination.x - playerPosition.x) > 0.5f)
+	{
+		collider->showHole(WallHole::HOLE_DIRECTION_X);
+	}
+	else
+		collider->showHole(WallHole::HOLE_DIRECTION_Z);
 }

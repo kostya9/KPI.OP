@@ -10,6 +10,6 @@ class Field : public GameObject
 	public:
 		// Generates a field size x size
 		Field(Loader * loader, GLuint size, glm::vec3 position);
+		bool isInField(glm::fvec2 position);
 		GLuint getSize();
-
 };

@@ -16,11 +16,6 @@ Player::Player(Loader * loader, glm::fvec3 position, Camera * c) : GameObject(en
 	cam->setPosition(position);
 	cam->moveForward(-delta);
 	cam->moveUp(delta);
-	// DEBUG
-	//cam.yaw(M_PI / 2);
-	//cam.moveLeft(3.0f);
-	//cam.moveForward(-3.0f);
-
 	cam->pitch(M_PI / 4);
 }
 GLfloat Player::getEnergy()
@@ -41,11 +36,11 @@ void Player::startDamaging(GLuint dmgPerSecond)
 }
 void Player::stopDamaging()
 {
-	this->dmgPerSecond = 0.0f;
+	this->dmgPerSecond = 0;
 }
-void Player::addDamage(GLuint dmg)
+void Player::addDamage(GLfloat dmg)
 {
-	const GLfloat i = 100.f;
+	const GLfloat i = 300.f;
 	energy -= (dmg / (dmg + i));
 }
 bool Player::canBurnWall()
@@ -125,7 +120,7 @@ void Player::update()
 }
 glm::fvec3 Player::getMovementVector()
 {
-	GLfloat precision = 0.001;
+	GLfloat precision = 0.001f;
 	GLfloat deltaDistance = glm::length2(this->dest - this->position);
 	if (deltaDistance < precision)
 	{
@@ -157,75 +152,8 @@ Camera * Player::getCamera()
 {
 	return cam;
 }
-/*
-Player::PLAYER_MOVE_STATUS Player::move(GameObjectManager * manager)
-{
-	static Wall * wall = nullptr;
-	if (moveState == MOVE_NO)
-	{
-		moveState = getMovementStateFromInputKeys();
-		if (moveState == MOVE_NO)
-			return NO_COMMANDS;
-
-		Wall::COLLISION_STATUS status = getColliderIfAHole(manager, &wall);
-		if (status == Wall::COLLISION_HOLE)
-		{
-			wall->setAlpha(0.5f);
-			return COLLISION_UNDETECTED;
-		}
-		if (status == Wall::COLLISION_TRUE)
-			return COLLISION_DETECTED;
-	}
-	moveModel(wall);
-	return COLLISION_UNDETECTED;
-}
-
-void Player::moveModel(Wall * wall)
-{
-	glm::fvec3 movement = Player::getMovementVector();
-	movement *= Window::getDeltaTime();
-	this->cam->setPosition(this->cam->getPosition() + movement);		 // Camera managing here
-	for (Entity & e : entities)
-	{
-		this->position += movement;
-		if (moveState == MOVE_NO)
-		{
-			if(wall != nullptr)
-				wall->setAlpha(1.0f);
-			this->setPosition(dest);
-			return;
-		}
-		e.increasePosition(movement);
-	}
-}
-*/
 void Player::setSineHeightPosition()
 {
-	GLfloat dy = 0.2 * glm::sin(glfwGetTime());
+	GLfloat dy = 0.2f * glm::sin(glfwGetTime());
 	this->setPosition(glm::vec3(position.x, position.y + dy, position.z));
 }
-/*
-Wall::COLLISION_STATUS Player::getColliderIfAHole(GameObjectManager * manager, Wall ** wall_out)
-{
-	if (manager != nullptr)
-	{
-		Wall * wall;
-		Wall::COLLISION_STATUS status = manager->isMovementColliding(this->position, dest, &wall);
-		if (status == Wall::COLLISION_TRUE)
-		{
-			moveState = MOVE_NO;
-			*wall_out = nullptr;
-			return status;
-		}
-		else if (status == Wall::COLLISION_HOLE)
-		{
-			dest += (dest - this->position);
-			dest.x = glm::round(dest.x);
-			dest.z = glm::round(dest.z);
-			*wall_out = wall;
-			return status;
-		}
-		else
-			return status;
-	}
-}*/

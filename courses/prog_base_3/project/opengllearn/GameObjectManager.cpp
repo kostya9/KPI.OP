@@ -32,6 +32,7 @@ void GameObjectManager::renderAll()
 		obj->render(renderer, *shader);
 	for (Wall * obj : walls)
 		obj->render(renderer, *shader);
+	field->render(renderer, *shader);
 	player->render(renderer, *shader);
 }
 
@@ -45,6 +46,11 @@ void GameObjectManager::addObject(Player * player)
 	this->player = player;
 }
 
+void GameObjectManager::addObject(Field * field)
+{
+	this->field = field;
+}
+
 void GameObjectManager::addObject(GameObject * object)
 {
 	objects.push_back(object);
@@ -53,6 +59,11 @@ void GameObjectManager::addObject(GameObject * object)
 void GameObjectManager::addObject(Light * light)
 {
 	this->light = light;
+}
+
+Field * GameObjectManager::getField()
+{
+	return field;
 }
 
 Light * GameObjectManager::getLight()

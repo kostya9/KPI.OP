@@ -12,13 +12,13 @@ class Player : public GameObject
 	private:
 		enum MOVEMENT_STATE_CODE { MOVE_LEFT, MOVE_FORWARD, MOVE_RIGHT, MOVE_BACKWARD, MOVE_NO } moveState;
 		GLfloat energy = 1.0f;
-		GLuint dmgPerSecond = 0.0f;
+		GLuint dmgPerSecond = 0;
 		glm::vec3 dest;
 		Camera * cam;
 		void setSineHeightPosition();
 		const GLfloat height = 0.5f;
 		glm::fvec3 getMovementVector();
-		void Player::addDamage(GLuint dmg);
+		void Player::addDamage(GLfloat dmg);
 
 	public:
 		enum PLAYER_MOVE_STATUS {NO_COMMANDS, COLLISION_DETECTED, COLLISION_UNDETECTED};

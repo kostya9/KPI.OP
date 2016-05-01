@@ -14,13 +14,14 @@ int main()
 {
 	Game * game = new Game();
 	keyboard = game->getKeyboard();
-	game->generateField(glm::fvec2(0.0f, 0.0f), 5);
+	game->generateField(glm::fvec2(0.0f, 0.0f), 3);
 	game->createPlayer(glm::fvec2(0.0f, 0.0f));
 	game->createLight(1.2f, glm::fvec3(0.0f, 2.0f, 1.0f));
 	game->createWall(glm::fvec2(1.0f, 0.0f));
 	game->createWall(glm::fvec2(2.0f, 0.0f));
 	game->createWall(glm::fvec2(1.0f, -2.0f));
-
+	//bool test = game->getField()->isInField(glm::fvec2(-2.0f, -2.0f));
+	//printf("Test is %s", test == true ? "true" : "false");
 	Font * font = new Font("fonts/Open_sans/OpenSans-Regular.ttf");
 	char debugInfo[100];
 	while (!glfwWindowShouldClose(Window::getGLFWWindow()))
@@ -33,6 +34,7 @@ int main()
 	}
 	delete font;
 	delete game;
+	_getch();
 	return 0;
 }
 

@@ -26,6 +26,10 @@ Player * Game::getPlayer()
 {
 	return manager->getPlayer();
 }
+Field * Game::getField()
+{
+	return manager->getField();
+}
 void Game::generateField(glm::fvec2 center, GLuint size)
 {
 	loader->generateField(center, size);
@@ -44,24 +48,32 @@ void Game::createLight(GLfloat brightness, glm::fvec3 position)
 }
 void Game::update()
 {
-	Player * player = getPlayer();
-	Light * light = manager->getLight();
+	endGameIfOutOfField();
 	checkInputKeysAndMovePlayer();
-	player->update();
-	glm::fvec3 newLightPos = player->getPosition();
+	getPlayer()->update();
+	changeLightPosition();
+}
+
+void Game::changeLightPosition()
+{
+	glm::fvec3 newLightPos = getPlayer()->getPosition();
 	newLightPos.y = 1.5f;
 	newLightPos.z += 2.5f;
-	light->setPosition(newLightPos);
+	manager->getLight()->setPosition(newLightPos);
+}
+
+void Game::endGameIfOutOfField()
+{
+	glm::fvec2 pos = glm::fvec2(getPlayer()->getPosition().x, getPlayer()->getPosition().z);
+	if (manager->getField()->isInField(pos) == false)
+		glfwSetWindowShouldClose(Window::getGLFWWindow(), GL_TRUE);
 }
 
 void Game::render()
 {
-
 	manager->renderAll();
 	writePlayerPosition();
 	Window::update();
-	//go->render(&renderer, shader);
-
 }
 
 void Game::checkInputKeysAndMovePlayer()

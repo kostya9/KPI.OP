@@ -14,5 +14,7 @@ class PlayerMovementManager
 		static MOVEMENT_STATUS checkInputKeysForMovement(Player * player, GameObjectManager * goManager);
 	private:
 		static MOVEMENT_STATUS tryMove(Player * player, GameObjectManager * goManager, glm::fvec3 destination);
+		static bool isMovementOffField(GameObjectManager * goManager, glm::fvec3 &playerPosition, glm::fvec3 &movementVec);
+		static void showWall(glm::fvec3 &destination, glm::fvec3 &playerPosition, Wall * collider);
 		static GameObject * lastCollider;
 };
