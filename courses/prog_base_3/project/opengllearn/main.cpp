@@ -14,7 +14,7 @@ int main()
 {
 	Game * game = new Game();
 	keyboard = game->getKeyboard();
-	game->generateField(glm::fvec2(0.0f, 0.0f), 3);
+	game->generateField(glm::fvec2(0.0f, 0.0f), 7);
 	game->createPlayer(glm::fvec2(0.0f, 0.0f));
 	game->createLight(1.2f, glm::fvec3(0.0f, 2.0f, 1.0f));
 	game->createWall(glm::fvec2(1.0f, 0.0f));

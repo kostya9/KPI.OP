@@ -28,12 +28,12 @@ void GameObjectManager::renderAll()
 	shader->loadLight(*light);
 	shader->unUse();
 	renderer->prepare();
+	player->render(renderer, *shader);
+	field->render(renderer, *shader);
 	for (GameObject * obj : objects)
 		obj->render(renderer, *shader);
 	for (Wall * obj : walls)
 		obj->render(renderer, *shader);
-	field->render(renderer, *shader);
-	player->render(renderer, *shader);
 }
 
 void GameObjectManager::addObject(Wall * wall)

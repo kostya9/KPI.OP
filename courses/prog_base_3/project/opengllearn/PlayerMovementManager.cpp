@@ -10,25 +10,45 @@ GameObject * PlayerMovementManager::getLastCollider()
 MOVEMENT_STATUS PlayerMovementManager::tryMoveForward(Player * player, GameObjectManager * goManager)
 {
 	glm::fvec3 dest = player->getPosition() + glm::fvec3(0.0f, 0.0f, -1.0f);
-	return tryMove(player, goManager, dest);
+	MOVEMENT_STATUS status = tryMove(player, goManager, dest);
+	if (status == MOVE_MOVING_HOLE)
+		player->moveForward(2);
+	else if (status == MOVE_MOVING)
+		player->moveForward(1);
+	return status;
 }
 
 MOVEMENT_STATUS PlayerMovementManager::tryMoveBackward(Player * player, GameObjectManager * goManager)
 {
 	glm::fvec3 dest = player->getPosition() + glm::fvec3(0.0f, 0.0f, 1.0f);
-	return tryMove(player, goManager, dest);
+	MOVEMENT_STATUS status = tryMove(player, goManager, dest);
+	if (status == MOVE_MOVING_HOLE)
+		player->moveBackwards(2);
+	else if (status == MOVE_MOVING)
+		player->moveBackwards(1);
+	return status;
 }
 
 MOVEMENT_STATUS PlayerMovementManager::tryMoveLeft(Player * player, GameObjectManager * goManager)
 {
 	glm::fvec3 dest = player->getPosition() + glm::fvec3(-1.0f, 0.0f, 0.0f);
-	return tryMove(player, goManager, dest);
+	MOVEMENT_STATUS status = tryMove(player, goManager, dest);
+	if (status == MOVE_MOVING_HOLE)
+		player->moveLeft(2);
+	else if (status == MOVE_MOVING)
+		player->moveLeft(1);
+	return status;
 }
 
 MOVEMENT_STATUS PlayerMovementManager::tryMoveRight(Player * player, GameObjectManager * goManager)
 {
 	glm::fvec3 dest = player->getPosition() + glm::fvec3(1.0f, 0.0f, 0.0f);
-	return tryMove(player, goManager, dest);
+	MOVEMENT_STATUS status = tryMove(player, goManager, dest);
+	if (status == MOVE_MOVING_HOLE)
+		player->moveRight(2);
+	else if (status == MOVE_MOVING)
+		player->moveRight(1);
+	return status;
 }
 
 MOVEMENT_STATUS PlayerMovementManager::checkInputKeysForMovement(Player * player, GameObjectManager * goManager)
@@ -39,37 +59,21 @@ MOVEMENT_STATUS PlayerMovementManager::checkInputKeysForMovement(Player * player
 		if (keyboard->isKeyPressed('w'))
 		{
 			status = tryMoveForward(player, goManager);
-			if (status == MOVE_MOVING_HOLE)
-				player->moveForward(2);
-			else if (status == MOVE_MOVING)
-				player->moveForward(1);
 			return status;
 		}
 		else if (keyboard->isKeyPressed('s'))
 		{
 			MOVEMENT_STATUS status = tryMoveBackward(player, goManager);
-			if (status == MOVE_MOVING_HOLE)
-				player->moveBackwards(2);
-			else if (status == MOVE_MOVING)
-				player->moveBackwards(1);
 			return status;
 		}
 		else if (keyboard->isKeyPressed('a'))
 		{
 			MOVEMENT_STATUS status = tryMoveLeft(player, goManager);
-			if (status == MOVE_MOVING_HOLE)
-				player->moveLeft(2);
-			else if (status == MOVE_MOVING)
-				player->moveLeft(1);
 			return status;
 		}
 		else if (keyboard->isKeyPressed('d'))
 		{
 			MOVEMENT_STATUS status = tryMoveRight(player, goManager);
-			if (status == MOVE_MOVING_HOLE)
-				player->moveRight(2);
-			else if (status == MOVE_MOVING)
-				player->moveRight(1);
 			return status;
 		}
 		else
