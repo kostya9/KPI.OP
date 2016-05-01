@@ -164,6 +164,7 @@
     <ClInclude Include="Font.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameObjectLoader.h" />
     <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="PlayerMovementManager.h" />
     <ClInclude Include="WallHole.h" />
@@ -189,6 +190,7 @@
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameObjectLoader.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerMovementManager.cpp" />

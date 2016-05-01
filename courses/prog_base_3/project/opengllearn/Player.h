@@ -1,6 +1,5 @@
 #pragma once
 #include "MainHeaders.h"
-#include "GameObjectManager.h"
 #include "GameObject.h"
 #define _USE_MATH_DEFINES
 #include <math.h>

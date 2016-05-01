@@ -7,6 +7,7 @@ class Wall : public GameObject
 {
 	private:
 		WallHole * hole;
+		/*WallState * state;*/ //  TODO: State pattern here? 
 	public:
 		enum COLLISION_STATUS {COLLISION_TRUE, COLLISION_HOLE, COLLISION_FALSE};
 		Wall(Loader * loader, glm::vec3 position);

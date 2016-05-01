@@ -138,6 +138,9 @@
     <ClInclude Include="CollisionManager.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="GameObjectLoader.h">
+      <Filter>Game\GameObjects\GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Loader.cpp">
@@ -184,6 +187,9 @@
     </ClCompile>
     <ClCompile Include="CollisionManager.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectLoader.cpp">
+      <Filter>Game\GameObjects\GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
