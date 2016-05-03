@@ -13,7 +13,7 @@ class Player : public GameObject
 		enum MOVEMENT_STATE_CODE { MOVE_LEFT, MOVE_FORWARD, MOVE_RIGHT, MOVE_BACKWARD, MOVE_NO } moveState;
 		GLfloat energy = 1.0f;
 		GLuint dmgPerSecond = 0;
-		glm::vec3 dest;
+		glm::fvec3 dest;
 		Camera * cam;
 		void setSineHeightPosition();
 		const GLfloat height = 0.5f;

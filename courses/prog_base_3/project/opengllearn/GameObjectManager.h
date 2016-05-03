@@ -5,6 +5,7 @@
 #include "Wall.h"
 #include "Player.h"
 #include "Field.h"
+#include "WhiteHole.h"
 class GameObjectManager
 {
 	private:
@@ -12,6 +13,7 @@ class GameObjectManager
 		vector <Wall *> walls;
 		Field * field;
 		Player * player;
+		WhiteHole * hole;
 		Light * light;
 		Renderer * renderer;
 		StaticShader * shader;
@@ -24,6 +26,8 @@ class GameObjectManager
 		void addObject(Field * field);
 		void addObject(GameObject * object);
 		void addObject(Light * light);
+		void addObject(WhiteHole * hole);
+		WhiteHole * getWhiteHole();
 		Field * getField();
 		Light * getLight();
 		Player * getPlayer();

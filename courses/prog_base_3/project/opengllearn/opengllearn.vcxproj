@@ -157,7 +157,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Field.h" />
@@ -178,6 +177,7 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="TexturedModel.h" />
     <ClInclude Include="Wall.h" />
+    <ClInclude Include="WhiteHole.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="Loader.h" />
     <ClInclude Include="MainHeaders.h" />
@@ -185,7 +185,6 @@
     <ClInclude Include="Renderer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -198,6 +197,7 @@
     <ClCompile Include="StaticShader.cpp" />
     <ClCompile Include="Wall.cpp" />
     <ClCompile Include="WallHole.cpp" />
+    <ClCompile Include="WhiteHole.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="main.cpp" />

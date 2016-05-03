@@ -31,9 +31,9 @@ GLuint Loader::loadTexture(GLchar * path)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	// Load image
 	int width, height;
-	unsigned char * img = SOIL_load_image(path, &width, &height, 0, SOIL_LOAD_RGB);
+	unsigned char * img = SOIL_load_image(path, &width, &height, 0, SOIL_LOAD_RGBA);
 	//Binding the image to the texture
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img);
 	glGenerateMipmap(GL_TEXTURE_2D);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -0.5);

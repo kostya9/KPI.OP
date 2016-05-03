@@ -3,12 +3,13 @@
 #include "Renderer.h"
 #include "Entity.h"
 #include "Shader.h"
-
+#include <glm/gtx/norm.hpp>
 // TODO : to implement interface functions
 
 class GameObject
 {
 	protected:
+		const GLfloat precision = 0.001f;
 		glm::fvec3 position;
 		vector <Entity> entities;
 		bool show;
@@ -25,6 +26,7 @@ class GameObject
 		bool getVisibility();
 		virtual void setAlpha(GLfloat alpha);
 		virtual void move(float speed, glm::fvec3 dPos)  {};
+		bool isAtPositionNeighborhood(glm::fvec3 position);
 		virtual void render(Renderer * renderer, StaticShader shader);
 		static vector <GameObject*> getObjects();
 		~GameObject();

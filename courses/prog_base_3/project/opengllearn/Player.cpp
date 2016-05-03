@@ -120,9 +120,7 @@ void Player::update()
 }
 glm::fvec3 Player::getMovementVector()
 {
-	GLfloat precision = 0.001f;
-	GLfloat deltaDistance = glm::length2(this->dest - this->position);
-	if (deltaDistance < precision)
+	if (isAtPositionNeighborhood(dest))
 	{
 		this->position = this->dest;
 		stopDamaging();

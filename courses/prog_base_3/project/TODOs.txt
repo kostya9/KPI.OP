@@ -1,3 +1,6 @@
+				TO WRITE TESTS!!!
+				
+				
 	TODOs features
 
 Getting the field borders - function isInField() or smth

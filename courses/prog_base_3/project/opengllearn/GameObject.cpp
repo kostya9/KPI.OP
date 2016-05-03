@@ -59,6 +59,16 @@ void GameObject::setAlpha(GLfloat alpha)
 	this->alpha = alpha;
 }
 
+bool GameObject::isAtPositionNeighborhood(glm::fvec3 position)
+{
+	position.y = 0.5f;
+	GLfloat deltaDistance = glm::length2(position - this->position);
+	if (deltaDistance < precision)
+		return true;
+	else
+		return false;
+}
+
 void GameObject::render(Renderer * renderer, StaticShader shader)
 {
 	if(show)

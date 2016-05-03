@@ -3,6 +3,7 @@
 #include "GameObjectManager.h"
 #include "Field.h"
 #include "Player.h"
+#include "WhiteHole.h"
 // TODO: Remove model loadings from class constructors to here
 class GameObjectLoader
 {
@@ -12,6 +13,8 @@ class GameObjectLoader
 		void createPlayer(glm::fvec2 position);
 		void createWall(glm::fvec2 position);
 		void createLight(GLfloat brightness, glm::fvec3 position);
+		void creatWhiteHole(glm::fvec2 position);
+		void loadLevel(string path);
 		~GameObjectLoader();
 	private:
 		GameObjectManager * manager;

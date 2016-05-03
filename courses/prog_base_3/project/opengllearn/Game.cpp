@@ -12,6 +12,8 @@ Game::Game()
 	settings->font = new Font("fonts/Open_sans/OpenSans-Regular.ttf");
 	loader = new GameObjectLoader(manager);
 	keyboard = new Keyboard();
+	Light * light = new Light(glm::fvec3(0.0f, 0.0f, 0.0f), glm::fvec3(1.0f, 1.0f, 1.0f));
+	manager->addObject(light);
 	key_callback kb = window_key_callback;
 	Window::addCallBack(kb);
 }
@@ -30,6 +32,10 @@ Field * Game::getField()
 {
 	return manager->getField();
 }
+void Game::loadLevel(string path)
+{
+	loader->loadLevel(path);
+}
 void Game::generateField(glm::fvec2 center, GLuint size)
 {
 	loader->generateField(center, size);
@@ -46,14 +52,24 @@ void Game::createLight(GLfloat brightness, glm::fvec3 position)
 {
 	loader->createLight(brightness, position);
 }
+void Game::createWhiteHole(glm::fvec2 position)
+{
+	this->loader->creatWhiteHole(position);
+}
 void Game::update()
 {
-	endGameIfOutOfField();
+	// endGameIfOutOfField(); // SHould I?
+	winIfAtWhiteHole();
 	checkInputKeysAndMovePlayer();
 	getPlayer()->update();
 	changeLightPosition();
 }
-
+void Game::winIfAtWhiteHole()
+{
+	WhiteHole * hole = manager->getWhiteHole();
+	if(getPlayer()->isAtPositionNeighborhood(hole->getPosition()))
+		glfwSetWindowShouldClose(Window::getGLFWWindow(), GL_TRUE);
+}
 void Game::changeLightPosition()
 {
 	glm::fvec3 newLightPos = getPlayer()->getPosition();

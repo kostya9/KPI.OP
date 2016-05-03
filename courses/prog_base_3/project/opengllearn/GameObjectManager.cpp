@@ -29,6 +29,7 @@ void GameObjectManager::renderAll()
 	shader->unUse();
 	renderer->prepare();
 	player->render(renderer, *shader);
+	hole->render(renderer, *shader);
 	field->render(renderer, *shader);
 	for (GameObject * obj : objects)
 		obj->render(renderer, *shader);
@@ -59,6 +60,16 @@ void GameObjectManager::addObject(GameObject * object)
 void GameObjectManager::addObject(Light * light)
 {
 	this->light = light;
+}
+
+void GameObjectManager::addObject(WhiteHole * hole)
+{
+	this->hole = hole;
+}
+
+WhiteHole * GameObjectManager::getWhiteHole()
+{
+	return this->hole;
 }
 
 Field * GameObjectManager::getField()

@@ -17,10 +17,15 @@ void main(void)
 
 	vec3 unitNormal = normalize(surfaceNormal); 
 	vec3 unitLightVector = normalize(toLightVector); 
-	
 	float nDot = dot(unitNormal, unitLightVector);
 	float brigtness = max(nDot, 0.0);
 	vec3 diffuse = brigtness * lightColor;
-	out_Color = vec4(ambient + diffuse, alpha) * texture(textureSampler, out_textureCoordinates);
+
+	vec4 textureColor = texture(textureSampler, out_textureCoordinates);
+	if(textureColor.a < 0.5f)
+	{
+		discard;
+	}
+	out_Color = vec4(ambient + diffuse, alpha) * textureColor;
 
 }

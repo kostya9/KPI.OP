@@ -55,6 +55,9 @@
     <Filter Include="Game\GameObjects\Player">
       <UniqueIdentifier>{52ff4855-da1d-44d0-bf9f-982af5a5455c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\GameObjects\WhiteHole">
+      <UniqueIdentifier>{df604d9f-2121-4332-a25e-07f0471d6198}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -135,11 +138,11 @@
     <ClInclude Include="PlayerMovementManager.h">
       <Filter>Game\GameObjects\Player</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionManager.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="GameObjectLoader.h">
       <Filter>Game\GameObjects\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="WhiteHole.h">
+      <Filter>Game\GameObjects\WhiteHole</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -185,11 +188,11 @@
     <ClCompile Include="PlayerMovementManager.cpp">
       <Filter>Game\GameObjects\Player</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameObjectLoader.cpp">
       <Filter>Game\GameObjects\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="WhiteHole.cpp">
+      <Filter>Game\GameObjects\WhiteHole</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
