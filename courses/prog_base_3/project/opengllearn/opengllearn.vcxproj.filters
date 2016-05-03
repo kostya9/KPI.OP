@@ -58,6 +58,9 @@
     <Filter Include="Game\GameObjects\WhiteHole">
       <UniqueIdentifier>{df604d9f-2121-4332-a25e-07f0471d6198}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Menu">
+      <UniqueIdentifier>{aa1df41c-b5e6-4a60-92cc-3e23cd533e30}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -144,6 +147,18 @@
     <ClInclude Include="WhiteHole.h">
       <Filter>Game\GameObjects\WhiteHole</Filter>
     </ClInclude>
+    <ClInclude Include="MenuOption.h">
+      <Filter>Game\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Game\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuOptionButton.h">
+      <Filter>Game\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuOptionSlider.h">
+      <Filter>Game\Menu</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Loader.cpp">
@@ -193,6 +208,18 @@
     </ClCompile>
     <ClCompile Include="WhiteHole.cpp">
       <Filter>Game\GameObjects\WhiteHole</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuOption.cpp">
+      <Filter>Game\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuOptionButton.cpp">
+      <Filter>Game\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuOptionSlider.cpp">
+      <Filter>Game\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Game\Menu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

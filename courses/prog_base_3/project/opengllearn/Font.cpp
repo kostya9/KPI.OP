@@ -93,7 +93,7 @@ void Font::renderText(GLchar * text, glm::fvec2 position, glm::fvec3 color, GLfl
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(VAO);
 
-	for (int i = 0; i < strlen(text); i++)
+	for (unsigned int i = 0; i < strlen(text); i++)
 	{
 		Character ch = chars[text[i]];
 

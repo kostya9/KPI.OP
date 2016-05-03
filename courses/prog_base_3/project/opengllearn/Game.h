@@ -7,6 +7,9 @@
 #include "GameObjectLoader.h"
 #include "Field.h"
 #include "Player.h"
+#include "Menu.h"
+#include "MenuOptionButton.h"
+#include "MenuOptionSlider.h"
 // TODO : to implement interface functions
 enum GameState { GAME_MENU, GAME_ACTIVE };
 
@@ -37,10 +40,11 @@ class Game
 	private:
 		const glm::fvec2 message_error_pos = glm::fvec2(00.f, 500.f);
 		string current_error_text;
-		GameState State;
+		GameState state;
 		GameObjectLoader * loader;
 		Keyboard * keyboard;
 		Settings * settings;
+		Menu * menu;
 		GameObjectManager * manager;
 
 };

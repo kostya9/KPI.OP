@@ -165,6 +165,10 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectLoader.h" />
     <ClInclude Include="GameObjectManager.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="MenuOption.h" />
+    <ClInclude Include="MenuOptionButton.h" />
+    <ClInclude Include="MenuOptionSlider.h" />
     <ClInclude Include="PlayerMovementManager.h" />
     <ClInclude Include="WallHole.h" />
     <ClInclude Include="Keyboard.h" />
@@ -191,6 +195,10 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectLoader.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="MenuOption.cpp" />
+    <ClCompile Include="MenuOptionButton.cpp" />
+    <ClCompile Include="MenuOptionSlider.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerMovementManager.cpp" />
     <ClCompile Include="Shader.cpp" />

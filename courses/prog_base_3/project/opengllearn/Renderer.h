@@ -9,12 +9,12 @@ class Renderer
 private:
 	const GLfloat FOV = 70.0f;
 	const GLfloat NEAR_PLANE = 0.1f;
-	const GLfloat FAR_PLANE = 100.0f;
-	glm::mat4 projectionMatrix;
+	const GLfloat FAR_PLANE = 1000.0f;// WTF>????????????
+	glm::fmat4 projectionMatrix;
 	void createProjectionMatrix()
 	{
 		projectionMatrix = glm::perspective(FOV, 1.0f, NEAR_PLANE, FAR_PLANE);
-		//projectionMatrix = glm::ortho(0.0f, (float)Window::getHeight(), 0.0f, (float)Window::getWidth()/*, NEAR_PLANE, FAR_PLANE*/);
+		//projectionMatrix = glm::ortho(0.0f, /*(float)Window::getWidth()/100/**/ 10.0f, 0.0f,/*(float)Window::getHeight()/100, 0.0f/**/4.0f, 0.1f, 100.0f/*, NEAR_PLANE, FAR_PLANE*/);
 	}
 	public:
 		Renderer(StaticShader shader)
@@ -29,7 +29,7 @@ private:
 		{
 			glfwPollEvents();
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			glClearColor(0.6784f, 0.792f, 0.99f, 1.0f); // LIGHT BLUE 
+			glClearColor(64/255.0f, 64 / 255.0f, 64 / 255.0f, 1.0f); // Dark Grey
 		}
 		void render(Entity entity, StaticShader shader)
 		{

@@ -6,6 +6,7 @@
 void window_key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 Game::Game()
 {
+	state = GAME_MENU;
 	Window::open();
 	manager = new GameObjectManager();
 	settings = new Settings();
@@ -16,6 +17,14 @@ Game::Game()
 	manager->addObject(light);
 	key_callback kb = window_key_callback;
 	Window::addCallBack(kb);
+
+	this->menu = new Menu();
+	MenuOptionButton * button = new MenuOptionButton(&Loader(), settings->font, glm::fvec3(1.0f, 1.0f, 1.0f), string("HEYYY"));
+	MenuOptionButton * button1 = new MenuOptionButton(&Loader(), settings->font, glm::fvec3(1.0f, 1.0f, 1.0f), string("HEYYY1"));
+	MenuOptionSlider * slider = new MenuOptionSlider(&Loader(), settings->font, glm::fvec3(1.0f, 1.0f, 1.0f));
+	menu->addMenuOption(button);
+	menu->addMenuOption(button1);
+	menu->addMenuOption(slider);
 }
 
 
@@ -58,11 +67,18 @@ void Game::createWhiteHole(glm::fvec2 position)
 }
 void Game::update()
 {
-	// endGameIfOutOfField(); // SHould I?
-	winIfAtWhiteHole();
-	checkInputKeysAndMovePlayer();
-	getPlayer()->update();
-	changeLightPosition();
+	if (state == GAME_ACTIVE)
+	{
+		// endGameIfOutOfField(); // SHould I?
+		winIfAtWhiteHole();
+		checkInputKeysAndMovePlayer();
+		getPlayer()->update();
+		changeLightPosition();
+	}
+	else if (state == GAME_MENU)
+	{
+		menu->update();
+	}
 }
 void Game::winIfAtWhiteHole()
 {
@@ -87,9 +103,18 @@ void Game::endGameIfOutOfField()
 
 void Game::render()
 {
-	manager->renderAll();
-	writePlayerPosition();
-	Window::update();
+	if (state == GAME_ACTIVE)
+	{
+		manager->renderAll();
+		writePlayerPosition();
+		Window::update();
+	}
+	else if (state == GAME_MENU)
+	{
+		StaticShader shader = StaticShader();
+		menu->render(&Renderer(shader), shader);
+		Window::update();
+	}
 }
 
 void Game::checkInputKeysAndMovePlayer()

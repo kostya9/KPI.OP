@@ -12,7 +12,7 @@ Field::Field(Loader * loader, GLuint size, glm::vec3 position) : GameObject()
 	vector<TexturedModel> models = loader->objToModel(fieldPath);
 	int sides = 1;
 	int curElement = 0;
-	for (int i = 0; i < size*size; i++)
+	for (unsigned int i = 0; i < size*size; i++)
 	{
 		int sideLength = sides / 4;
 		if (i == 0)

@@ -92,7 +92,7 @@ TexturedModel processMesh(aiMesh* mesh, const aiScene* scene, string directory)
 	vector<GLfloat> normals;
 	vector<GLuint> indices;
 	// Vertices
-	for (int vID = 0; vID < mesh->mNumVertices; vID++)
+	for (unsigned int vID = 0; vID < mesh->mNumVertices; vID++)
 	{
 		// Vertices
 		GLfloat x_vertex = mesh->mVertices[vID].x;

@@ -60,11 +60,11 @@ void GameObjectLoader::loadLevel(string path)
 	}
 	GLint radius = fieldSize / 2;
 	// Read and parse file
-	for (int i = 0; i < fieldSize; i++)
+	for (unsigned int i = 0; i < fieldSize; i++)
 	{
 		getline(levelFile, buffer);
 		const char * line = buffer.c_str();
-		for (int j = 0; j < fieldSize; j++)
+		for (unsigned int j = 0; j < fieldSize; j++)
 		{
 			glm::fvec2 curPos = glm::fvec2(- radius + j, - radius + i);
 			switch (line[j])
