@@ -22,12 +22,10 @@ using namespace std;
 void generateLevel(int fieldSize, float wallDensity, string path);
 int main(int argc, char * argv[])
 {
-	if (argc != 4)
-	{
-		puts(HELP_INFO);
-		return 1;
-	}
-	else
+	int fieldSize;
+	float wallDensity;
+	string path;
+	if(argc == 4)
 	{
 		int fieldSize = atoi(argv[1]);
 		if (fieldSize % 2 != 1)
@@ -42,10 +40,22 @@ int main(int argc, char * argv[])
 			return 1;
 		}
 		string path(argv[3]);
-		generateLevel(fieldSize, wallDensity, path);
-		puts("Generated successfully");
-		return 0;
 	}
+	else if (argc == 1)
+	{
+		wallDensity = 0.66f;
+		fieldSize = 13;
+		path = string("output.txt");
+	}
+	else
+	{
+		puts(HELP_INFO);
+		return 1;
+	}
+	printf("Generating a level with field %ix%i, wall count density = %.2f, output file : %s\n", fieldSize, fieldSize, wallDensity, path.c_str());
+	generateLevel(fieldSize, wallDensity, path);
+	puts("Generated successfully");
+	return 0;
 }
 void generateLevel(int fieldSize, float wallDensity, string path)
 {
