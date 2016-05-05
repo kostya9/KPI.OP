@@ -3,21 +3,16 @@
 				
 	TODOs features
 
-Getting the field borders - function isInField() or smth
-
-Game menu state
-
-Generate walls on the map(by reading a file or randomly?)
+add HighScore feature
 
 Generating particles while cutting (or lighting red ??)
 
 Fog of war ?
 
-Fog particles
+	Fog particles
 
 Drawing a map
 
-White hole - win condition
 
 AI ???
 

@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Field.h"
 #include "WhiteHole.h"
+#include "Menu.h"
 class GameObjectManager
 {
 	private:
@@ -17,6 +18,7 @@ class GameObjectManager
 		Light * light;
 		Renderer * renderer;
 		StaticShader * shader;
+		Menu * menu;
 	public:
 		GameObjectManager();
 		Wall::COLLISION_STATUS isMovementColliding(glm::fvec3 positionFrom, glm::fvec3 positionDest, Wall ** collider); // Wall collision
@@ -27,6 +29,7 @@ class GameObjectManager
 		void addObject(GameObject * object);
 		void addObject(Light * light);
 		void addObject(WhiteHole * hole);
+		void addObject(Menu * menu);
 		WhiteHole * getWhiteHole();
 		Field * getField();
 		Light * getLight();

@@ -2,7 +2,6 @@
 
 GameObject::GameObject(vector<Entity> entities, glm::fvec3 position)
 {
-	objects.push_back(this);
 	this->entities = entities;
 	this->setPosition(position);
 	this->show = true;
@@ -78,21 +77,6 @@ void GameObject::render(Renderer * renderer, StaticShader shader)
 		}
 }
 
-vector<GameObject*> GameObject::getObjects()
-{
-	return objects;
-}
-
 GameObject::~GameObject()
 {
-	int i = 0;
-	for (GameObject * object : objects)
-	{
-		if (object == this)
-		{
-			objects.erase(objects.begin() + i);
-			break;
-		}
-		i++;
-	}
 }

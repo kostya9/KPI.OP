@@ -1,0 +1,2 @@
+cd levels
+genRandomLevel.bat

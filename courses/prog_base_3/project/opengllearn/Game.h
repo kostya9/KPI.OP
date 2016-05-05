@@ -20,6 +20,8 @@ class Game
 		Keyboard * getKeyboard();
 		Player * getPlayer();
 		Field * getField();
+		void setState(GameState state);
+		void cleanGameObjects();
 		void loadLevel(string path);
 		void generateField(glm::fvec2 center, GLuint size);
 		void createPlayer(glm::fvec2 position);
@@ -30,6 +32,7 @@ class Game
 		void changeLightPosition();
 		void endGameIfOutOfField();
 		void winIfAtWhiteHole();
+		void close();
 		void checkInputKeysAndMovePlayer();
 		void removeTransparencyIfAlreadyMoved(GameObject * newCollider, GameObject * collider);
 		void updatingErrorMessage(MOVEMENT_STATUS status);
@@ -46,5 +49,6 @@ class Game
 		Settings * settings;
 		Menu * menu;
 		GameObjectManager * manager;
+		GameObject * lastCollider;
 
 };

@@ -5,6 +5,21 @@ bool Menu::isActive()
 	return active;
 }
 
+Game * Menu::getGame()
+{
+	return game;
+}
+
+Camera * Menu::getCamera()
+{
+	return cam;
+}
+
+Light * Menu::getLight()
+{
+	return light;
+}
+
 void Menu::addMenuOption(MenuOption * option)
 {
 	options.push_back(option);
@@ -23,6 +38,8 @@ void Menu::enable()
 
 void Menu::update()
 {
+	if (keyboard->isKeyPressed(GLFW_KEY_ENTER))
+		options.at(curSelected)->onClick();
 	static char prevKey = '\0';
 	if ((prevKey == '\0') && keyboard->isKeyPressed('s'))
 	{
@@ -47,15 +64,12 @@ void Menu::update()
 
 void Menu::render(Renderer * renderer, StaticShader shader)
 {
-	Camera c = Camera();
-	Light light = Light(glm::fvec3(0.0f, 0.0f, 1.0f), glm::fvec3(1.0f, 1.0f, 1.0f));
-	c.moveForward(-1.f);
-	shader.use();
+	/*shader.use();
 	shader.loadViewMatrix(c);
 	shader.loadLight(light);
 	shader.unUse();
-	renderer->prepare();
-	glm::fvec2 startPos = glm::fvec2(0.0f, 0.2f);
+	renderer->prepare();*/
+	glm::fvec2 startPos = glm::fvec2(0.0f, 0.3f);
 	for (MenuOption * option : options)
 	{
 		option->render(renderer, shader, startPos);

@@ -24,12 +24,24 @@ Wall::COLLISION_STATUS GameObjectManager::isMovementColliding(glm::fvec3 positio
 void GameObjectManager::renderAll()
 {
 	shader->use();
-	shader->loadViewMatrix(*(player->getCamera()));
-	shader->loadLight(*light);
+	if (menu == nullptr)
+	{
+		shader->loadViewMatrix(*(player->getCamera()));
+		shader->loadLight(*light);
+	}
+	else
+	{
+		shader->loadViewMatrix(*(menu->getCamera()));
+		shader->loadLight(*(menu->getLight()));
+	}
+
 	shader->unUse();
 	renderer->prepare();
 	player->render(renderer, *shader);
-	hole->render(renderer, *shader);
+	if (menu != nullptr)
+		menu->render(renderer, *shader);
+	if(hole != nullptr)
+		hole->render(renderer, *shader);
 	field->render(renderer, *shader);
 	for (GameObject * obj : objects)
 		obj->render(renderer, *shader);
@@ -65,6 +77,11 @@ void GameObjectManager::addObject(Light * light)
 void GameObjectManager::addObject(WhiteHole * hole)
 {
 	this->hole = hole;
+}
+
+void GameObjectManager::addObject(Menu * menu)
+{
+	this->menu = menu;
 }
 
 WhiteHole * GameObjectManager::getWhiteHole()
@@ -107,6 +124,11 @@ GameObjectManager::~GameObjectManager()
 		delete obj;
 	for (Wall * obj : walls)
 		delete obj;
+	if(hole != nullptr)
+		delete hole;
+	delete light;
+	//if (menu != nullptr)
+		//delete menu;
 	delete renderer;
 	shader->deleteShader();
 	delete shader;

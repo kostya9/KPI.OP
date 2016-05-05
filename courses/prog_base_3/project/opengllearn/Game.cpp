@@ -2,11 +2,11 @@
 
 #include "Game.h"
 #include "PlayerMovementManager.h"
-
+#include "NewGameMenuOption.h"
+#include "ExitMenuOption.h"
 void window_key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 Game::Game()
 {
-	state = GAME_MENU;
 	Window::open();
 	manager = new GameObjectManager();
 	settings = new Settings();
@@ -17,14 +17,19 @@ Game::Game()
 	manager->addObject(light);
 	key_callback kb = window_key_callback;
 	Window::addCallBack(kb);
+	setState(GAME_MENU);
 
-	this->menu = new Menu();
+	this->menu = new Menu(this);
+	manager->addObject(menu);
+
 	MenuOptionButton * button = new MenuOptionButton(&Loader(), settings->font, glm::fvec3(1.0f, 1.0f, 1.0f), string("HEYYY"));
 	MenuOptionButton * button1 = new MenuOptionButton(&Loader(), settings->font, glm::fvec3(1.0f, 1.0f, 1.0f), string("HEYYY1"));
-	MenuOptionSlider * slider = new MenuOptionSlider(&Loader(), settings->font, glm::fvec3(1.0f, 1.0f, 1.0f));
+	NewGameMenuOption * newGame = new NewGameMenuOption(&Loader(), settings->font, glm::fvec3(1.0f, 1.0f, 1.0f));
+	ExitMenuOption * buttonExit = new ExitMenuOption(&Loader(), settings->font, glm::fvec3(1.0f, 1.0f, 1.0f));
+	menu->addMenuOption(newGame);
 	menu->addMenuOption(button);
 	menu->addMenuOption(button1);
-	menu->addMenuOption(slider);
+	menu->addMenuOption(buttonExit);
 }
 
 
@@ -40,6 +45,29 @@ Player * Game::getPlayer()
 Field * Game::getField()
 {
 	return manager->getField();
+}
+void Game::setState(GameState state)
+{
+	cleanGameObjects();
+	this->state = state;
+	if (state == GAME_MENU)
+	{
+		this->manager->addObject(menu);
+		loader->generateField(glm::fvec2(0.0f, 0.0f), 7);
+		loader->createPlayer(glm::fvec2(2.0f, -2.0f));
+		loader->createWall(glm::fvec2(-2.0f, 0.f));
+		loader->createWall(glm::fvec2(2.0f, 0.f));
+	}
+}
+void Game::cleanGameObjects()
+{
+	delete this->manager;
+	delete this->loader;
+	lastCollider = nullptr;
+	manager = new GameObjectManager();
+	loader = new GameObjectLoader(manager);
+	Light * light = new Light(glm::fvec3(0.0f, 0.0f, 0.0f), glm::fvec3(1.0f, 1.0f, 1.0f));
+	manager->addObject(light);
 }
 void Game::loadLevel(string path)
 {
@@ -70,21 +98,73 @@ void Game::update()
 	if (state == GAME_ACTIVE)
 	{
 		// endGameIfOutOfField(); // SHould I?
-		winIfAtWhiteHole();
 		checkInputKeysAndMovePlayer();
 		getPlayer()->update();
 		changeLightPosition();
+		winIfAtWhiteHole();
+		if (keyboard->isKeyPressed(GLFW_KEY_ESCAPE))
+		{
+			this->setState(GAME_MENU);
+		}
 	}
 	else if (state == GAME_MENU)
 	{
+		GameObject * newCollider = PlayerMovementManager::getLastCollider();
+		removeTransparencyIfAlreadyMoved(newCollider, lastCollider);
+		static int counter = 0;
 		menu->update();
+		if (this->state == GAME_ACTIVE)
+		{
+			lastCollider = nullptr;
+			counter = 0;
+			return;
+		}
+		getPlayer()->update();
+		MOVEMENT_STATUS status;
+		switch (counter / 4)
+		{
+			case 0:
+			{
+				status = PlayerMovementManager::tryMoveLeft(getPlayer(), manager);
+			}break;
+			case 1:
+			{
+				status = PlayerMovementManager::tryMoveBackward(getPlayer(), manager);
+			}break;
+			case 2:
+			{
+				status = PlayerMovementManager::tryMoveRight(getPlayer(), manager);
+			}break;
+			case 3:
+			{
+				status = PlayerMovementManager::tryMoveForward(getPlayer(), manager);
+			}break;
+			case 4:
+			{
+				status = MOVE_NOT_MOVING_COLLISION;
+				counter = 0;
+			}
+		}
+		if (status == MOVE_MOVING && lastCollider != nullptr)
+			lastCollider->setAlpha(1.f);
+
+		lastCollider = PlayerMovementManager::getLastCollider();
+		setTransparencyIfMovingThrough(lastCollider, status);
+		if (status == MOVE_MOVING)
+			counter++;
+		if (status == MOVE_MOVING_HOLE)
+			counter+=2;
 	}
 }
 void Game::winIfAtWhiteHole()
 {
 	WhiteHole * hole = manager->getWhiteHole();
-	if(getPlayer()->isAtPositionNeighborhood(hole->getPosition()))
-		glfwSetWindowShouldClose(Window::getGLFWWindow(), GL_TRUE);
+	if (getPlayer()->isAtPositionNeighborhood(hole->getPosition()))
+		this->setState(GAME_MENU);
+}
+void Game::close()
+{
+	glfwSetWindowShouldClose(Window::getGLFWWindow(), GL_TRUE);
 }
 void Game::changeLightPosition()
 {
@@ -107,30 +187,35 @@ void Game::render()
 	{
 		manager->renderAll();
 		writePlayerPosition();
-		Window::update();
 	}
 	else if (state == GAME_MENU)
 	{
-		StaticShader shader = StaticShader();
-		menu->render(&Renderer(shader), shader);
-		Window::update();
+		//StaticShader shader = StaticShader();
+		manager->renderAll();
+		//menu->render(&Renderer(shader), shader);
 	}
+	Window::update();
 }
 
 void Game::checkInputKeysAndMovePlayer()
 {
-	static GameObject * collider;
 	GameObject * newCollider = PlayerMovementManager::getLastCollider();
-	removeTransparencyIfAlreadyMoved(newCollider, collider);
+	
 	MOVEMENT_STATUS status = PlayerMovementManager::checkInputKeysForMovement(getPlayer(), manager);
-	collider = PlayerMovementManager::getLastCollider();
-	setTransparencyIfMovingThrough(collider, status);
+	//removeTransparencyIfAlreadyMoved(newCollider, lastCollider);
+	//if(status == MOVE_MOVING)
+		
+	if (status != MOVE_MOVING_HOLE && status != MOVE_ALREADY_MOVING && lastCollider != nullptr)
+		lastCollider->setAlpha(1.f);
+	newCollider = PlayerMovementManager::getLastCollider();
+	if (newCollider != nullptr)
+		lastCollider = newCollider;
+	setTransparencyIfMovingThrough(lastCollider, status);
 	updatingErrorMessage(status);
 }
 
 void Game::removeTransparencyIfAlreadyMoved(GameObject * newCollider, GameObject * collider)
 {
-	
 	if (getPlayer()->isMoving() == false || newCollider != collider)
 	{
 		if (collider != nullptr)
@@ -175,6 +260,7 @@ void Game::writePlayerPosition()
 }
 Game::~Game()
 {
+	puts("IM DYING!!");
 	delete manager;
 	delete loader;
 	delete settings;
@@ -182,7 +268,7 @@ Game::~Game()
 }
 void window_key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
-	if (key == GLFW_KEY_ESCAPE)
+	if (key == GLFW_KEY_F1)
 	{
 		glfwSetWindowShouldClose(window, GL_TRUE);
 		return;

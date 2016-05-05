@@ -9,78 +9,96 @@ GameObject * PlayerMovementManager::getLastCollider()
 }
 MOVEMENT_STATUS PlayerMovementManager::tryMoveForward(Player * player, GameObjectManager * goManager)
 {
-	glm::fvec3 dest = player->getPosition() + glm::fvec3(0.0f, 0.0f, -1.0f);
-	MOVEMENT_STATUS status = tryMove(player, goManager, dest);
-	if (status == MOVE_MOVING_HOLE)
-		player->moveForward(2);
-	else if (status == MOVE_MOVING)
-		player->moveForward(1);
-	return status;
+	if (player->isMoving() == false)
+	{
+		glm::fvec3 dest = player->getPosition() + glm::fvec3(0.0f, 0.0f, -1.0f);
+		MOVEMENT_STATUS status = tryMove(player, goManager, dest);
+		if (status == MOVE_MOVING_HOLE)
+			player->moveForward(2);
+		else if (status == MOVE_MOVING)
+			player->moveForward(1);
+		return status;
+	}
+	else
+		return MOVE_ALREADY_MOVING;
 }
 
 MOVEMENT_STATUS PlayerMovementManager::tryMoveBackward(Player * player, GameObjectManager * goManager)
 {
-	glm::fvec3 dest = player->getPosition() + glm::fvec3(0.0f, 0.0f, 1.0f);
-	MOVEMENT_STATUS status = tryMove(player, goManager, dest);
-	if (status == MOVE_MOVING_HOLE)
-		player->moveBackwards(2);
-	else if (status == MOVE_MOVING)
-		player->moveBackwards(1);
-	return status;
+	if (player->isMoving() == false)
+	{
+		glm::fvec3 dest = player->getPosition() + glm::fvec3(0.0f, 0.0f, 1.0f);
+		MOVEMENT_STATUS status = tryMove(player, goManager, dest);
+		if (status == MOVE_MOVING_HOLE)
+			player->moveBackwards(2);
+		else if (status == MOVE_MOVING)
+			player->moveBackwards(1);
+		return status;
+	}
+	else
+		return MOVE_ALREADY_MOVING;
 }
 
 MOVEMENT_STATUS PlayerMovementManager::tryMoveLeft(Player * player, GameObjectManager * goManager)
 {
-	glm::fvec3 dest = player->getPosition() + glm::fvec3(-1.0f, 0.0f, 0.0f);
-	MOVEMENT_STATUS status = tryMove(player, goManager, dest);
-	if (status == MOVE_MOVING_HOLE)
-		player->moveLeft(2);
-	else if (status == MOVE_MOVING)
-		player->moveLeft(1);
-	return status;
+	if (player->isMoving() == false)
+	{
+		glm::fvec3 dest = player->getPosition() + glm::fvec3(-1.0f, 0.0f, 0.0f);
+		MOVEMENT_STATUS status = tryMove(player, goManager, dest);
+		if (status == MOVE_MOVING_HOLE)
+			player->moveLeft(2);
+		else if (status == MOVE_MOVING)
+			player->moveLeft(1);
+		return status;
+	}
+	return MOVE_ALREADY_MOVING;
 }
 
 MOVEMENT_STATUS PlayerMovementManager::tryMoveRight(Player * player, GameObjectManager * goManager)
 {
-	glm::fvec3 dest = player->getPosition() + glm::fvec3(1.0f, 0.0f, 0.0f);
-	MOVEMENT_STATUS status = tryMove(player, goManager, dest);
-	if (status == MOVE_MOVING_HOLE)
-		player->moveRight(2);
-	else if (status == MOVE_MOVING)
-		player->moveRight(1);
-	return status;
+	if (player->isMoving() == false)
+	{
+		glm::fvec3 dest = player->getPosition() + glm::fvec3(1.0f, 0.0f, 0.0f);
+		MOVEMENT_STATUS status = tryMove(player, goManager, dest);
+		if (status == MOVE_MOVING_HOLE)
+			player->moveRight(2);
+		else if (status == MOVE_MOVING)
+			player->moveRight(1);
+		return status;
+	}
+	return MOVE_ALREADY_MOVING;
 }
 
 MOVEMENT_STATUS PlayerMovementManager::checkInputKeysForMovement(Player * player, GameObjectManager * goManager)
 {
-	if (player->isMoving() == false)
+	MOVEMENT_STATUS status;
+	if (keyboard->isKeyPressed('w'))
 	{
-		MOVEMENT_STATUS status;
-		if (keyboard->isKeyPressed('w'))
-		{
-			status = tryMoveForward(player, goManager);
-			return status;
-		}
-		else if (keyboard->isKeyPressed('s'))
-		{
-			MOVEMENT_STATUS status = tryMoveBackward(player, goManager);
-			return status;
-		}
-		else if (keyboard->isKeyPressed('a'))
-		{
-			MOVEMENT_STATUS status = tryMoveLeft(player, goManager);
-			return status;
-		}
-		else if (keyboard->isKeyPressed('d'))
-		{
-			MOVEMENT_STATUS status = tryMoveRight(player, goManager);
-			return status;
-		}
-		else
-			return MOVE_NOT_MOVING_NO_COMMANDS;
+		status = tryMoveForward(player, goManager);
+		return status;
+	}
+	else if (keyboard->isKeyPressed('s'))
+	{
+		MOVEMENT_STATUS status = tryMoveBackward(player, goManager);
+		return status;
+	}
+	else if (keyboard->isKeyPressed('a'))
+	{
+		MOVEMENT_STATUS status = tryMoveLeft(player, goManager);
+		return status;
+	}
+	else if (keyboard->isKeyPressed('d'))
+	{
+		MOVEMENT_STATUS status = tryMoveRight(player, goManager);
+		return status;
 	}
 	else
-		return MOVE_MOVING;
+	{
+		lastCollider = nullptr;
+		if (player->isMoving())
+			return MOVE_ALREADY_MOVING;
+		return MOVE_NOT_MOVING_NO_COMMANDS;
+	}
 
 }
 
@@ -110,6 +128,7 @@ MOVEMENT_STATUS PlayerMovementManager::tryMove(Player * player, GameObjectManage
 	}
 	else if (collision_status == Wall::COLLISION_FALSE)
 	{
+		lastCollider = nullptr;
 		if (goManager->getField()->isInField(glm::fvec2(destination.x, destination.z)) == false)
 			return MOVE_NOT_MOVING_COLLISION;
 		return MOVE_MOVING;

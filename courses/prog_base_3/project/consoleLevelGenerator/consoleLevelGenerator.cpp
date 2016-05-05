@@ -64,7 +64,7 @@ void generateLevel(int fieldSize, float wallDensity, string path)
 	char * levelArray = new char[fieldSize*fieldSize]();
 	output.open(path, fstream::out);
 	output << to_string(fieldSize) << "\n";
-	int numberOfWalls = wallDensity * (fieldSize * fieldSize);
+	int numberOfWalls = (int)(wallDensity * (fieldSize * fieldSize));
 	for (int i = 0; i < fieldSize * fieldSize; i++)
 		levelArray[i] = NOTHING_POS_CODE;
 	for (int i = 0; i < numberOfWalls; i++)

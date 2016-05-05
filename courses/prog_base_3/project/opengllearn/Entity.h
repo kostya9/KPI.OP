@@ -6,6 +6,7 @@ struct Entity
 	public:
 		TexturedModel model;
 		glm::vec3 position;
+		// Rotation in DEGREES
 		GLfloat rotX, rotY, rotZ;
 		GLfloat scale;
 		Entity(TexturedModel model, glm::vec3 position, float rotX, float rotY, float rotZ, float scale)
@@ -30,10 +31,12 @@ struct Entity
 		{
 			this->position += position;
 		}
+
 		void increasePosition(GLfloat dx, GLfloat dy, GLfloat dz)
 		{
 			increasePosition(glm::fvec3(dx, dy, dz));
 		}
+		// Rotation in DEGREES
 		void increaseRotation(GLfloat dx, GLfloat dy, GLfloat dz)
 		{
 			rotX += dx;

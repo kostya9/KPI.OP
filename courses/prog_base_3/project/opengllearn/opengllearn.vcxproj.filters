@@ -159,6 +159,12 @@
     <ClInclude Include="MenuOptionSlider.h">
       <Filter>Game\Menu</Filter>
     </ClInclude>
+    <ClInclude Include="NewGameMenuOption.h">
+      <Filter>Game\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="ExitMenuOption.h">
+      <Filter>Game\Menu</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Loader.cpp">
@@ -219,6 +225,12 @@
       <Filter>Game\Menu</Filter>
     </ClCompile>
     <ClCompile Include="Menu.cpp">
+      <Filter>Game\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="NewGameMenuOption.cpp">
+      <Filter>Game\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="ExitMenuOption.cpp">
       <Filter>Game\Menu</Filter>
     </ClCompile>
   </ItemGroup>

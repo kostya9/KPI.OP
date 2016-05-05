@@ -66,7 +66,7 @@ void GameObjectLoader::loadLevel(string path)
 		const char * line = buffer.c_str();
 		for (unsigned int j = 0; j < fieldSize; j++)
 		{
-			glm::fvec2 curPos = glm::fvec2(- radius + j, - radius + i);
+			glm::fvec2 curPos = glm::fvec2(- radius + (int)j, - radius + (int)i);
 			switch (line[j])
 			{
 				case '0':

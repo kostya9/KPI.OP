@@ -28,7 +28,7 @@ void MenuOption::render(Renderer * renderer, StaticShader shader, glm::fvec2 pos
 {
 	for (Entity &en : entities)
 	{
-		en.position = glm::fvec3(position.x, position.y, 0.0f);
+		en.position = glm::fvec3(position.x, 6.0f, position.y);
 		if (selected)
 			en.scale = this->scale + 0.1f;
 		else
@@ -40,11 +40,15 @@ void MenuOption::render(Renderer * renderer, StaticShader shader, glm::fvec2 pos
 	position.x *= Window::getWidth();
 	position.y *= Window::getHeight();
 	position.x += Window::getWidth() / 2 - text.size() * 15.0f;
-	position.y += Window::getHeight()/2 - text.size() * 3.0f;
+	position.y += Window::getHeight()/2 - 12.0f;
 	if (!selected)
 		font->renderText((GLchar *)text.c_str(), position, color, 1.0f);
 	else
-		font->renderText((GLchar *)text.c_str(), position, color, 1.1f);
+	{
+		position.y += 1.2f;
+		position.x -= 10.0f;
+		font->renderText((GLchar *)text.c_str(), position, color, 1.05f);
+	}
 }
 
 void MenuOption::disable()
