@@ -1,0 +1,64 @@
+<html>
+	<head>
+		<title>New Designer</title>
+					<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha/css/bootstrap.min.css">
+					<link rel="stylesheet" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.css" >
+					<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.0/jquery.js" ></script>
+					<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.0/jquery-ui.js" ></script>
+					<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.js" ></script>
+					<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.js"> </script>
+					<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.js" ></script>
+				</head>
+				<body>
+				<nav class="navbar navbar-dark bg-inverse"><a class="navbar-brand" href="#">Designers</a><ul class="nav navbar-nav"><li class="nav-item"><a class="nav-link" href="/">Home</a></li></ul></nav>
+					<div class="container">
+						<form action="/designers" method="post">
+							<div class="form-group">
+								<label for="name">Name:</label>
+								<input type="text" class="form-control" name="name" required>
+								</div>
+							<div class="form-group">
+								<label for="surname">Surname:</label>
+								<input type="text" class="form-control" name="surname" required>
+								</div>
+							<div class="form-group">
+								<label for="department">Department:</label>
+								<input type="text" class="form-control" name="department" required>
+								</div>
+							<div class="form-group">
+								<label for="company">Company:</label>
+								<input type="text" class="form-control" name="company" required>
+								</div>
+							<div class="form-group">
+								<label for="motto">Motto:</label>
+								<input type="text" class="form-control" name="motto" required>
+								</div>
+							<div class="form-group">
+							<label for="experienceYears">ExperienceYears:</label>
+							<input type="number" min="0" step="1" class="form-control" name="experienceYears" required>
+							</div>
+							<div class="form-group">
+								<label for="averagePolygons">AveragePolygons:</label>
+								<input type="number" min="0" step="0.01" class="form-control" name="averagePolygons" required>
+								</div>
+							<div class="form-group">
+								<label for="averageVertices">AverageVertices</label>
+								<input type="number" min="0" step="0.01" class="form-control" name="averageVertices" required>
+								</div>
+							<div class="form-group">
+								<label for="hireDate">HireDate:</label>
+								<div class="input-group input-append date" id="datePicker">
+									<input type="text" class="form-control" name="date" required>
+										<span class="input-group-addon add-on">
+											<span class="glyphicon glyphicon-calendar"/>
+										</span>
+									</div>
+								</div>
+							<div class="form-group"> 	   </div>
+							<button type="submit" class="btn btn-default">Submit</button>
+						</form>
+				</div>
+<script> $(document).ready(function() {     $('#datePicker')         .datepicker({             format: 'yyyy-mm-dd'         })         .on('changeDate', function(e) {
+             $('#eventForm').formValidation('revalidateField', 'date');         }); }); </script>
+				</body>
+</html>
