@@ -408,7 +408,7 @@ static void make_response_post(http_server_t * self, char * address, char * cont
 		{
 			char xml_buffer[XML_BUFFER_LENGTH];
 			designer_to_xml_string(xml_buffer, XML_BUFFER_LENGTH, des_cr);
-			response_ok(buffer, xml_buffer);
+			sprintf(buffer, HTTP_VERSION " 301 REDIRECT\nLocation : \designers\r\n\r\n");
 		}break;
 		default:
 			page_not_found(buffer, "ERROR COULD NOT CREATE DESIGNER");
@@ -448,5 +448,13 @@ void make_response(http_server_t * self, char * request, char * buffer, size_t b
 		char * content = strstr(buffer_cont, "\r\n\r\n");
 		content = strtok(content, "\r\n\r\n");
 		make_response_post(self, address, content, buffer, buffer_size);
+	}
+	else if(method == HTTP_OPTIONS)
+	{
+		sprintf(buffer,
+			"HTTP/1.1 200 OK\n"
+			"Access-Control-Allow-Origin: *\n"
+			"Access-Control-Allow-Methods: DELETE\n"
+			"\n");
 	}
 }
