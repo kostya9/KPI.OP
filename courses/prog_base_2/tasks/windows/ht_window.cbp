@@ -38,6 +38,10 @@
 			<Add library="comctl32" />
 		</Linker>
 		<Unit filename="main.cpp" />
+		<Unit filename="window_controls.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="window_controls.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
