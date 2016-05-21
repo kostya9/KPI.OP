@@ -1,0 +1,18 @@
+# depslib dependency file v1.0
+1463868390 source:d:\projects\cb\ht_window\main.cpp
+	<tchar.h>
+	<windows.h>
+	<ctype.h>
+	<stdio.h>
+	"window_controls.h"
+
+1463868369 d:\projects\cb\ht_window\window_controls.h
+	<windows.h>
+	<CommCtrl.h>
+
+1463868370 source:d:\projects\cb\ht_window\window_controls.c
+	"window_controls.h"
+
+1463868370 source:d:\projects\cb\ht_window\window_controls.cpp
+	"window_controls.h"
+
