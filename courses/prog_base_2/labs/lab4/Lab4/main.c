@@ -7,6 +7,7 @@ int main(void)
 {
 	lib_init();
 	http_server_t * server = http_server_new();
+	puts("Server started on port 8080...");
 	http_server_start(server, 8080);
 	http_server_delete(server);
 	lib_free();
