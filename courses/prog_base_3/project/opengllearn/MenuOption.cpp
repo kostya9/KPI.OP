@@ -39,20 +39,21 @@ void MenuOption::render(MasterRenderer * renderer, glm::fvec2 position)
 
 	for (Entity en : entities)
 		renderer->proccessEntity(en);
-	position.x *= Window::getWidth();
-	position.y *= Window::getHeight();
-	position.x += Window::getWidth() / 2 - text.size() * 15.0f;
-	position.y += Window::getHeight()/2 - 12.0f;
+}
+void MenuOption::renderText(glm::fvec2 pos) {
+	pos.x *= Window::getWidth();
+	pos.y *= Window::getHeight();
+	pos.x += Window::getWidth() / 2 - text.size() * 15.0f;
+	pos.y += Window::getHeight() / 2 - 12.0f;
 	if (!selected)
-		font->renderText((GLchar *)text.c_str(), position, color, 1.0f);
+		font->renderText((GLchar *)text.c_str(), pos, color, 1.0f);
 	else
 	{
-		position.y += 1.2f;
-		position.x -= 10.0f;
-		font->renderText((GLchar *)text.c_str(), position, color, 1.05f);
+		pos.y += 1.2f;
+		pos.x -= 10.0f;
+		font->renderText((GLchar *)text.c_str(), pos, color, 1.05f);
 	}
 }
-
 void MenuOption::disable()
 {
 	enabled = false;

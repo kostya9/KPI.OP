@@ -62,6 +62,7 @@ void GameObjectManager::renderAll()
 	{
 		renderer->render((menu->getLight()), (menu->getCamera()));
 		renderer->cleanUp();
+		menu->renderText();
 	}
 	renderer->update();
 }

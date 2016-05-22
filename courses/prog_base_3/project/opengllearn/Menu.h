@@ -32,4 +32,5 @@ class Menu
 		void enable();
 		void update();
 		void render(MasterRenderer * renderer);
+		void renderText();
 };

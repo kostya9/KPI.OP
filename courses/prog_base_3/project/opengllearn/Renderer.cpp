@@ -79,6 +79,7 @@ void Renderer::render(unordered_map<TexturedModel, vector<Entity>*> entities)
 		}
 		unbindTexturedModel();
 	}
+	glDisable(GL_CULL_FACE);
 }
 
 void Renderer::render(Shader shader, Entity entity)
@@ -108,7 +109,6 @@ void Renderer::prepareTexturedModel(TexturedModel text_model)
 	Model model = text_model.getModel();
 	Texture texture = text_model.getTexture();
 	GLuint vaoID = model.getVaoId();
-	shader.use();
 	bindVAO(vaoID);
 	glActiveTexture(GL_TEXTURE0); // sampler2D thingy
 	glBindTexture(GL_TEXTURE_2D, text_model.getTexture().getId());
@@ -123,7 +123,6 @@ void Renderer::unbindTexturedModel()
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(0);
 	unBindVAO();
-	shader.unUse();
 }
 
 void Renderer::prepareInstance(Entity entity)

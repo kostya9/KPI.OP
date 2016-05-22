@@ -76,3 +76,13 @@ void Menu::render(MasterRenderer * renderer)
 		startPos.y -= 0.2f;
 	}
 }
+
+void Menu::renderText()
+{
+	glm::fvec2 startPos = glm::fvec2(0.0f, 0.3f);
+	for (MenuOption * opt : options)
+	{
+		opt->renderText(startPos);
+		startPos.y -= 0.2f;
+	}
+}

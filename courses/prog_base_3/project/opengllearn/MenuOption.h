@@ -22,6 +22,7 @@ class MenuOption
 		virtual void onClick() {};
 		virtual void update() {};
 		virtual void render(MasterRenderer * renderer, glm::fvec2 position);
+		void MenuOption::renderText(glm::fvec2 pos);
 		virtual void disable();
 		virtual void enable();
 };
