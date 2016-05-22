@@ -17,6 +17,7 @@ private:
 	glm::fmat4 projectionMatrix;
 	StaticShader shader;
 	void createProjectionMatrix();
+	glm::fvec3 mask = glm::fvec3(1.0f, 1.0f, 1.0f);
 	public:
 		Renderer(StaticShader shader);
 		/*Prepares the window for drawing the next frame*/
@@ -25,6 +26,7 @@ private:
 		void shake(StaticShader shader, GLfloat time);
 		void unShake(StaticShader shader);
 		void update(StaticShader shader);
+		void addMask(glm::fvec3 mask);
 		void render(unordered_map<TexturedModel, vector<Entity> *> entities);
 		void render(Shader shader, Entity entity);
 		void prepareTexturedModel(TexturedModel text_model);

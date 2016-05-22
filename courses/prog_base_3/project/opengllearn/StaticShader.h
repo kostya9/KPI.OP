@@ -14,6 +14,7 @@ class StaticShader : public Shader
 		GLuint location_alpha;
 		GLuint location_shake;
 		GLuint location_time;
+		GLuint location_mask;
 	public:
 		StaticShader(); // Actually just constatnt paths // EDITED
 		void loadTransformationMatrix(glm::mat4 matrix);
@@ -22,6 +23,7 @@ class StaticShader : public Shader
 		void loadLight(Light * light);
 		void loadAlpha(GLfloat alpha);
 		void loadShake(GLboolean shake, GLfloat time);
+		void loadMask(glm::fvec3 mask);
 	protected:
 		virtual void bindAttributes() override;
 		virtual void getAllUniformLocations() override;

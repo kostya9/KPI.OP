@@ -103,20 +103,23 @@ void Game::update()
 	if (state == GAME_ACTIVE)
 	{
 		// endGameIfOutOfField(); // SHould I?
-		if(winIfAtWhiteHole() == false)
+		if (winIfAtWhiteHole() == false)
+		{
 			checkInputKeysAndMovePlayer();
-		if (isEnoughEnergy() == false)
-		{
-			lose();
-			return;
-		}
-		getPlayer()->update();
-		changeLightPosition();
-		if (manager->getShadow()->isAtPositionNeighborhood(getPlayer()->getPosition()))
-			getPlayer()->startDamaging(100);
-		if (keyboard->isKeyPressed(GLFW_KEY_ESCAPE))
-		{
-			this->setState(GAME_MENU);
+			if (isEnoughEnergy() == false)
+			{
+				manager->addMask(glm::fvec3(0.7f, 0.5f, 0.5f));
+				lose();
+				return;
+			}
+			if (manager->getShadow()->isAtPositionNeighborhood(getPlayer()->getPosition()))
+				getPlayer()->startDamaging(100);
+			getPlayer()->update();
+			changeLightPosition();
+			if (keyboard->isKeyPressed(GLFW_KEY_ESCAPE))
+			{
+				this->setState(GAME_MENU);
+			}
 		}
 	}
 	else if (state == GAME_MENU)
@@ -173,6 +176,7 @@ bool Game::winIfAtWhiteHole()
 	WhiteHole * hole = manager->getWhiteHole();
 	if (getPlayer()->isAtPositionNeighborhood(hole->getPosition()))
 	{
+		manager->addMask(glm::fvec3(0.5f, 0.7f, 0.5f));
 		current_info_text = string("You won! Congratulations!");
 		if (keyboard->isAnythingPressed())
 		{

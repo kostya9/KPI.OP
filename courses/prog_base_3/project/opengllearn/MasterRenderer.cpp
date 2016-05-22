@@ -44,6 +44,11 @@ void MasterRenderer::update()
 	renderer.update(shader);
 }
 
+void MasterRenderer::mask(glm::fvec3 color)
+{
+	renderer.addMask(color);
+}
+
 void MasterRenderer::shake(GLfloat time)
 {
 	renderer.shake(shader, time);

@@ -36,6 +36,7 @@ class GameObjectManager
 		void addObject(Light * light);
 		void addObject(WhiteHole * hole);
 		void addObject(Menu * menu);
+		void addMask(glm::fvec3 mask);
 		WhiteHole * getWhiteHole();
 		Field * getField();
 		Light * getLight();

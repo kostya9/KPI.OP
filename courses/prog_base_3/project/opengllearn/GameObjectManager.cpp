@@ -108,6 +108,11 @@ void GameObjectManager::addObject(Menu * menu)
 	this->menu = menu;
 }
 
+void GameObjectManager::addMask(glm::fvec3 mask)
+{
+	this->renderer->mask(mask);
+}
+
 WhiteHole * GameObjectManager::getWhiteHole()
 {
 	return this->hole;

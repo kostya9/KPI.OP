@@ -55,9 +55,15 @@ void Renderer::update(StaticShader shader)
 	}
 }
 
+void Renderer::addMask(glm::fvec3 mask)
+{
+	this->mask = mask;
+}
+
 void Renderer::render(unordered_map<TexturedModel, vector<Entity>*> entities)
 {
 	glEnable(GL_CULL_FACE);
+	shader.loadMask(mask);
 	for (pair<TexturedModel, vector<Entity> *> p : entities)
 	{
 		TexturedModel model = p.first;
@@ -130,7 +136,6 @@ void Renderer::prepareInstance(Entity entity)
 	shader.use();
 	glm::mat4 transformationMatrix = Maths::createTransformationMatrix(entity.position, entity.rotX, entity.rotY, entity.rotZ, entity.scale);
 	shader.loadTransformationMatrix(transformationMatrix);
-	glColor4f(1.0f, 1.0f, 1.0f, entity.alpha);
 	shader.loadAlpha(entity.alpha);
 	//shader.loadProjectionMatrix(projectionMatrix);
 }

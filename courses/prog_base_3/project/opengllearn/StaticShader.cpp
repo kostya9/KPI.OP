@@ -41,6 +41,11 @@ void StaticShader::loadShake(GLboolean shake, GLfloat time)
 	loadFloat(location_time, time);
 }
 
+void StaticShader::loadMask(glm::fvec3 mask)
+{
+	loadVector(location_mask, mask);
+}
+
 void StaticShader::bindAttributes() // DO NOT INLINE THIS AND ATTRIBUTE
 {
 	Shader::bindAttribute(0, "position");
@@ -58,4 +63,5 @@ void StaticShader::getAllUniformLocations()
 	location_alpha = this->getUniformLocation("alpha");
 	location_shake = this->getUniformLocation("shake");
 	location_time = this->getUniformLocation("time");
+	location_mask = this->getUniformLocation("mask");
 }

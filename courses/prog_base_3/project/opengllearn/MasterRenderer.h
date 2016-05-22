@@ -19,5 +19,6 @@ public:
 	void render(Light * light, Camera * cam);
 	void proccessEntity(Entity entity);
 	void update();
+	void mask(glm::fvec3 color);
 	void shake(GLfloat time);
 };
