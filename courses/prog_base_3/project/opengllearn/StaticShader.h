@@ -18,8 +18,8 @@ class StaticShader : public Shader
 		StaticShader(); // Actually just constatnt paths // EDITED
 		void loadTransformationMatrix(glm::mat4 matrix);
 		void loadProjectionMatrix(glm::mat4 matrix);
-		void loadViewMatrix(Camera camera);
-		void loadLight(Light light);
+		void loadViewMatrix(Camera  *camera);
+		void loadLight(Light * light);
 		void loadAlpha(GLfloat alpha);
 		void loadShake(GLboolean shake, GLfloat time);
 	protected:

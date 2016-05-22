@@ -25,6 +25,12 @@ void Wall::render(MasterRenderer * renderer)
 	hole->render(renderer);
 }
 
+void Wall::render(MasterRenderer * renderer, glm::fvec3 object, GLfloat distance)
+{
+	GameObject::render(renderer, object, distance);
+	hole->render(renderer, object, distance);
+}
+
 void Wall::setPosition(glm::fvec3 position)
 {
 	GameObject::setPosition(position);

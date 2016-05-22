@@ -19,6 +19,16 @@ void WallHole::render(MasterRenderer * renderer)
 		}
 }
 
+void WallHole::render(MasterRenderer * renderer, glm::fvec3 object, GLfloat distance)
+{
+	if (!show) // This is a hole, so invisibility for it means that Entities should be visible
+		for (Entity en : entities)
+		{
+			if(glm::length2(object - en.position) < distance)
+				renderer->proccessEntity(en);
+		}
+}
+
 WallHole::VISIBILITY_RETURN_CODE WallHole::makeVisible(HOLE_DIRECTION direction)
 {
 	this->show = true;

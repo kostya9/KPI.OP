@@ -29,6 +29,7 @@ void MenuOption::render(MasterRenderer * renderer, glm::fvec2 position)
 {
 	for (Entity &en : entities)
 	{
+		en.alpha = 0.8f;
 		en.position = glm::fvec3(position.x, 6.0f, position.y);
 		if (selected)
 			en.scale = this->scale + 0.1f;

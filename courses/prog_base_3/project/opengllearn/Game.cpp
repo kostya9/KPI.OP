@@ -48,6 +48,7 @@ Field * Game::getField()
 }
 void Game::setState(GameState state)
 {
+	
 	cleanGameObjects();
 	this->state = state;
 	if (state == GAME_MENU)
@@ -57,6 +58,7 @@ void Game::setState(GameState state)
 		loader->createPlayer(glm::fvec2(2.0f, -2.0f));
 		loader->createWall(glm::fvec2(-2.0f, 0.f));
 		loader->createWall(glm::fvec2(2.0f, 0.f));
+		loader->createShadow(getPlayer()->getPosition());
 	}
 }
 void Game::cleanGameObjects()
@@ -74,6 +76,7 @@ void Game::cleanGameObjects()
 void Game::loadLevel(string path)
 {
 	loader->loadLevel(path);
+	loader->createShadow(getPlayer()->getPosition());
 }
 void Game::generateField(glm::fvec2 center, GLuint size)
 {
@@ -102,8 +105,17 @@ void Game::update()
 		// endGameIfOutOfField(); // SHould I?
 		if(winIfAtWhiteHole() == false)
 			checkInputKeysAndMovePlayer();
+		if (isEnoughEnergy() == false)
+		{
+			lose();
+			return;
+		}
 		getPlayer()->update();
 		changeLightPosition();
+		if (manager->getShadow()->isAtPositionNeighborhood(getPlayer()->getPosition()))
+			getPlayer()->startDamaging(100);
+		else
+			getPlayer()->stopDamaging();
 		if (keyboard->isKeyPressed(GLFW_KEY_ESCAPE))
 		{
 			this->setState(GAME_MENU);
@@ -183,7 +195,15 @@ void Game::changeLightPosition()
 	newLightPos.z += 2.5f;
 	manager->getLight()->setPosition(newLightPos);
 }
+void Game::lose()
+{
+	current_error_text = "You lost! Try again";
+	if (keyboard->isAnythingPressed())
+	{
+		this->setState(GAME_MENU);
+	}
 
+}
 void Game::endGameIfOutOfField()
 {
 	glm::fvec2 pos = glm::fvec2(getPlayer()->getPosition().x, getPlayer()->getPosition().z);
@@ -277,6 +297,10 @@ Game::~Game()
 	delete loader;
 	delete settings;
 	Window::close();
+}
+bool Game::isEnoughEnergy()
+{
+	return getPlayer()->getEnergy() > 0.3f;
 }
 void window_key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {

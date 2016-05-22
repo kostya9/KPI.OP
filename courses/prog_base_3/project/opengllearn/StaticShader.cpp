@@ -18,16 +18,16 @@ void StaticShader::loadProjectionMatrix(glm::mat4 matrix)
 	this->loadMatrix(location_projectionMatrix, matrix);
 }
 
-void StaticShader::loadViewMatrix(Camera camera)
+void StaticShader::loadViewMatrix(Camera * camera)
 {
-	glm::mat4 viewMatrix = camera.getViewMatrix();
+	glm::mat4 viewMatrix = camera->getViewMatrix();
 	this->loadMatrix(location_viewMatrix, viewMatrix);
 }
 
-void StaticShader::loadLight(Light light)
+void StaticShader::loadLight(Light * light)
 {
-	loadVector(location_lightColor, light.getColor());
-	loadVector(location_lightPosition, light.getPosition());
+	loadVector(location_lightColor, light->getColor());
+	loadVector(location_lightPosition, light->getPosition());
 }
 
 void StaticShader::loadAlpha(GLfloat alpha)

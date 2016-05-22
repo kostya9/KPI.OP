@@ -41,6 +41,8 @@ class Game
 		void writePlayerPosition();
 		~Game();
 	private:
+		bool isEnoughEnergy();
+		void lose();
 		const glm::fvec2 message_error_pos = glm::fvec2(00.f, 500.f);
 		const glm::fvec2 message_info_pos = glm::fvec2(50.f, 150.f);
 		string current_error_text;

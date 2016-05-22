@@ -22,7 +22,7 @@ void main(void)
 	vec3 diffuse = brigtness * lightColor;
 
 	vec4 textureColor = texture(textureSampler, out_textureCoordinates);
-	if(textureColor.a < 0.5f)
+	if(textureColor.a < 0.3f)
 	{
 		discard;
 	}

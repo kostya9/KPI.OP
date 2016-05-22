@@ -6,21 +6,23 @@ void MasterRenderer::cleanUp()
 	{
 		delete pair.second;
 	}
+	entities.clear();
 	entities = unordered_map<TexturedModel, vector<Entity> *>();
 }
 
-void MasterRenderer::render(Light light, Camera cam)
+void MasterRenderer::render(Shader shader, Entity entity)
+{
+	renderer.render(shader, entity);
+}
+
+void MasterRenderer::render(Light * light, Camera * cam)
 {
 	renderer.prepare();
 	shader.use();
 	shader.loadLight(light);
 	shader.loadViewMatrix(cam);
 	renderer.render(entities);
-
-
-
 	shader.unUse();
-	entities.clear();
 }
 
 void MasterRenderer::proccessEntity(Entity entity)

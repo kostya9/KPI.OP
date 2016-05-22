@@ -78,7 +78,15 @@ void GameObject::render(MasterRenderer * renderer)
 			renderer->proccessEntity(en/**/);
 		}
 }
-
+void GameObject::render(MasterRenderer * renderer, glm::fvec3 object, GLfloat distance)
+{
+	if (show)
+		for (Entity en : entities)
+		{
+			if(glm::length2(object - en.position) < distance)
+				renderer->proccessEntity(en/**/);
+		}
+}
 GameObject::~GameObject()
 {
 }

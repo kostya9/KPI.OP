@@ -8,6 +8,7 @@ class WallHole : public GameObject{
 		WallHole(vector<Entity> entities, glm::fvec3 position);
 		HOLE_DIRECTION getDirection();
 		void render(MasterRenderer * renderer);
+		void render(MasterRenderer * renderer, glm::fvec3 object, GLfloat distance);
 		VISIBILITY_RETURN_CODE makeVisible(HOLE_DIRECTION direction);
 		VISIBILITY_RETURN_CODE makeInvisible();
 	private:

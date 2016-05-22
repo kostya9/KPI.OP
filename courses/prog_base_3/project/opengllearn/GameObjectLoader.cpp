@@ -40,6 +40,12 @@ void GameObjectLoader::creatWhiteHole(glm::fvec2 position)
 	manager->addObject(hole);
 }
 
+void GameObjectLoader::createShadow(glm::fvec3 position)
+{
+	Shadow * shadow = new Shadow(loader, position);
+	manager->addObject(shadow);
+}
+
 void GameObjectLoader::loadLevel(string path)
 {
 	vector<glm::fvec2> wallsPos;

@@ -15,7 +15,8 @@ private:
 	unordered_map<TexturedModel, vector<Entity> *> entities = unordered_map<TexturedModel, vector<Entity> *>();
 public:
 	void cleanUp();
-	void render(Light light, Camera cam);
+	void render(Shader shader, Entity entity);
+	void render(Light * light, Camera * cam);
 	void proccessEntity(Entity entity);
 	void update();
 	void shake(GLfloat time);

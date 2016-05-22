@@ -168,6 +168,9 @@
     <ClInclude Include="MasterRenderer.h">
       <Filter>Engine\Render</Filter>
     </ClInclude>
+    <ClInclude Include="Shadow.h">
+      <Filter>Game\GameObjects\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Loader.cpp">
@@ -236,8 +239,14 @@
     <ClCompile Include="ExitMenuOption.cpp">
       <Filter>Game\Menu</Filter>
     </ClCompile>
+    <ClCompile Include="Shadow.cpp">
+      <Filter>Game\GameObjects\Player</Filter>
+    </ClCompile>
     <ClCompile Include="MasterRenderer.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Engine\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Engine\Render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

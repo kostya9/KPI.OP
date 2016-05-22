@@ -14,6 +14,7 @@ class GameObjectLoader
 		void createWall(glm::fvec2 position);
 		void createLight(GLfloat brightness, glm::fvec3 position);
 		void creatWhiteHole(glm::fvec2 position);
+		void createShadow(glm::fvec3 position);
 		void loadLevel(string path);
 		~GameObjectLoader();
 	private:

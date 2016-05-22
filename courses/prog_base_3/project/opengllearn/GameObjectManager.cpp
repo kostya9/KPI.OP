@@ -31,24 +31,37 @@ void GameObjectManager::renderAll()
 
 	shader->unUse();
 	renderer->prepare();*/
+
+	shadow->queuePosition(player->getPosition());
+	shadow->hideObject();
+	if ((glfwGetTime() - shadowTimeCreated) > 3.f)
+	{
+		shadow->showObject();
+		shadow->update();
+	}
+	shadow->render(renderer);
 	player->render(renderer);
 	if (menu != nullptr)
 		menu->render(renderer);
 	if(hole != nullptr)
-		hole->render(renderer);
-	field->render(renderer);
+		hole->render(renderer, player->getPosition(), 70.0f);
+	field->render(renderer, player->getPosition(), 70.0f);
 	for (GameObject * obj : objects)
-		obj->render(renderer);
+		obj->render(renderer, player->getPosition(), 70.0f);
 	for (Wall * obj : walls)
-		obj->render(renderer);
+	{
+		obj->render(renderer, player->getPosition(), 70.0f);
+	}
 
 	if (menu == nullptr)
 	{
-		renderer->render(*light, *(player->getCamera()));
+		renderer->render(light, (player->getCamera()));
+		renderer->cleanUp();
 	}
 	else
 	{
-		renderer->render(*(menu->getLight()), *(menu->getCamera()));
+		renderer->render((menu->getLight()), (menu->getCamera()));
+		renderer->cleanUp();
 	}
 	renderer->update();
 }
@@ -66,6 +79,12 @@ void GameObjectManager::addObject(Player * player)
 void GameObjectManager::addObject(Field * field)
 {
 	this->field = field;
+}
+
+void GameObjectManager::addObject(Shadow * shadow)
+{
+	shadowTimeCreated = glfwGetTime();
+	this->shadow = shadow;
 }
 
 void GameObjectManager::addObject(GameObject * object)
@@ -101,6 +120,11 @@ Field * GameObjectManager::getField()
 Light * GameObjectManager::getLight()
 {
 	return light;
+}
+
+Shadow * GameObjectManager::getShadow()
+{
+	return shadow;
 }
 
 Player * GameObjectManager::getPlayer()

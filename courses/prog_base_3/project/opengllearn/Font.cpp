@@ -87,7 +87,7 @@ void Font::renderText(GLchar * text, glm::fvec2 position, glm::fvec3 color, GLfl
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	shader.use();
 	glUniform3f(glGetUniformLocation(shader.getProgramId(), "textColor"), color.x, color.y, color.z);
 	glActiveTexture(GL_TEXTURE0);

@@ -10,7 +10,7 @@
 class GameObject
 {
 	protected:
-		const GLfloat precision = 0.0003f;
+		GLfloat precision = 0.0003f;
 		glm::fvec3 position;
 		vector <Entity> entities;
 		bool show;
@@ -29,5 +29,6 @@ class GameObject
 		virtual void move(float speed, glm::fvec3 dPos)  {};
 		bool isAtPositionNeighborhood(glm::fvec3 position);
 		virtual void render(MasterRenderer * renderer);
+		virtual void render(MasterRenderer * renderer, glm::fvec3 object, GLfloat distance);
 		~GameObject();
 };

@@ -8,6 +8,7 @@
 #include "WhiteHole.h"
 #include "Menu.h"
 #include "MasterRenderer.h"
+#include "Shadow.h"
 class GameObjectManager
 {
 	private:
@@ -18,8 +19,10 @@ class GameObjectManager
 		WhiteHole * hole;
 		Light * light;
 		MasterRenderer * renderer;
+		Shadow * shadow;
 		/*StaticShader * shader;*/
 		Menu * menu;
+		GLfloat shadowTimeCreated;
 	public:
 		GameObjectManager();
 		void shake(GLfloat time);
@@ -28,6 +31,7 @@ class GameObjectManager
 		void addObject(Wall * wall);
 		void addObject(Player * player);
 		void addObject(Field * field);
+		void addObject(Shadow * shadow);
 		void addObject(GameObject * object);
 		void addObject(Light * light);
 		void addObject(WhiteHole * hole);
@@ -35,6 +39,7 @@ class GameObjectManager
 		WhiteHole * getWhiteHole();
 		Field * getField();
 		Light * getLight();
+		Shadow * getShadow();
 		Player * getPlayer();
 		void deleteObject(GameObject * object);
 		~GameObjectManager();
