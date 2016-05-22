@@ -114,8 +114,6 @@ void Game::update()
 		changeLightPosition();
 		if (manager->getShadow()->isAtPositionNeighborhood(getPlayer()->getPosition()))
 			getPlayer()->startDamaging(100);
-		else
-			getPlayer()->stopDamaging();
 		if (keyboard->isKeyPressed(GLFW_KEY_ESCAPE))
 		{
 			this->setState(GAME_MENU);

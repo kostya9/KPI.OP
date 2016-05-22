@@ -120,7 +120,7 @@ MOVEMENT_STATUS PlayerMovementManager::tryMove(Player * player, GameObjectManage
 			if (player->canBurnWall() == false)
 				return MOVE_NOT_ENOUGH_ENERGY;
 			showWall(destination, playerPosition, collider);
-			player->startDamaging(60);
+			player->startDamaging(100);
 			return MOVE_MOVING_HOLE;
 		}
 		else

@@ -32,11 +32,19 @@ void Player::render(MasterRenderer * renderer)
 }
 void Player::startDamaging(GLuint dmgPerSecond)
 {
+	this->damageEndTime = glfwGetTime() + 1.f;
 	this->dmgPerSecond = dmgPerSecond;
+}
+void Player::startDamaging(GLuint dmgPerSecond, GLfloat seconds)
+{
+	damageEndTime = glfwGetTime() + seconds;
+	this->dmgPerSecond = dmgPerSecond;
+
 }
 void Player::stopDamaging()
 {
 	this->dmgPerSecond = 0;
+	this->damageEndTime = 0;
 }
 void Player::addDamage(GLfloat dmg)
 {
@@ -104,7 +112,8 @@ void Player::moveBackwards(GLint times)
 }
 void Player::update()
 {
-	addDamage(dmgPerSecond * Window::getDeltaTime());
+	if(glfwGetTime() < damageEndTime)
+		addDamage(dmgPerSecond * Window::getDeltaTime());
 	if (this->energy < 1.0f)
 	{
 		this->energy += 0.001f;

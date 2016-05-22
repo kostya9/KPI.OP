@@ -13,6 +13,7 @@ class Player : public GameObject
 		enum MOVEMENT_STATE_CODE { MOVE_LEFT, MOVE_FORWARD, MOVE_RIGHT, MOVE_BACKWARD, MOVE_NO } moveState;
 		GLfloat energy = 1.0f;
 		GLuint dmgPerSecond = 0;
+		GLfloat damageEndTime = 0.f;
 		glm::fvec3 dest;
 		Camera * cam;
 		void setSineHeightPosition();
@@ -28,6 +29,7 @@ class Player : public GameObject
 		//PLAYER_MOVE_STATUS move(GameObjectManager * manager = nullptr);
 		void render(MasterRenderer * renderer);
 		void startDamaging(GLuint dmgPerSecond);
+		void startDamaging(GLuint dmgPerSecond, GLfloat seconds);
 		void stopDamaging();
 		bool canBurnWall();
 		bool isMoving();
