@@ -5,6 +5,10 @@
 
 add HighScore feature
 
+Add fancy YOU WON writings
+
+Ever should lose a game?
+
 Generating particles while cutting (or lighting red ??)
 
 Fog of war ?

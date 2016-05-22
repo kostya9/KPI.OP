@@ -21,5 +21,14 @@ public:
 	{
 		return key_pressed[key];
 	}
+	bool isAnythingPressed()
+	{
+		for (int i = 0; i < 1000; i++)
+		{
+			if (key_pressed[i] == true)
+				return true;
+		}
+		return false;
+	}
 
 };

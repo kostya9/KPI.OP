@@ -14,7 +14,7 @@ class Model
 			this->vaoID = vaoID;
 		}
 		/*Gets the VAO linked to this model*/
-		GLuint getVaoId()
+		GLuint getVaoId() const
 		{
 			return vaoID;
 		}

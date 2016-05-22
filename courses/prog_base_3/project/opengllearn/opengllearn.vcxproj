@@ -91,7 +91,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\kosty\OneDrive\Документы\Visual Studio 2015\Projects\OpenglLearncpp\opengllearn\lib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\lib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/TP %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -166,6 +166,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectLoader.h" />
     <ClInclude Include="GameObjectManager.h" />
+    <ClInclude Include="MasterRenderer.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="MenuOption.h" />
     <ClInclude Include="MenuOptionButton.h" />
@@ -198,6 +199,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectLoader.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
+    <ClCompile Include="MasterRenderer.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MenuOption.cpp" />
     <ClCompile Include="MenuOptionButton.cpp" />

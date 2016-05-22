@@ -35,6 +35,12 @@ void StaticShader::loadAlpha(GLfloat alpha)
 	loadFloat(location_alpha, alpha);
 }
 
+void StaticShader::loadShake(GLboolean shake, GLfloat time)
+{
+	loadBool(location_shake, shake);
+	loadFloat(location_time, time);
+}
+
 void StaticShader::bindAttributes() // DO NOT INLINE THIS AND ATTRIBUTE
 {
 	Shader::bindAttribute(0, "position");
@@ -50,4 +56,6 @@ void StaticShader::getAllUniformLocations()
 	location_lightPosition = this->getUniformLocation("lightPosition");
 	location_lightColor = this->getUniformLocation("lightColor");
 	location_alpha = this->getUniformLocation("alpha");
+	location_shake = this->getUniformLocation("shake");
+	location_time = this->getUniformLocation("time");
 }

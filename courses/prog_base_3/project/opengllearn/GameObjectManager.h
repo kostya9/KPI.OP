@@ -7,6 +7,7 @@
 #include "Field.h"
 #include "WhiteHole.h"
 #include "Menu.h"
+#include "MasterRenderer.h"
 class GameObjectManager
 {
 	private:
@@ -16,11 +17,12 @@ class GameObjectManager
 		Player * player;
 		WhiteHole * hole;
 		Light * light;
-		Renderer * renderer;
-		StaticShader * shader;
+		MasterRenderer * renderer;
+		/*StaticShader * shader;*/
 		Menu * menu;
 	public:
 		GameObjectManager();
+		void shake(GLfloat time);
 		Wall::COLLISION_STATUS isMovementColliding(glm::fvec3 positionFrom, glm::fvec3 positionDest, Wall ** collider); // Wall collision
 		void renderAll();
 		void addObject(Wall * wall);

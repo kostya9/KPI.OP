@@ -1,8 +1,11 @@
 #include "GameObjectManager.h"
 GameObjectManager::GameObjectManager()
 {
-	shader = new StaticShader();
-	renderer = new Renderer(*shader);
+	renderer = new MasterRenderer();
+}
+void GameObjectManager::shake(GLfloat time)
+{
+	this->renderer->shake(time);
 }
 Wall::COLLISION_STATUS GameObjectManager::isMovementColliding(glm::fvec3 positionFrom, glm::fvec3 positionDest, Wall ** collider)
 {
@@ -23,30 +26,31 @@ Wall::COLLISION_STATUS GameObjectManager::isMovementColliding(glm::fvec3 positio
 
 void GameObjectManager::renderAll()
 {
-	shader->use();
+	/*shader->use();
+
+
+	shader->unUse();
+	renderer->prepare();*/
+	player->render(renderer);
+	if (menu != nullptr)
+		menu->render(renderer);
+	if(hole != nullptr)
+		hole->render(renderer);
+	field->render(renderer);
+	for (GameObject * obj : objects)
+		obj->render(renderer);
+	for (Wall * obj : walls)
+		obj->render(renderer);
+
 	if (menu == nullptr)
 	{
-		shader->loadViewMatrix(*(player->getCamera()));
-		shader->loadLight(*light);
+		renderer->render(*light, *(player->getCamera()));
 	}
 	else
 	{
-		shader->loadViewMatrix(*(menu->getCamera()));
-		shader->loadLight(*(menu->getLight()));
+		renderer->render(*(menu->getLight()), *(menu->getCamera()));
 	}
-
-	shader->unUse();
-	renderer->prepare();
-	player->render(renderer, *shader);
-	if (menu != nullptr)
-		menu->render(renderer, *shader);
-	if(hole != nullptr)
-		hole->render(renderer, *shader);
-	field->render(renderer, *shader);
-	for (GameObject * obj : objects)
-		obj->render(renderer, *shader);
-	for (Wall * obj : walls)
-		obj->render(renderer, *shader);
+	renderer->update();
 }
 
 void GameObjectManager::addObject(Wall * wall)
@@ -130,7 +134,5 @@ GameObjectManager::~GameObjectManager()
 	//if (menu != nullptr)
 		//delete menu;
 	delete renderer;
-	shader->deleteShader();
-	delete shader;
 	delete player;
 }

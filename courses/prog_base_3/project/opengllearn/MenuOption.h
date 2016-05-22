@@ -1,5 +1,6 @@
 #pragma once
 class Menu;
+#include "MasterRenderer.h"
 #include "Font.h"
 class MenuOption
 {
@@ -12,6 +13,7 @@ class MenuOption
 		GLfloat scale;
 		bool selected = false;
 		bool enabled = true;
+		GLfloat alpha = 1.0f;
 	public:
 		MenuOption(Font * font, vector<Entity> entities, glm::fvec3 color, string text);
 		void setMenu(Menu * menu);
@@ -19,7 +21,7 @@ class MenuOption
 		virtual void onDeselect();
 		virtual void onClick() {};
 		virtual void update() {};
-		virtual void render(Renderer * renderer, StaticShader shader, glm::fvec2 position);
+		virtual void render(MasterRenderer * renderer, glm::fvec2 position);
 		virtual void disable();
 		virtual void enable();
 };

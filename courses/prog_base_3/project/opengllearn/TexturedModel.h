@@ -14,12 +14,31 @@ class TexturedModel
 			this->model = model; // requires default constructor for some reason
 			this->texture = texture;
 		}
-		Model getModel()
+		Model getModel() const
 		{
 			return model;
 		}
-		Texture getTexture()
+		Texture getTexture() const
 		{
 			return texture;
 		}
+		int operator==(const TexturedModel& other) const
+		{
+			return (this->model.getVaoId() == other.getModel().getVaoId()) && (this->texture.getId() == other.getTexture().getId());
+		}
 };
+
+namespace std
+{
+	template <>
+	struct hash<TexturedModel>
+	{
+		size_t operator()(TexturedModel const & x) const noexcept
+		{
+			return (
+				(51 + std::hash<int>()(x.getModel().getVaoId())) * 51
+				+ std::hash<int>()(x.getTexture().getId())
+				);
+		}
+	};
+}

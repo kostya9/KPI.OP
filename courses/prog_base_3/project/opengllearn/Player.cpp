@@ -22,12 +22,12 @@ GLfloat Player::getEnergy()
 {
 	return energy;
 }
-void Player::render(Renderer * renderer, StaticShader shader)
+void Player::render(MasterRenderer * renderer)
 {
 	glm::vec3 prevPos = this->position;
 	this->setScale(energy);
 	setSineHeightPosition();
-	GameObject::render(renderer, shader);
+	GameObject::render(renderer);
 	this->setPosition(prevPos);
 }
 void Player::startDamaging(GLuint dmgPerSecond)
@@ -113,8 +113,8 @@ void Player::update()
 	{
 		glm::fvec3 movement = getMovementVector();
 		glm::fvec3 camPosition = cam->getPosition();
-		this->position += movement * Window::getDeltaTime();
-		this->cam->setPosition(camPosition + movement * Window::getDeltaTime());
+		this->position += RUN_SPEED * movement * Window::getDeltaTime();
+		this->cam->setPosition(camPosition + RUN_SPEED * movement * Window::getDeltaTime());
 		this->position.y = height;
 	}
 }

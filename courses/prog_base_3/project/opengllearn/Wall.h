@@ -11,7 +11,7 @@ class Wall : public GameObject
 	public:
 		enum COLLISION_STATUS {COLLISION_TRUE, COLLISION_HOLE, COLLISION_FALSE};
 		Wall(Loader * loader, glm::vec3 position);
-		void render(Renderer * renderer, StaticShader shader);
+		void render(MasterRenderer * renderer);
 		void setPosition(glm::fvec3 position);
 		void setAlpha(GLfloat alpha);
 		bool hasHole();

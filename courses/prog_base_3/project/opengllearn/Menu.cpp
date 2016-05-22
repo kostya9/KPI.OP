@@ -62,7 +62,7 @@ void Menu::update()
 		prevKey = '\0';
 }
 
-void Menu::render(Renderer * renderer, StaticShader shader)
+void Menu::render(MasterRenderer * renderer)
 {
 	/*shader.use();
 	shader.loadViewMatrix(c);
@@ -72,7 +72,7 @@ void Menu::render(Renderer * renderer, StaticShader shader)
 	glm::fvec2 startPos = glm::fvec2(0.0f, 0.3f);
 	for (MenuOption * option : options)
 	{
-		option->render(renderer, shader, startPos);
+		option->render(renderer, startPos);
 		startPos.y -= 0.2f;
 	}
 }

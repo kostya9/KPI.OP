@@ -7,6 +7,7 @@ MenuOption::MenuOption(Font * font, vector<Entity> entities, glm::fvec3 color, s
 	this->entities = entities;
 	this->text = text;
 	this->scale = 1.0f;
+	this->alpha = 1.0f;
 }
 
 void MenuOption::setMenu(Menu * menu)
@@ -24,7 +25,7 @@ void MenuOption::onDeselect()
 	selected = false;
 }
 
-void MenuOption::render(Renderer * renderer, StaticShader shader, glm::fvec2 position)
+void MenuOption::render(MasterRenderer * renderer, glm::fvec2 position)
 {
 	for (Entity &en : entities)
 	{
@@ -36,7 +37,7 @@ void MenuOption::render(Renderer * renderer, StaticShader shader, glm::fvec2 pos
 	}
 
 	for (Entity en : entities)
-		renderer->render(en, shader);
+		renderer->proccessEntity(en);
 	position.x *= Window::getWidth();
 	position.y *= Window::getHeight();
 	position.x += Window::getWidth() / 2 - text.size() * 15.0f;

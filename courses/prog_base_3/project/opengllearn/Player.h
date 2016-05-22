@@ -4,7 +4,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 // TODO : to implement interface functions
-#define RUN_SPEED 1.f
+#define RUN_SPEED 1.5f
 #define TURN_SPEED 20.002f
 extern Keyboard * keyboard;
 class Player : public GameObject
@@ -26,7 +26,7 @@ class Player : public GameObject
 		GLfloat getEnergy();
 		Camera * getCamera();
 		//PLAYER_MOVE_STATUS move(GameObjectManager * manager = nullptr);
-		void render(Renderer * renderer, StaticShader shader);
+		void render(MasterRenderer * renderer);
 		void startDamaging(GLuint dmgPerSecond);
 		void stopDamaging();
 		bool canBurnWall();

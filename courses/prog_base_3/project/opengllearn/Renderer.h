@@ -1,4 +1,7 @@
 #pragma once
+#include <algorithm>
+#include <vector>
+#include <unordered_map>
 #include "MainHeaders.h"
 #include "StaticShader.h"
 #include "TexturedModel.h"
@@ -10,7 +13,9 @@ private:
 	const GLfloat FOV = 70.0f;
 	const GLfloat NEAR_PLANE = 0.1f;
 	const GLfloat FAR_PLANE = 1000.0f;// WTF>????????????
+	GLfloat time = 0;
 	glm::fmat4 projectionMatrix;
+	StaticShader shader;
 	void createProjectionMatrix()
 	{
 		projectionMatrix = glm::perspective(FOV, 1.0f, NEAR_PLANE, FAR_PLANE);
@@ -19,6 +24,7 @@ private:
 	public:
 		Renderer(StaticShader shader)
 		{
+			this->shader = shader;
 			createProjectionMatrix();
 			shader.use();
 			shader.loadProjectionMatrix(projectionMatrix);
@@ -31,49 +37,87 @@ private:
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glClearColor(64/255.0f, 64 / 255.0f, 64 / 255.0f, 1.0f); // Dark Grey
 		}
-		void render(Entity entity, StaticShader shader)
-		{
-			render(entity, shader, 1.0f);
-
-		}
 		/*Renders(draws) a model to the screen*/
-		void render(Entity entity, StaticShader shader, GLfloat alpha)
+		void shake(StaticShader shader, GLfloat time)
 		{
-			if (alpha != 1.0f)
+			shader.use();
+			this->time = time;
+			shader.loadShake(GL_TRUE, time);
+			shader.unUse();
+		}
+		void unShake(StaticShader shader)
+		{
+			shader.use();
+			this->time = 0;
+			shader.loadShake(GL_FALSE, 0);
+			shader.unUse();
+		}
+		void update(StaticShader shader)
+		{
+			if (this->time < 0)
 			{
-				glEnable(GL_BLEND);
-				glEnable(GL_CULL_FACE);
+				unShake(shader);
 			}
-			TexturedModel texturedModel = entity.model;
-			Model model = texturedModel.getModel();
-			Texture texture = texturedModel.getTexture();
+			else if (this->time > 0)
+			{
+				this->time -= 5 * Window::getDeltaTime();
+				shake(shader, time);
+			}
+		}
+		void render(unordered_map<TexturedModel, vector<Entity> *> entities)
+		{
+			glEnable(GL_CULL_FACE);
+			for (pair<TexturedModel, vector<Entity> *> p : entities)
+			{
+				TexturedModel model = p.first;
+				prepareTexturedModel(model);
+				vector<Entity> * ents = p.second;
+				for (Entity entity : *ents)
+				{
+					if (entity.alpha != 1.0f)
+					{
+						glEnable(GL_BLEND);
+						glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+					}
+					prepareInstance(entity);
+					glDrawElements(GL_TRIANGLES, model.getModel().getVertexCount(), GL_UNSIGNED_INT, 0); // This draws using our bound indices array
+					if (entity.alpha != 1.0f)
+					{
+						glDisable(GL_BLEND);
+					}
+				}
+				unbindTexturedModel();
+			}
+		}
+
+		void prepareTexturedModel(TexturedModel text_model)
+		{
+			Model model = text_model.getModel();
+			Texture texture = text_model.getTexture();
 			GLuint vaoID = model.getVaoId();
 			shader.use();
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			glColor4f(1.0f, 1.0f, 1.0f, alpha);
 			bindVAO(vaoID);
+			glActiveTexture(GL_TEXTURE0); // sampler2D thingy
+			glBindTexture(GL_TEXTURE_2D, text_model.getTexture().getId());
 			glEnableVertexAttribArray(0); // Position
 			glEnableVertexAttribArray(1); // Texture
 			glEnableVertexAttribArray(2); // Normal
-			glm::mat4 transformationMatrix = Maths::createTransformationMatrix(entity.position, entity.rotX, entity.rotY, entity.rotZ, entity.scale);
-			shader.loadTransformationMatrix(transformationMatrix);
-			shader.loadAlpha(alpha);
-			//shader.loadProjectionMatrix(projectionMatrix);
-
-			//glDrawArrays(GL_TRIANGLES, 0, model.getVertexCount()); // This draws from vertices
-			glActiveTexture(GL_TEXTURE0); // sampler2D thingy
-			glBindTexture(GL_TEXTURE_2D, texture.getId());
-			glDrawElements(GL_TRIANGLES, model.getVertexCount(), GL_UNSIGNED_INT, 0); // This draws using our bound indices array
-			//glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+		}
+		void unbindTexturedModel()
+		{
 			glDisableVertexAttribArray(2);
 			glDisableVertexAttribArray(1);
 			glDisableVertexAttribArray(0);
 			unBindVAO();
-			if (alpha != 1.0f)
-			{
-				glDisable(GL_BLEND);
-				glDisable(GL_CULL_FACE);
-			}
 			shader.unUse();
+		}
+		void prepareInstance(Entity entity)
+		{
+			shader.use();
+			glm::mat4 transformationMatrix = Maths::createTransformationMatrix(entity.position, entity.rotX, entity.rotY, entity.rotZ, entity.scale);
+			shader.loadTransformationMatrix(transformationMatrix);
+			glColor4f(1.0f, 1.0f, 1.0f, entity.alpha);
+			shader.loadAlpha(entity.alpha);
+			//shader.loadProjectionMatrix(projectionMatrix);
 		}
 };

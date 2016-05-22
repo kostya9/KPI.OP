@@ -8,7 +8,7 @@ class Texture
 		{
 			this->textureID = textureID;
 		}
-		GLuint getId()
+		GLuint getId() const
 		{
 			return textureID;
 		}

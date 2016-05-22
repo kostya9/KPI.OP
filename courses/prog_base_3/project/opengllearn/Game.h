@@ -31,7 +31,7 @@ class Game
 		void update();
 		void changeLightPosition();
 		void endGameIfOutOfField();
-		void winIfAtWhiteHole();
+		bool winIfAtWhiteHole();
 		void close();
 		void checkInputKeysAndMovePlayer();
 		void removeTransparencyIfAlreadyMoved(GameObject * newCollider, GameObject * collider);
@@ -42,7 +42,9 @@ class Game
 		~Game();
 	private:
 		const glm::fvec2 message_error_pos = glm::fvec2(00.f, 500.f);
+		const glm::fvec2 message_info_pos = glm::fvec2(50.f, 150.f);
 		string current_error_text;
+		string current_info_text;
 		GameState state;
 		GameObjectLoader * loader;
 		Keyboard * keyboard;

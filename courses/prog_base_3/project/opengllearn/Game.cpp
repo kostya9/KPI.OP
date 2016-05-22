@@ -22,13 +22,13 @@ Game::Game()
 	this->menu = new Menu(this);
 	manager->addObject(menu);
 
-	MenuOptionButton * button = new MenuOptionButton(&Loader(), settings->font, glm::fvec3(1.0f, 1.0f, 1.0f), string("HEYYY"));
-	MenuOptionButton * button1 = new MenuOptionButton(&Loader(), settings->font, glm::fvec3(1.0f, 1.0f, 1.0f), string("HEYYY1"));
+	//MenuOptionButton * button = new MenuOptionButton(&Loader(), settings->font, glm::fvec3(1.0f, 1.0f, 1.0f), string("HEYYY"));
+	//MenuOptionButton * button1 = new MenuOptionButton(&Loader(), settings->font, glm::fvec3(1.0f, 1.0f, 1.0f), string("HEYYY1"));
 	NewGameMenuOption * newGame = new NewGameMenuOption(&Loader(), settings->font, glm::fvec3(1.0f, 1.0f, 1.0f));
 	ExitMenuOption * buttonExit = new ExitMenuOption(&Loader(), settings->font, glm::fvec3(1.0f, 1.0f, 1.0f));
 	menu->addMenuOption(newGame);
-	menu->addMenuOption(button);
-	menu->addMenuOption(button1);
+	//menu->addMenuOption(button);
+	//menu->addMenuOption(button1);
 	menu->addMenuOption(buttonExit);
 }
 
@@ -63,6 +63,8 @@ void Game::cleanGameObjects()
 {
 	delete this->manager;
 	delete this->loader;
+	current_error_text = string();
+	current_info_text = string();
 	lastCollider = nullptr;
 	manager = new GameObjectManager();
 	loader = new GameObjectLoader(manager);
@@ -98,10 +100,10 @@ void Game::update()
 	if (state == GAME_ACTIVE)
 	{
 		// endGameIfOutOfField(); // SHould I?
-		checkInputKeysAndMovePlayer();
+		if(winIfAtWhiteHole() == false)
+			checkInputKeysAndMovePlayer();
 		getPlayer()->update();
 		changeLightPosition();
-		winIfAtWhiteHole();
 		if (keyboard->isKeyPressed(GLFW_KEY_ESCAPE))
 		{
 			this->setState(GAME_MENU);
@@ -156,11 +158,19 @@ void Game::update()
 			counter+=2;
 	}
 }
-void Game::winIfAtWhiteHole()
+bool Game::winIfAtWhiteHole()
 {
 	WhiteHole * hole = manager->getWhiteHole();
 	if (getPlayer()->isAtPositionNeighborhood(hole->getPosition()))
-		this->setState(GAME_MENU);
+	{
+		current_info_text = string("You won! Congratulations!");
+		if (keyboard->isAnythingPressed())
+		{
+			this->setState(GAME_MENU);
+		}
+		return true;
+	}
+	return false;
 }
 void Game::close()
 {
@@ -204,7 +214,8 @@ void Game::checkInputKeysAndMovePlayer()
 	MOVEMENT_STATUS status = PlayerMovementManager::checkInputKeysForMovement(getPlayer(), manager);
 	//removeTransparencyIfAlreadyMoved(newCollider, lastCollider);
 	//if(status == MOVE_MOVING)
-		
+	if (status == MOVE_NOT_MOVING_COLLISION)
+		this->manager->shake(2.0f);
 	if (status != MOVE_MOVING_HOLE && status != MOVE_ALREADY_MOVING && lastCollider != nullptr)
 		lastCollider->setAlpha(1.f);
 	newCollider = PlayerMovementManager::getLastCollider();
@@ -255,6 +266,7 @@ void Game::writePlayerPosition()
 {
 	char debugInfo[100];
 	settings->font->renderText((GLchar *)current_error_text.c_str(), message_error_pos, glm::fvec3(1.0f, 0.1f, 0.1f), 1.0f);
+	settings->font->renderText((GLchar *)current_info_text.c_str(), message_info_pos, glm::fvec3(0.2f, 0.6f, 1.0f), 1.2f);
 	sprintf(debugInfo, "X : %3.2f, Y : %3.2f, Z : %3.2f", getPlayer()->getPosition().x, getPlayer()->getPosition().y, getPlayer()->getPosition().z);
 	settings->font->renderText(debugInfo, glm::fvec2(0.f, 0.f), glm::fvec3(1.0f, 0.1f, 0.1f), 1.0f);
 }

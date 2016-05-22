@@ -4,12 +4,13 @@
 #include "Entity.h"
 #include "Shader.h"
 #include <glm/gtx/norm.hpp>
+#include "MasterRenderer.h"
 // TODO : to implement interface functions
 
 class GameObject
 {
 	protected:
-		const GLfloat precision = 0.001f;
+		const GLfloat precision = 0.0003f;
 		glm::fvec3 position;
 		vector <Entity> entities;
 		bool show;
@@ -27,6 +28,6 @@ class GameObject
 		virtual void setAlpha(GLfloat alpha);
 		virtual void move(float speed, glm::fvec3 dPos)  {};
 		bool isAtPositionNeighborhood(glm::fvec3 position);
-		virtual void render(Renderer * renderer, StaticShader shader);
+		virtual void render(MasterRenderer * renderer);
 		~GameObject();
 };

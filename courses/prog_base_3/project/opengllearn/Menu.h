@@ -1,5 +1,6 @@
 #pragma once
 #include "MenuOption.h"
+#include "MasterRenderer.h"
 extern Keyboard * keyboard;
 class Game;
 class Menu
@@ -20,7 +21,7 @@ class Menu
 			cam->moveUp(7.0f);
 			cam->pitch(3.1415f / 2);
 			cam->roll(3.1415f);
-			this->light = new Light(glm::fvec3(0.0f, 2.0f, 0.0f), glm::fvec3(1.0f, 1.0f, 1.0f));
+			this->light = new Light(glm::fvec3(0.0f, 10.0f, 0.0f), glm::fvec3(1.0f, 1.0f, 1.0f));
 		};
 		bool isActive();
 		Game * getGame();
@@ -30,5 +31,5 @@ class Menu
 		void disable();
 		void enable();
 		void update();
-		void render(Renderer * renderer, StaticShader shader);
+		void render(MasterRenderer * renderer);
 };

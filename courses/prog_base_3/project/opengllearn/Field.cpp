@@ -9,7 +9,7 @@ Field::Field(Loader * loader, GLuint size, glm::vec3 position) : GameObject()
 	this->position = position;
 	enum SIDE { TOP, RIGHT, BOTTOM, LEFT };
 	SIDE side = TOP;
-	vector<TexturedModel> models = loader->objToModel(fieldPath);
+	static vector<TexturedModel> models = loader->objToModel(fieldPath);
 	int sides = 1;
 	int curElement = 0;
 	for (unsigned int i = 0; i < size*size; i++)

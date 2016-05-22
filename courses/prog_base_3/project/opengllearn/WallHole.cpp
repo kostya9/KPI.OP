@@ -10,12 +10,12 @@ WallHole::HOLE_DIRECTION WallHole::getDirection()
 	return direction;
 }
 
-void WallHole::render(Renderer * renderer, StaticShader shader)
+void WallHole::render(MasterRenderer * renderer)
 {
 	if (!show) // This is a hole, so invisibility for it means that Entities should be visible
 		for (Entity en : entities)
 		{
-			renderer->render(en, shader);
+			renderer->proccessEntity(en);
 		}
 }
 

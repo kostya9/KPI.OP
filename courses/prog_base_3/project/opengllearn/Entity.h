@@ -9,6 +9,7 @@ struct Entity
 		// Rotation in DEGREES
 		GLfloat rotX, rotY, rotZ;
 		GLfloat scale;
+		GLfloat alpha = 1.0f;
 		Entity(TexturedModel model, glm::vec3 position, float rotX, float rotY, float rotZ, float scale)
 		{
 			this->model = model;

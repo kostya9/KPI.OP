@@ -44,7 +44,7 @@ int main(int argc, char * argv[])
 	else if (argc == 1)
 	{
 		wallDensity = 0.66f;
-		fieldSize = 13;
+		fieldSize = 31;
 		path = string("output.txt");
 	}
 	else

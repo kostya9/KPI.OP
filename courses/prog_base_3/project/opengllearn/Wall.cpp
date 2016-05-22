@@ -4,8 +4,8 @@
 
 Wall::Wall(Loader * loader, glm::vec3 position)
 {
-	vector<TexturedModel> models = loader->objToModel("../opengllearn/models/wall/wallWIthHole.obj");
-	vector<TexturedModel> modelsHole = loader->objToModel("../opengllearn/models/wall/cylinderAsHole.obj");
+	static vector<TexturedModel> models = loader->objToModel("../opengllearn/models/wall/wall_upd.obj");
+	static vector<TexturedModel> modelsHole = loader->objToModel("../opengllearn/models/wall/cylinderAsHole.obj");
 	vector<Entity> entitiesHole;
 
 	for (TexturedModel model : models)
@@ -19,10 +19,10 @@ Wall::Wall(Loader * loader, glm::vec3 position)
 	this->hole->hideObject();
 }
 
-void Wall::render(Renderer * renderer, StaticShader shader)
+void Wall::render(MasterRenderer * renderer)
 {
-	GameObject::render(renderer, shader);
-	hole->render(renderer, shader);
+	GameObject::render(renderer);
+	hole->render(renderer);
 }
 
 void Wall::setPosition(glm::fvec3 position)

@@ -56,6 +56,8 @@ bool GameObject::getVisibility()
 void GameObject::setAlpha(GLfloat alpha)
 {
 	this->alpha = alpha;
+	for (Entity & en : entities)
+		en.alpha = alpha;
 }
 
 bool GameObject::isAtPositionNeighborhood(glm::fvec3 position)
@@ -68,12 +70,12 @@ bool GameObject::isAtPositionNeighborhood(glm::fvec3 position)
 		return false;
 }
 
-void GameObject::render(Renderer * renderer, StaticShader shader)
+void GameObject::render(MasterRenderer * renderer)
 {
 	if(show)
 		for (Entity en : entities)
 		{
-			renderer->render(en, shader, alpha/**/);
+			renderer->proccessEntity(en/**/);
 		}
 }
 
