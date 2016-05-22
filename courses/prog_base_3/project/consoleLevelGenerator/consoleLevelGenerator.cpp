@@ -6,6 +6,7 @@
 #include <map>
 #include <string>
 #include <fstream>
+#include <cstdlib>
 #include <ctime>
 #define HELP_INFO \
 "First argument - size of the field. Should be odd.\n" \
@@ -44,7 +45,7 @@ int main(int argc, char * argv[])
 	else if (argc == 1)
 	{
 		wallDensity = 0.66f;
-		fieldSize = 31;
+		fieldSize = 61;
 		path = string("output.txt");
 	}
 	else
@@ -61,7 +62,7 @@ void generateLevel(int fieldSize, float wallDensity, string path)
 {
 	ofstream output;
 	srand(time(NULL));
-	char * levelArray = new char[fieldSize*fieldSize]();
+	char * levelArray = new char[fieldSize*fieldSize + fieldSize*100]();
 	output.open(path, fstream::out);
 	output << to_string(fieldSize) << "\n";
 	int numberOfWalls = (int)(wallDensity * (fieldSize * fieldSize));
@@ -69,10 +70,13 @@ void generateLevel(int fieldSize, float wallDensity, string path)
 		levelArray[i] = NOTHING_POS_CODE;
 	for (int i = 0; i < numberOfWalls; i++)
 	{
-		levelArray[rand() % fieldSize + (rand() % fieldSize - 1) * fieldSize] = WALL_POS_CODE;
+		int index = rand() % fieldSize + (rand() % fieldSize) * (fieldSize - 1);
+		levelArray[index] = WALL_POS_CODE;
 	}
-	levelArray[rand() % fieldSize + (rand() % fieldSize - 1) * fieldSize] = WHITEHOLE_POS_CODE; // wallHole
-	levelArray[rand() % fieldSize + (rand() % fieldSize - 1) * fieldSize] = PLAYER_POS_CODE; // playerPos
+	int index = (rand() + 1) % fieldSize + (rand() % fieldSize - 1) * (fieldSize - 1);
+	levelArray[index] = WHITEHOLE_POS_CODE; // wallHole
+	index = rand() % fieldSize + (rand() % fieldSize - 1) * (fieldSize - 1);
+	levelArray[index] = PLAYER_POS_CODE; // playerPos
 	// Fill level
 	for(int i = 0; i < fieldSize; i++)
 	{
@@ -82,4 +86,9 @@ void generateLevel(int fieldSize, float wallDensity, string path)
 		}
 		output << "\n";
 	}
+	puts("dfsdf");
+	output.flush();
+	output.close();
+	delete[] levelArray;
+	
 }
