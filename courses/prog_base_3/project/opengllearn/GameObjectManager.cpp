@@ -39,7 +39,6 @@ void GameObjectManager::renderAll()
 		shadow->showObject();
 		shadow->update();
 	}
-	shadow->render(renderer);
 	player->render(renderer);
 	if (menu != nullptr)
 		menu->render(renderer);
@@ -52,6 +51,7 @@ void GameObjectManager::renderAll()
 	{
 		obj->render(renderer, player->getPosition(), 70.0f);
 	}
+	shadow->render(renderer);
 
 	if (menu == nullptr)
 	{
