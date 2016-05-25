@@ -17,6 +17,17 @@ Model Loader::loadToVao(GLfloat positions[],  GLuint size_pos, GLuint indices[],
 	return Model(vaoID, size_ind);
 }
 
+Model Loader::loadToVao(GLfloat positions[], GLuint size)
+{
+	GLuint vaoId = createVAO();
+	glBindVertexArray(vaoId);
+	this->dataToAttributes(0, 2, positions, sizeof(GLfloat) * 
+		
+		size);
+	glBindVertexArray(0);
+	return Model(vaoId, size);
+}
+
 GLuint Loader::loadTexture(GLchar * path)
 {
 	GLuint textureID;

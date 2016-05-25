@@ -9,7 +9,7 @@ out vec4 out_Color;
 uniform sampler2D textureSampler;
 uniform vec3 lightColor;
 uniform float alpha;
-
+uniform vec3 mask;
 void main(void)
 {
 	float ambientStrength = 0.2f; // HARDCODED GENERAL LIGHT
@@ -26,6 +26,6 @@ void main(void)
 	{
 		discard;
 	}
-	out_Color = vec4(ambient + diffuse, alpha) * textureColor;
+	out_Color = vec4(ambient + diffuse, alpha) * textureColor * vec4(mask, 1.0f);
 
 }

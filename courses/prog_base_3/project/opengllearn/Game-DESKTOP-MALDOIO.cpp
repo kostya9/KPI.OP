@@ -1,12 +1,9 @@
 #define  _CRT_SECURE_NO_WARNINGS
-#include "guiTexture.h"
-#include "GuiRenderer.h"
+
 #include "Game.h"
 #include "PlayerMovementManager.h"
 #include "NewGameMenuOption.h"
 #include "ExitMenuOption.h"
-GuiRenderer * r;
-vector<GuiTexture> textures;
 void window_key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 Game::Game()
 {
@@ -33,13 +30,6 @@ Game::Game()
 	//menu->addMenuOption(button);
 	//menu->addMenuOption(button1);
 	menu->addMenuOption(buttonExit);
-
-	Loader * loader =  new Loader();
-	textures = vector<GuiTexture>();
-	GLuint texture = loader->loadTexture("models\\menu\\button\\button.png");
-	GuiTexture gui = GuiTexture(texture, glm::fvec2(0.0f, 0.0f), glm::fvec2(1.0f, 1.0f));
-	textures.push_back(gui);
-	r = new GuiRenderer(loader);
 }
 
 
@@ -222,6 +212,7 @@ void Game::endGameIfOutOfField()
 	if (manager->getField()->isInField(pos) == false)
 		glfwSetWindowShouldClose(Window::getGLFWWindow(), GL_TRUE);
 }
+
 void Game::render()
 {
 	if (state == GAME_ACTIVE)
@@ -233,7 +224,6 @@ void Game::render()
 	{
 		//StaticShader shader = StaticShader();
 		manager->renderAll();
-		r->render(textures);
 		//menu->render(&Renderer(shader), shader);
 	}
 	Window::update();

@@ -61,6 +61,9 @@
     <Filter Include="Game\Menu">
       <UniqueIdentifier>{aa1df41c-b5e6-4a60-92cc-3e23cd533e30}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Shader\gui">
+      <UniqueIdentifier>{0360beb3-77e6-4c13-b87d-2bd4b86755d2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -171,6 +174,15 @@
     <ClInclude Include="Shadow.h">
       <Filter>Game\GameObjects\Player</Filter>
     </ClInclude>
+    <ClInclude Include="GuiRenderer.h">
+      <Filter>Engine\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiShader.h">
+      <Filter>Engine\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="guiTexture.h">
+      <Filter>Engine\Entities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Loader.cpp">
@@ -187,9 +199,6 @@
     </ClCompile>
     <ClCompile Include="Font.cpp">
       <Filter>Engine\Font</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>Game\GameObjects\GameObject</Filter>
@@ -248,6 +257,12 @@
     <ClCompile Include="Renderer.cpp">
       <Filter>Engine\Render</Filter>
     </ClCompile>
+    <ClCompile Include="GuiRenderer.cpp">
+      <Filter>Engine\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -263,6 +278,12 @@
     </None>
     <None Include="shaders\fonts\vertex.sh">
       <Filter>Engine\Shader\fonts</Filter>
+    </None>
+    <None Include="shaders\gui\fragment.sh">
+      <Filter>Engine\Shader\gui</Filter>
+    </None>
+    <None Include="shaders\gui\vertex.sh">
+      <Filter>Engine\Shader\gui</Filter>
     </None>
   </ItemGroup>
 </Project>
