@@ -176,6 +176,7 @@
     <ClInclude Include="MenuOptionButton.h" />
     <ClInclude Include="MenuOptionSlider.h" />
     <ClInclude Include="NewGameMenuOption.h" />
+    <ClInclude Include="PickerShader.h" />
     <ClInclude Include="PlayerMovementManager.h" />
     <ClInclude Include="Shadow.h" />
     <ClInclude Include="WallHole.h" />
@@ -205,6 +206,7 @@
     <ClCompile Include="GameObjectLoader.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="GuiRenderer.cpp" />
+    <ClCompile Include="guiTexture.cpp" />
     <ClCompile Include="MasterRenderer.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MenuOption.cpp" />
@@ -232,6 +234,8 @@
     <None Include="shaders\fragment.sh" />
     <None Include="shaders\gui\fragment.sh" />
     <None Include="shaders\gui\vertex.sh" />
+    <None Include="shaders\picker\fragment.sh" />
+    <None Include="shaders\picker\vertex.sh" />
     <None Include="shaders\vertex.sh" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

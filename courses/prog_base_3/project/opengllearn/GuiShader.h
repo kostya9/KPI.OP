@@ -5,6 +5,7 @@ class GuiShader : public Shader {
 private:
 
 	GLuint location_transformationMatrix;
+	GLuint location_extraIDColor;
 public:
 	GuiShader() : Shader("shaders\\gui\\vertex.sh", "shaders\\gui\\fragment.sh") {
 		getAllUniformLocations();

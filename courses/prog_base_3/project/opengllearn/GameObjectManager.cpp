@@ -1,7 +1,9 @@
 #include "GameObjectManager.h"
 GameObjectManager::GameObjectManager()
 {
+	loader = new Loader();
 	renderer = new MasterRenderer();
+	guiRenderer = new GuiRenderer(loader);
 }
 void GameObjectManager::shake(GLfloat time)
 {
@@ -31,7 +33,7 @@ void GameObjectManager::renderAll()
 
 	shader->unUse();
 	renderer->prepare();*/
-
+	
 	shadow->queuePosition(player->getPosition());
 	shadow->hideObject();
 	if ((glfwGetTime() - shadowTimeCreated) > 3.f)
@@ -40,8 +42,6 @@ void GameObjectManager::renderAll()
 		shadow->update();
 	}
 	player->render(renderer);
-	if (menu != nullptr)
-		menu->render(renderer);
 	if(hole != nullptr)
 		hole->render(renderer, player->getPosition(), 70.0f);
 	field->render(renderer, player->getPosition(), 70.0f);
@@ -60,11 +60,14 @@ void GameObjectManager::renderAll()
 	}
 	else
 	{
+		renderer->prepare();
+		menu->checkMouse(guiRenderer);
 		renderer->render((menu->getLight()), (menu->getCamera()));
 		renderer->cleanUp();
-		menu->renderText();
+		menu->render(guiRenderer);
 	}
 	renderer->update();
+
 }
 
 void GameObjectManager::addObject(Wall * wall)

@@ -5,8 +5,7 @@
 #include "PlayerMovementManager.h"
 #include "NewGameMenuOption.h"
 #include "ExitMenuOption.h"
-GuiRenderer * r;
-vector<GuiTexture> textures;
+void onMouseButton(GLFWwindow* window, int button, int action, int mode);
 void window_key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 Game::Game()
 {
@@ -19,10 +18,11 @@ Game::Game()
 	Light * light = new Light(glm::fvec3(0.0f, 0.0f, 0.0f), glm::fvec3(1.0f, 1.0f, 1.0f));
 	manager->addObject(light);
 	key_callback kb = window_key_callback;
+	glfwSetMouseButtonCallback(Window::getGLFWWindow(), onMouseButton);
 	Window::addCallBack(kb);
 	setState(GAME_MENU);
 
-	this->menu = new Menu(this);
+	this->menu = new Menu(this, settings->font);
 	manager->addObject(menu);
 
 	//MenuOptionButton * button = new MenuOptionButton(&Loader(), settings->font, glm::fvec3(1.0f, 1.0f, 1.0f), string("HEYYY"));
@@ -34,14 +34,36 @@ Game::Game()
 	//menu->addMenuOption(button1);
 	menu->addMenuOption(buttonExit);
 
-	Loader * loader =  new Loader();
-	textures = vector<GuiTexture>();
-	GLuint texture = loader->loadTexture("models\\menu\\button\\button.png");
-	GuiTexture gui = GuiTexture(texture, glm::fvec2(0.0f, 0.0f), glm::fvec2(1.0f, 1.0f));
-	textures.push_back(gui);
-	r = new GuiRenderer(loader);
 }
 
+void onMouseButton(GLFWwindow* window, int button, int action, int mods) {
+	if (button == GLFW_MOUSE_BUTTON_LEFT)
+	{
+		if (action == GLFW_PRESS)
+		{
+			keyboard->leftButtonPress();
+		}
+		else if (action == GLFW_RELEASE)
+		{
+			keyboard->leftButtonRelease();
+		}
+	}
+}
+void window_key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
+{
+	if (key == GLFW_KEY_F1)
+	{
+		glfwSetWindowShouldClose(window, GL_TRUE);
+		return;
+	}
+
+	if (key < 255 && isalpha(key))
+		key = tolower(key);
+	if (action == GLFW_PRESS)
+		keyboard->keyPress(key);
+	else if (action == GLFW_RELEASE)
+		keyboard->keyRelease(key);
+}
 
 Keyboard * Game::getKeyboard()
 {
@@ -233,7 +255,6 @@ void Game::render()
 	{
 		//StaticShader shader = StaticShader();
 		manager->renderAll();
-		r->render(textures);
 		//menu->render(&Renderer(shader), shader);
 	}
 	Window::update();
@@ -313,19 +334,4 @@ Game::~Game()
 bool Game::isEnoughEnergy()
 {
 	return getPlayer()->getEnergy() > 0.3f;
-}
-void window_key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
-{
-	if (key == GLFW_KEY_F1)
-	{
-		glfwSetWindowShouldClose(window, GL_TRUE);
-		return;
-	}
-
-	if (key < 255 && isalpha(key))
-		key = tolower(key);
-	if (action == GLFW_PRESS)
-		keyboard->keyPress(key);
-	else if (action == GLFW_RELEASE)
-		keyboard->keyRelease(key);
 }

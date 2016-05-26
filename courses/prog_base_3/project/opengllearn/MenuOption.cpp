@@ -1,10 +1,10 @@
 #include "MenuOption.h"
 
-MenuOption::MenuOption(Font * font, vector<Entity> entities, glm::fvec3 color, string text)
+MenuOption::MenuOption(Font * font, GuiTexture texture, glm::fvec3 color, string text)
 {
 	this->color = color;
 	this->font = font;
-	this->entities = entities;
+	this->texture = texture;
 	this->text = text;
 	this->scale = 1.0f;
 	this->alpha = 1.0f;
@@ -13,6 +13,16 @@ MenuOption::MenuOption(Font * font, vector<Entity> entities, glm::fvec3 color, s
 void MenuOption::setMenu(Menu * menu)
 {
 	this->menu = menu;
+}
+
+string MenuOption::getText()
+{
+	return text;
+}
+
+GLuint MenuOption::getID()
+{
+	return id;
 }
 
 void MenuOption::onSelect()
@@ -25,7 +35,12 @@ void MenuOption::onDeselect()
 	selected = false;
 }
 
-void MenuOption::render(MasterRenderer * renderer, glm::fvec2 position)
+void MenuOption::setPosition(glm::fvec2 position)
+{
+	this->texture.setPosition(position);
+}
+
+/*void MenuOption::render(GuiRenderer * renderer, glm::fvec2 position)
 {
 	for (Entity &en : entities)
 	{
@@ -39,7 +54,7 @@ void MenuOption::render(MasterRenderer * renderer, glm::fvec2 position)
 
 	for (Entity en : entities)
 		renderer->proccessEntity(en);
-}
+}*/
 void MenuOption::renderText(glm::fvec2 pos) {
 	pos.x *= Window::getWidth();
 	pos.y *= Window::getHeight();
@@ -53,6 +68,10 @@ void MenuOption::renderText(glm::fvec2 pos) {
 		pos.x -= 10.0f;
 		font->renderText((GLchar *)text.c_str(), pos, color, 1.05f);
 	}
+}
+GuiTexture MenuOption::getTexture()
+{
+	return texture;
 }
 void MenuOption::disable()
 {

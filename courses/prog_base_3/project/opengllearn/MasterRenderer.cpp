@@ -1,5 +1,10 @@
 #include "MasterRenderer.h"
 
+void MasterRenderer::prepare()
+{
+	renderer.prepare();
+}
+
 void MasterRenderer::cleanUp()
 {
 	for (pair<TexturedModel, vector<Entity> *> pair : entities)

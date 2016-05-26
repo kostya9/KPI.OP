@@ -3,6 +3,7 @@
 NewGameMenuOption::NewGameMenuOption(Loader * loader, Font * font, glm::fvec3 color) : MenuOptionButton(loader, font, color, string("New Game"))
 {
 	this->scale = 1.2f;
+	this->id = 100;
 }
 
 void NewGameMenuOption::onClick()

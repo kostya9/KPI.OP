@@ -21,11 +21,9 @@ Model Loader::loadToVao(GLfloat positions[], GLuint size)
 {
 	GLuint vaoId = createVAO();
 	glBindVertexArray(vaoId);
-	this->dataToAttributes(0, 2, positions, sizeof(GLfloat) * 
-		
-		size);
+	this->dataToAttributes(0, 2, positions, size);
 	glBindVertexArray(0);
-	return Model(vaoId, size);
+	return Model(vaoId, size/2);
 }
 
 GLuint Loader::loadTexture(GLchar * path)

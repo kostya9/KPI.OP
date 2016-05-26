@@ -9,6 +9,7 @@
 #include "Menu.h"
 #include "MasterRenderer.h"
 #include "Shadow.h"
+#include "GuiRenderer.h"
 class GameObjectManager
 {
 	private:
@@ -23,6 +24,8 @@ class GameObjectManager
 		/*StaticShader * shader;*/
 		Menu * menu;
 		GLfloat shadowTimeCreated;
+		GuiRenderer * guiRenderer;
+		Loader * loader;
 	public:
 		GameObjectManager();
 		void shake(GLfloat time);

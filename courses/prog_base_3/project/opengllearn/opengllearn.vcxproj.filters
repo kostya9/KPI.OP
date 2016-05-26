@@ -64,6 +64,9 @@
     <Filter Include="Engine\Shader\gui">
       <UniqueIdentifier>{0360beb3-77e6-4c13-b87d-2bd4b86755d2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Shader\picker">
+      <UniqueIdentifier>{bfe2d85a-a24c-4e81-b067-6fb4fa5ab13a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -183,6 +186,9 @@
     <ClInclude Include="guiTexture.h">
       <Filter>Engine\Entities</Filter>
     </ClInclude>
+    <ClInclude Include="PickerShader.h">
+      <Filter>Engine\Shader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Loader.cpp">
@@ -263,6 +269,9 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="guiTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -284,6 +293,12 @@
     </None>
     <None Include="shaders\gui\vertex.sh">
       <Filter>Engine\Shader\gui</Filter>
+    </None>
+    <None Include="shaders\picker\vertex.sh">
+      <Filter>Engine\Shader\picker</Filter>
+    </None>
+    <None Include="shaders\picker\fragment.sh">
+      <Filter>Engine\Shader\picker</Filter>
     </None>
   </ItemGroup>
 </Project>
