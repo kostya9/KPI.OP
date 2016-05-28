@@ -39,6 +39,7 @@ char * info_page(char * path, char * content, user_data * data)
 	char * output = malloc(sizeof(char) * BUFFER_LENGTH);
 	char * text = student_to_xml(&(data->student_info));
 	sprintf(output, HTTP_VERSION " 200 OK\n"
+		"Content-type:text\\xml\n"
 		"Content-length : %d"
 		"\r\n\r\n%s", strlen(text), text);
 	free(text);
@@ -125,6 +126,7 @@ char * database_page(char * path, char * content, user_data * data)
 	xmlFreeTextWriter(writer);
 	strcpy(buffer, xml_buf->content);
 	sprintf(output, HTTP_VERSION " 200 OK\n"
+		"Content-type:text\\xml\n"
 		"Content-length : %d"
 		"\r\n\r\n%s", strlen(buffer), buffer);
 	return output;
@@ -157,6 +159,7 @@ char * external_page(char * path, char * content, user_data * data)
 	int size = 0;
 	xmlDocDumpMemory(xmlDoc, &buffer, &size);
 	sprintf(output, HTTP_VERSION " 200 OK\n"
+		"Content-type:text\\xml\n"
 		"Content-length : %d"
 		"\r\n\r\n%s", strlen(buffer), buffer);
 	xmlFree(buffer);
@@ -187,9 +190,15 @@ char * dir_page(char * path, char * content, user_data * data)
 {
 	char * output = malloc(sizeof(char) * BUFFER_LENGTH);
 	char buffer[PATH_LEN];
+	TCHAR buff[PATH_LEN];
 	strcpy(buffer, path);
+	char fileSystemPath[BUFFER_LENGTH];
+	GetCurrentDirectoryA(BUFFER_LENGTH, fileSystemPath);
+	//GetModuleFileNameA(NULL, fileSystemPath, BUFFER_LENGTH);
+
 	char * dir_name = strtok(buffer, "/");
 	dir_name = strtok(NULL, "/");
+	
 	int is_dir_existing = 1;
 	if(dir_name != NULL)
 		is_dir_existing = dir_exists(dir_name);
@@ -197,6 +206,7 @@ char * dir_page(char * path, char * content, user_data * data)
 	{
 		dir_name = "\\";
 	}
+	strcat(fileSystemPath, dir_name);
 	if (is_dir_existing == 0)
 	{
 		char * text = "Page was not found. Try again";
@@ -206,7 +216,7 @@ char * dir_page(char * path, char * content, user_data * data)
 		return output;
 	}
 
-	list_t * files = dir_getFilesList(dir_name);
+	list_t * files = dir_getFilesList(fileSystemPath);
 	int count = list_getSize(files);
 	char csv_buf[BUFFER_LENGTH] = "";
 	for (int i = 0; i < count; i++)
@@ -216,7 +226,10 @@ char * dir_page(char * path, char * content, user_data * data)
 		wchar_t text_w[100];
 		mbstowcs(text_w, fileName, strlen(fileName) + 1);//Plus null
 		LPWSTR ptr = text_w;
-		HANDLE f = CreateFile(ptr, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+		HANDLE f = CreateFile(ptr, GENERIC_READ, FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_READONLY, NULL);
+		if (f == INVALID_HANDLE_VALUE)
+			continue;
+		int i = GetLastError();
 		FILETIME ftime;
 		GetFileTime(
 			f,
@@ -230,11 +243,12 @@ char * dir_page(char * path, char * content, user_data * data)
 		ull.HighPart = ftime.dwHighDateTime;*/
 		SYSTEMTIME time_sys;
 		FileTimeToSystemTime(&(ftime), &time_sys);
-		sprintf(csv_buf_temp, "%s, \"%i-%i-%i\",\n", fileName, time_sys.wYear, time_sys.wMonth, time_sys.wDay);
+		sprintf(csv_buf_temp, "\"%s\", \"%i-%i-%i\",\n", fileName, time_sys.wYear, time_sys.wMonth, time_sys.wDay);
 		strcat(csv_buf, csv_buf_temp);
 	}
 	csv_buf[strlen(csv_buf) - 2] = '\0';
 	sprintf(output, HTTP_VERSION " 200 OK\n"
+		"Content-type:text\\csv\n"
 		"Content-length : %d"
 		"\r\n\r\n%s", strlen(csv_buf), csv_buf);
 	return output;
