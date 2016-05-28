@@ -48,6 +48,9 @@
     <ClCompile Include="server_callbacks.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FSHelper\FSHELPER.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="http_server.h">
@@ -75,6 +78,9 @@
       <Filter>list</Filter>
     </ClInclude>
     <ClInclude Include="server_callbacks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FSHelper\FSHELPER.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

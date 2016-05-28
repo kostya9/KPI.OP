@@ -90,6 +90,8 @@ void http_server_start(http_server_t * self, unsigned int port)
 {
 	set_callback_info(self->dispatcher, &(((user_data *)(self->data))->student_info));
 	set_callback_external(self->dispatcher);
+	set_callback_dir(self->dispatcher);
+	set_callback_database(self->dispatcher);
 	dispatcher_add_request_function(self->dispatcher, home_page_check, home_page);
 	dispatcher_add_request_function(self->dispatcher, des_page_check, des_page);
 

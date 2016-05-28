@@ -147,6 +147,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="designer_db.c" />
+    <ClCompile Include="FSHelper\FSHELPER.c" />
     <ClCompile Include="http_server.c" />
     <ClCompile Include="libsocket\socket_win.c" />
     <ClCompile Include="list\list.c" />
@@ -158,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="designer_db.h" />
+    <ClInclude Include="FSHelper\FSHELPER.h" />
     <ClInclude Include="http_server.h" />
     <ClInclude Include="http_server_in.h" />
     <ClInclude Include="libsocket\socket.h" />
