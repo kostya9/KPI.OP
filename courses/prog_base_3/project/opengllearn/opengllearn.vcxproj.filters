@@ -67,6 +67,9 @@
     <Filter Include="Engine\Shader\picker">
       <UniqueIdentifier>{bfe2d85a-a24c-4e81-b067-6fb4fa5ab13a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Shader\gui\bar">
+      <UniqueIdentifier>{b1c79a91-5060-4229-bebd-9ecf25a510ad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -189,6 +192,12 @@
     <ClInclude Include="PickerShader.h">
       <Filter>Engine\Shader</Filter>
     </ClInclude>
+    <ClInclude Include="EnergyBar.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiBarShader.h">
+      <Filter>Engine\Shader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Loader.cpp">
@@ -272,6 +281,9 @@
     <ClCompile Include="guiTexture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EnergyBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -299,6 +311,12 @@
     </None>
     <None Include="shaders\picker\fragment.sh">
       <Filter>Engine\Shader\picker</Filter>
+    </None>
+    <None Include="shaders\gui\bar\fragment.sh">
+      <Filter>Engine\Shader\gui\bar</Filter>
+    </None>
+    <None Include="shaders\gui\bar\vertex.sh">
+      <Filter>Engine\Shader\gui\bar</Filter>
     </None>
   </ItemGroup>
 </Project>

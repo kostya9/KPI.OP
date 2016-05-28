@@ -1,10 +1,10 @@
 #include "GameObjectLoader.h"
 #define BUFFER_LEN 1024
-GameObjectLoader::GameObjectLoader(GameObjectManager * manager)
+GameObjectLoader::GameObjectLoader(GameObjectManager * manager, Font* font)
 {
 	this->loader = new Loader(); // temp
 	this->manager = manager;
-
+	this->font = font;
 }
 
 void GameObjectLoader::generateField(glm::fvec2 center, GLuint size)
@@ -102,6 +102,8 @@ void GameObjectLoader::loadLevel(string path)
 		createWall(curPos);
 	createPlayer(playerPos);
 	creatWhiteHole(whiteHolePos);
+	EnergyBar * bar = new EnergyBar(glm::fvec2(-1.0f + 0.255 + 0.01f, 1.0f - 0.128 - 0.01f), loader, font);
+	this->manager->addObject(bar);
 }
 
 GameObjectLoader::~GameObjectLoader()

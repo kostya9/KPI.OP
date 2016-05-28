@@ -55,7 +55,16 @@ void GameObjectManager::renderAll()
 
 	if (menu == nullptr)
 	{
+		bar->setEnergy(getPlayer()->getEnergy());
+		vector<GuiTexture> txt;
+		txt.push_back(bar->getBackTexture());
 		renderer->render(light, (player->getCamera()));
+		GLfloat xMax = bar->getXMax();
+		bar->renderText();
+		guiRenderer->renderBar(bar->getBarTexture(), xMax, 1.0f);
+		guiRenderer->render(txt);
+
+
 		renderer->cleanUp();
 	}
 	else
@@ -68,6 +77,11 @@ void GameObjectManager::renderAll()
 	}
 	renderer->update();
 
+}
+
+void GameObjectManager::addObject(EnergyBar * bar)
+{
+	this->bar = bar;
 }
 
 void GameObjectManager::addObject(Wall * wall)

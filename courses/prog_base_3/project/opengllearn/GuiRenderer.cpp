@@ -64,3 +64,20 @@ void GuiRenderer::render(vector<GuiTexture> textures)
 	glBindVertexArray(0);
 	shader.unUse();
 }
+
+void GuiRenderer::renderBar(GuiTexture barText, GLfloat xMax, GLfloat yMax)
+{
+	bar.use();
+	glBindVertexArray(quad.getVaoId());
+	glEnableVertexAttribArray(0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, barText.getTexture());
+	glm::mat4 matrix = Maths::createTransformationMatrix(barText.getPosition(), barText.getScale());
+	bar.loadTransformation(matrix);
+	bar.loadXMax(xMax);
+	bar.loadYMax(yMax);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
+	glDisableVertexAttribArray(0);
+	glBindVertexArray(0);
+	bar.unUse();
+}

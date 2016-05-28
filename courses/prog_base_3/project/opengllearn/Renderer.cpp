@@ -28,10 +28,10 @@ void Renderer::prepare()
 
 void Renderer::shake(StaticShader shader, GLfloat time)
 {
-	shader.use();
-	this->time = time;
-	shader.loadShake(GL_TRUE, time);
-	shader.unUse();
+	if (this->time <= 0)
+	{
+		this->time = time;
+	}
 }
 
 void Renderer::unShake(StaticShader shader)
@@ -51,7 +51,9 @@ void Renderer::update(StaticShader shader)
 	else if (this->time > 0)
 	{
 		this->time -= 5 * Window::getDeltaTime();
-		shake(shader, time);
+		shader.use();
+		shader.loadShake(GL_TRUE, time);
+		shader.unUse();
 	}
 }
 

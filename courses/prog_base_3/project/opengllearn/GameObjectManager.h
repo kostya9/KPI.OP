@@ -10,6 +10,7 @@
 #include "MasterRenderer.h"
 #include "Shadow.h"
 #include "GuiRenderer.h"
+#include "EnergyBar.h"
 class GameObjectManager
 {
 	private:
@@ -24,6 +25,7 @@ class GameObjectManager
 		/*StaticShader * shader;*/
 		Menu * menu;
 		GLfloat shadowTimeCreated;
+		EnergyBar * bar;
 		GuiRenderer * guiRenderer;
 		Loader * loader;
 	public:
@@ -31,6 +33,7 @@ class GameObjectManager
 		void shake(GLfloat time);
 		Wall::COLLISION_STATUS isMovementColliding(glm::fvec3 positionFrom, glm::fvec3 positionDest, Wall ** collider); // Wall collision
 		void renderAll();
+		void addObject(EnergyBar * bar);
 		void addObject(Wall * wall);
 		void addObject(Player * player);
 		void addObject(Field * field);

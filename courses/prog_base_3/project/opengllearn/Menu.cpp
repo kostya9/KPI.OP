@@ -15,10 +15,11 @@ void Menu::setSelected(int id)
 		if (option->getID() == id)
 		{
 			this->curSelected = i;
-			break;
+			return;
 		}
 		i++;
 	}
+	this->curSelected = -1;
 }
 bool Menu::isActive()
 {
@@ -58,28 +59,31 @@ void Menu::enable()
 
 void Menu::update()
 {
-	if (keyboard->isKeyPressed(GLFW_KEY_ENTER) || keyboard->isLeftButtonPressed())
-		options.at(curSelected)->onClick();
-	static char prevKey = '\0';
-	if ((prevKey == '\0') && keyboard->isKeyPressed('s'))
+	if (curSelected != -1)
 	{
-		options.at(curSelected)->onDeselect();
-		curSelected = (curSelected + 1) % (options.size());
-		options.at(curSelected)->onSelect();
-		prevKey = 's';
-	}
-	else if ((prevKey == '\0') && keyboard->isKeyPressed('w'))
-	{
-		options.at(curSelected)->onDeselect();
-		curSelected = (curSelected + (options.size() - 1)) % (options.size());
-		options.at(curSelected)->onSelect();
-		prevKey = 'w';
-	}
+		if (keyboard->isKeyPressed(GLFW_KEY_ENTER) || keyboard->isLeftButtonPressed())
+			options.at(curSelected)->onClick();
+		static char prevKey = '\0';
+		if ((prevKey == '\0') && keyboard->isKeyPressed('s'))
+		{
+			options.at(curSelected)->onDeselect();
+			curSelected = (curSelected + 1) % (options.size());
+			options.at(curSelected)->onSelect();
+			prevKey = 's';
+		}
+		else if ((prevKey == '\0') && keyboard->isKeyPressed('w'))
+		{
+			options.at(curSelected)->onDeselect();
+			curSelected = (curSelected + (options.size() - 1)) % (options.size());
+			options.at(curSelected)->onSelect();
+			prevKey = 'w';
+		}
 
-	if ((prevKey == 'w') && (keyboard->isKeyPressed('w') == false))
-		prevKey = '\0';
-	else if ((prevKey == 's') && (keyboard->isKeyPressed('s') == false))
-		prevKey = '\0';
+		if ((prevKey == 'w') && (keyboard->isKeyPressed('w') == false))
+			prevKey = '\0';
+		else if ((prevKey == 's') && (keyboard->isKeyPressed('s') == false))
+			prevKey = '\0';
+	}
 }
 bool isEqual(GLchar x, GLchar y, GLchar precision)
 {

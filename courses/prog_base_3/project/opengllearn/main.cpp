@@ -24,6 +24,5 @@ int main()
 	}
 	//delete font;
 	delete game;
-	_getch();
 	return 0;
 }

@@ -8,7 +8,7 @@
 class GameObjectLoader
 {
 	public:
-		GameObjectLoader(GameObjectManager * manager);
+		GameObjectLoader(GameObjectManager * manager, Font * font);
 		void generateField(glm::fvec2 center, GLuint size);
 		void createPlayer(glm::fvec2 position);
 		void createWall(glm::fvec2 position);
@@ -19,5 +19,6 @@ class GameObjectLoader
 		~GameObjectLoader();
 	private:
 		GameObjectManager * manager;
+		Font * font;
 		Loader * loader;
 };

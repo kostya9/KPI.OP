@@ -13,7 +13,7 @@ Game::Game()
 	manager = new GameObjectManager();
 	settings = new Settings();
 	settings->font = new Font("fonts/Open_sans/OpenSans-Regular.ttf");
-	loader = new GameObjectLoader(manager);
+	loader = new GameObjectLoader(manager, settings->font);
 	keyboard = new Keyboard();
 	Light * light = new Light(glm::fvec3(0.0f, 0.0f, 0.0f), glm::fvec3(1.0f, 1.0f, 1.0f));
 	manager->addObject(light);
@@ -101,7 +101,7 @@ void Game::cleanGameObjects()
 	current_info_text = string();
 	lastCollider = nullptr;
 	manager = new GameObjectManager();
-	loader = new GameObjectLoader(manager);
+	loader = new GameObjectLoader(manager, settings->font);
 	Light * light = new Light(glm::fvec3(0.0f, 0.0f, 0.0f), glm::fvec3(1.0f, 1.0f, 1.0f));
 	manager->addObject(light);
 }
@@ -249,6 +249,7 @@ void Game::render()
 	if (state == GAME_ACTIVE)
 	{
 		manager->renderAll();
+		
 		writePlayerPosition();
 	}
 	else if (state == GAME_MENU)
@@ -293,7 +294,7 @@ void Game::updatingErrorMessage(MOVEMENT_STATUS status)
 {
 	if (status == MOVE_NOT_MOVING_COLLISION)
 	{
-		current_error_text = string("Could not move - collision detected");
+		//current_error_text = string("Could not move - collision detected");
 	}
 	else if (status == MOVE_NOT_ENOUGH_ENERGY)
 	{
@@ -317,11 +318,12 @@ void Game::setTransparencyIfMovingThrough(GameObject * collider, MOVEMENT_STATUS
 }
 void Game::writePlayerPosition()
 {
+	
 	char debugInfo[100];
 	settings->font->renderText((GLchar *)current_error_text.c_str(), message_error_pos, glm::fvec3(1.0f, 0.1f, 0.1f), 1.0f);
 	settings->font->renderText((GLchar *)current_info_text.c_str(), message_info_pos, glm::fvec3(0.2f, 0.6f, 1.0f), 1.2f);
-	sprintf(debugInfo, "X : %3.2f, Y : %3.2f, Z : %3.2f", getPlayer()->getPosition().x, getPlayer()->getPosition().y, getPlayer()->getPosition().z);
-	settings->font->renderText(debugInfo, glm::fvec2(0.f, 0.f), glm::fvec3(1.0f, 0.1f, 0.1f), 1.0f);
+	/*sprintf(debugInfo, "X : %3.2f, Y : %3.2f, Z : %3.2f", getPlayer()->getPosition().x, getPlayer()->getPosition().y, getPlayer()->getPosition().z);
+	settings->font->renderText(debugInfo, glm::fvec2(0.f, 0.f), glm::fvec3(1.0f, 0.1f, 0.1f), 1.0f);/**/
 }
 Game::~Game()
 {
