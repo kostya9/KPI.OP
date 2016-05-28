@@ -5,6 +5,7 @@
 #define CONTENT_LEN 4096
 #define CHECK_YES 1
 #define CHECK_NO 0
+#define str_equal(a, b) (strcmp(a, b) == 0)
 typedef int(*check_func)(HTTP_METHOD m, char *, char*);
 typedef struct request_dispatcher_s request_dispatcher_t;
 

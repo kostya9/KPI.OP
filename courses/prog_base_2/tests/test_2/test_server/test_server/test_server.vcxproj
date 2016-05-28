@@ -72,7 +72,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <LibraryPath>lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
-    <SourcePath>include;$(VC_SourcePath);</SourcePath>
+    <SourcePath>$(VC_SourcePath);</SourcePath>
+    <IncludePath>include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -152,6 +153,7 @@
     <ClCompile Include="main.c" />
     <ClCompile Include="request_dispatcher.c" />
     <ClCompile Include="request_handler.c" />
+    <ClCompile Include="server_callbacks.c" />
     <ClCompile Include="student.c" />
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +164,7 @@
     <ClInclude Include="list\list.h" />
     <ClInclude Include="request_dispatcher.h" />
     <ClInclude Include="request_handler.h" />
+    <ClInclude Include="server_callbacks.h" />
     <ClInclude Include="student.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

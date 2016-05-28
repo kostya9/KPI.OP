@@ -6,7 +6,9 @@
 #include "libsocket\socket.h"
 #include "http_server_in.h"
 #include "request_dispatcher.h"
-#include "include\curl\curl.h"
+#include <curl\curl.h>
+#include "server_callbacks.h"
+#include "student.h"
 char * page_not_found_handle(char * path, char * content, void *data)
 {
 	char * output = malloc(sizeof(char) * BUFFER_LENGTH);
@@ -31,7 +33,7 @@ char * des_page(char * path, char * content, void * data)
 	char buff[BUFFER_LENGTH] = "";
 	//sprintf(output, HTTP_VERSION " 200 OK\n);
 	int count = 0;
-	des_db_t * db = data;
+	des_db_t * db = ((user_data *)(data))->db;
 	designer_t * designers = des_db_get_designers(db, &count);
 	for (int i = 0; i < count; i++)
 	{
@@ -71,11 +73,13 @@ http_server_t * http_server_new()
 	//designer * designers = malloc(arr_size * sizeof(designer));
 	//int size = designers_fill_array(designers, arr_size);
 	socket_t * socket = socket_new();
-	http_server_t * server = malloc(sizeof(http_server_s));
+	http_server_t * server = malloc(sizeof(http_server_t));
 	//server->size = size;
 	request_dispatcher_t * dispatcher = dispatcher_new(page_not_found_handle);
 	server->dispatcher = dispatcher;
-	server->db = des_db_new("des.db");
+	server->data = (user_data *)malloc(sizeof(user_data));
+	((user_data *)(server->data))->db = des_db_new("des.db");
+	((user_data *)(server->data))->student_info = student_new("Kostya Sharovarsky", "KP-52", 39);
 	//server->array_size = arr_size;
 	//server->data = designers;
 	server->socket = socket;
@@ -84,8 +88,11 @@ http_server_t * http_server_new()
 
 void http_server_start(http_server_t * self, unsigned int port)
 {
+	set_callback_info(self->dispatcher, &(((user_data *)(self->data))->student_info));
+	set_callback_external(self->dispatcher);
 	dispatcher_add_request_function(self->dispatcher, home_page_check, home_page);
 	dispatcher_add_request_function(self->dispatcher, des_page_check, des_page);
+
 	socket_bind(self->socket, port);
 	socket_listen(self->socket);
 	socket_t * client;
@@ -98,7 +105,7 @@ void http_server_start(http_server_t * self, unsigned int port)
 		request_handler_t * handler = dispatcher_get_handler(self->dispatcher, request_buffer);
 		if (handler != NULL)
 		{
-			handler_get_response(response_buffer, handler, self->db); // TODO DATA
+			handler_get_response(response_buffer, handler, self->data); // TODO DATA
 			handler_delete(handler);
 		}
 		else

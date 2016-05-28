@@ -45,6 +45,9 @@
     <ClCompile Include="student.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="server_callbacks.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="http_server.h">
@@ -70,6 +73,9 @@
     </ClInclude>
     <ClInclude Include="student.h">
       <Filter>list</Filter>
+    </ClInclude>
+    <ClInclude Include="server_callbacks.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
