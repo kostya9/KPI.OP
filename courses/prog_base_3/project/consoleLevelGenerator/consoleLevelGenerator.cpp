@@ -21,7 +21,7 @@
 #define NOTHING_POS_CODE '0'
 
 using namespace std;
-int isUnique(char * array, int size, int value);
+int validatePos(char * arr, int fieldSize, int index);
 void generateLevel(int fieldSize, float wallDensity, string path);
 int getRandomPosition(int fieldSize);
 int main(int argc, char * argv[])
@@ -52,8 +52,8 @@ int main(int argc, char * argv[])
 	}
 	else if (argc <= 1)
 	{
-		wallDensity = 0.66f;
-		fieldSize = 31;
+		wallDensity = 0.45f;
+		fieldSize = 21;
 		path = string("output.txt");
 	}
 	else
@@ -76,17 +76,13 @@ void generateLevel(int fieldSize, float wallDensity, string path)
 	int numberOfWalls = static_cast<int>(wallDensity * (fieldSize * fieldSize));
 	for (int i = 0; i < fieldSize * fieldSize; i++)
 		levelArray[i] = NOTHING_POS_CODE;
-	vector<int> walls;
 	for (int i = 0; i < numberOfWalls; i++)
 	{
 		int index = getRandomPosition(fieldSize);
-		int uniqRet = isUnique(levelArray, fieldSize*fieldSize, index);
-		if(uniqRet)
+		if (levelArray[index] != WALL_POS_CODE && validatePos(levelArray, fieldSize, index))
 			levelArray[index] = WALL_POS_CODE;
 		else
-		{
 			i--;
-		}
 	}
 	int index1 = getRandomPosition(fieldSize);
 	levelArray[index1] = WHITEHOLE_POS_CODE; // wallHole
@@ -114,12 +110,19 @@ void generateLevel(int fieldSize, float wallDensity, string path)
 
 int getRandomPosition(int fieldSize)
 {
-	return ((rand() + 1) % (fieldSize) + 1) * ((rand() + 1) % (fieldSize) + 1);
+	int fieldCount = fieldSize * fieldSize;
+	int pos = (rand() + 1) % fieldCount;
+	_ASSERT(pos < (fieldSize * fieldSize) && pos >= 0);
+	return pos;
 }
-int isUnique(char * array, int size, int value)
+int validatePos(char * arr, int fieldSize, int index)
 {
-	for (int i = 0; i < size; i++)
-		if (value == array[i])
-			return 0;
+	int count = 0;
+	for (int i = 0; i < 3; i++)
+		for (int j = 0; j < 3; j++)
+			if (arr[index - fieldSize - 1 + fieldSize * j + i] == WALL_POS_CODE)
+				count++;
+	if (count > 5)
+		return 0;
 	return 1;
 }
