@@ -165,6 +165,7 @@
     <ClInclude Include="Field.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameDescriptionButton.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectLoader.h" />
     <ClInclude Include="GameObjectManager.h" />
@@ -172,6 +173,9 @@
     <ClInclude Include="GuiRenderer.h" />
     <ClInclude Include="GuiShader.h" />
     <ClInclude Include="guiTexture.h" />
+    <ClInclude Include="GameDescriptionScreen.h" />
+    <ClInclude Include="HighScore.h" />
+    <ClInclude Include="HighScoreScreen.h" />
     <ClInclude Include="MasterRenderer.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="MenuOption.h" />
@@ -180,6 +184,7 @@
     <ClInclude Include="NewGameMenuOption.h" />
     <ClInclude Include="PickerShader.h" />
     <ClInclude Include="PlayerMovementManager.h" />
+    <ClInclude Include="Points.h" />
     <ClInclude Include="Shadow.h" />
     <ClInclude Include="WallHole.h" />
     <ClInclude Include="Keyboard.h" />
@@ -205,11 +210,15 @@
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameDescriptionButton.cpp" />
+    <ClCompile Include="GameDescriptionScreen.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectLoader.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="GuiRenderer.cpp" />
     <ClCompile Include="guiTexture.cpp" />
+    <ClCompile Include="HighScore.cpp" />
+    <ClCompile Include="HighScoreScreen.cpp" />
     <ClCompile Include="MasterRenderer.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MenuOption.cpp" />
@@ -218,6 +227,7 @@
     <ClCompile Include="NewGameMenuOption.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerMovementManager.cpp" />
+    <ClCompile Include="Points.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Shadow.cpp" />

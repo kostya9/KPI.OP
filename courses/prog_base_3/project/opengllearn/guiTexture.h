@@ -20,6 +20,7 @@ public:
 	glm::fvec2 getPosition() { return position; }
 	void setPosition(glm::fvec2 pos);
 	void setScale(GLfloat scale);
+	void setInitialScale(glm::fvec2 scale);
 
 
 };

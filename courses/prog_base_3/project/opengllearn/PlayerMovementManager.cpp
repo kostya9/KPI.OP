@@ -77,29 +77,25 @@ MOVEMENT_STATUS PlayerMovementManager::checkInputKeysForMovement(Player * player
 		status = tryMoveForward(player, goManager);
 		return status;
 	}
-	else if (keyboard->isKeyPressed('s'))
+	if (keyboard->isKeyPressed('s'))
 	{
 		MOVEMENT_STATUS status = tryMoveBackward(player, goManager);
 		return status;
 	}
-	else if (keyboard->isKeyPressed('a'))
+	if (keyboard->isKeyPressed('a'))
 	{
 		MOVEMENT_STATUS status = tryMoveLeft(player, goManager);
 		return status;
 	}
-	else if (keyboard->isKeyPressed('d'))
+	if (keyboard->isKeyPressed('d'))
 	{
 		MOVEMENT_STATUS status = tryMoveRight(player, goManager);
 		return status;
 	}
-	else
-	{
-		lastCollider = nullptr;
-		if (player->isMoving())
-			return MOVE_ALREADY_MOVING;
-		return MOVE_NOT_MOVING_NO_COMMANDS;
-	}
-
+	lastCollider = nullptr;
+	if (player->isMoving())
+		return MOVE_ALREADY_MOVING;
+	return MOVE_NOT_MOVING_NO_COMMANDS;
 }
 
 MOVEMENT_STATUS PlayerMovementManager::tryMove(Player * player, GameObjectManager * goManager, glm::fvec3 destination)

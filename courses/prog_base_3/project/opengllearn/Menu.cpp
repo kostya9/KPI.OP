@@ -4,7 +4,10 @@
 #include <cstdlib>
 void Menu::checkMouse(GuiRenderer * renderer)
 {
-	GLuint id = renderer->getIdOnMousePosition(this->options);
+	GLuint id;
+	if (this->fullScreen != nullptr)
+		return this->setSelected(fullScreen->getID());
+	id = renderer->getIdOnMousePosition(this->options);
 	this->setSelected(id);
 }
 void Menu::setSelected(int id)
@@ -18,6 +21,11 @@ void Menu::setSelected(int id)
 			return;
 		}
 		i++;
+	}
+	if (this->fullScreen != nullptr)
+	{
+		this->fullScreen->onSelect();
+		this->curSelected = fullScreen->getID();
 	}
 	this->curSelected = -1;
 }
@@ -47,9 +55,37 @@ void Menu::addMenuOption(MenuOption * option)
 	option->setMenu(this);
 }
 
+void Menu::deleteMenuOption(MenuOption* option)
+{
+	size_t count = options.size();
+	for (int i = 0; i < count; ++i)
+	{
+		if(option == options.at(i))
+		{
+			options.erase(options.begin() + i);
+			break;
+		}
+	}
+}
+
 void Menu::disable()
 {
 	active = false;
+}
+
+void Menu::setFullScreen(MenuOption* option)
+{
+	delete keyboard;
+	keyboard = new Keyboard();
+	this->fullScreen = option;
+	this->fullScreen->setMenu(this);
+}
+
+void Menu::deleteFullSreen()
+{
+	delete keyboard;
+	keyboard = new Keyboard();
+	this->fullScreen = nullptr;
 }
 
 void Menu::enable()
@@ -57,12 +93,22 @@ void Menu::enable()
 	active = true;
 }
 
-void Menu::update()
+int Menu::update()
 {
+	int rc = OK;
+	if(fullScreen != nullptr)
+	{
+		if (keyboard->isKeyPressed(GLFW_KEY_ENTER) || keyboard->isLeftButtonPressed())
+			rc = this->fullScreen->onClick();
+	}
+	if (rc == RETURN)
+		return rc;
 	if (curSelected != -1)
 	{
 		if (keyboard->isKeyPressed(GLFW_KEY_ENTER) || keyboard->isLeftButtonPressed())
-			options.at(curSelected)->onClick();
+			rc = options.at(curSelected)->onClick();
+		if (rc == RETURN)
+			return rc;
 		static char prevKey = '\0';
 		if ((prevKey == '\0') && keyboard->isKeyPressed('s'))
 		{
@@ -83,7 +129,9 @@ void Menu::update()
 			prevKey = '\0';
 		else if ((prevKey == 's') && (keyboard->isKeyPressed('s') == false))
 			prevKey = '\0';
+
 	}
+	return rc;
 }
 bool isEqual(GLchar x, GLchar y, GLchar precision)
 {
@@ -101,6 +149,13 @@ void Menu::render(GuiRenderer * renderer)
 	vector<tuple<glm::fvec2, GLfloat, string>> guiText;
 	glm::fvec2 startPos = glm::fvec2(0.0f, 0.3f);
 	int i = 0;
+	if(this->fullScreen != nullptr)
+	{
+		textures.push_back(fullScreen->getTexture());
+		setSelected(fullScreen->getID());
+		renderer->render(textures);
+		return;
+	}
 	for (MenuOption * option : options)
 	{
 		GuiTexture txt = option->getTexture();
@@ -109,7 +164,7 @@ void Menu::render(GuiRenderer * renderer)
 		string text = option->getText();
 		pos.x += Window::getWidth() * startPos.x;
 		pos.y += Window::getHeight() * startPos.y;
-		pos.x -= text.size() * 15.0f;
+		pos.x -= text.size() * 14.0f;
 		pos.y -= 12.0f;
 		option->setPosition(startPos * 2.f);
 		if (curSelected != i)

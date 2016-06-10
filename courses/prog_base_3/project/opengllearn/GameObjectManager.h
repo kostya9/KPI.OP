@@ -1,7 +1,6 @@
 #pragma once
 #include "MainHeaders.h"
 #include "GameObject.h"
-#include "Shader.h"
 #include "Wall.h"
 #include "Player.h"
 #include "Field.h"
@@ -43,6 +42,8 @@ class GameObjectManager
 		void addObject(WhiteHole * hole);
 		void addObject(Menu * menu);
 		void addMask(glm::fvec3 mask);
+		void swapWalls();
+		void blinkMask(glm::fvec3 color);
 		WhiteHole * getWhiteHole();
 		Field * getField();
 		Light * getLight();

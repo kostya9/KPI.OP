@@ -8,6 +8,11 @@
 #include "Font.h"
 #include "Game.h"
 Keyboard * keyboard;
+#include <Windows.h>
+#include <Mmsystem.h>
+#include <mciapi.h>
+//these two headers are already included in the <Windows.h> header
+#pragma comment(lib, "Winmm.lib")
 // The MAIN function, from here we start the application and run the game loop
 int main()
 {

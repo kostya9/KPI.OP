@@ -1,4 +1,9 @@
 #include "GameObjectLoader.h"
+#include "NewGameMenuOption.h"
+#include "ExitMenuOption.h"
+#include "HighScore.h"
+#include "GameDescriptionButton.h"
+#include "Game.h"
 #define BUFFER_LEN 1024
 GameObjectLoader::GameObjectLoader(GameObjectManager * manager, Font* font)
 {
@@ -28,7 +33,7 @@ void GameObjectLoader::createWall(glm::fvec2 position)
 	manager->addObject(wall);
 }
 
-void GameObjectLoader::createLight(GLfloat brightness, glm::fvec3 position)
+void GameObjectLoader::createLight(GLfloat brightness, glm::fvec3 position) const
 {
 	Light * light = new Light(position, glm::vec3(brightness, brightness, brightness));
 	manager->addObject(light);
@@ -104,6 +109,27 @@ void GameObjectLoader::loadLevel(string path)
 	creatWhiteHole(whiteHolePos);
 	EnergyBar * bar = new EnergyBar(glm::fvec2(-1.0f + 0.255 + 0.01f, 1.0f - 0.128 - 0.01f), loader, font);
 	this->manager->addObject(bar);
+	this->manager->swapWalls();
+}
+
+void GameObjectLoader::loadMenu(Game * game)
+{
+	Menu* menu = new Menu(game, game->getSettings()->font);
+	manager->addObject(menu);
+
+	//MenuOptionButton * button = new MenuOptionButton(&Loader(), settings->font, glm::fvec3(1.0f, 1.0f, 1.0f), string("HEYYY"));
+	//MenuOptionButton * button1 = new MenuOptionButton(&Loader(), settings->font, glm::fvec3(1.0f, 1.0f, 1.0f), string("HEYYY1"));
+	NewGameMenuOption* newGame = new NewGameMenuOption(&Loader(), game->getSettings()->font, glm::fvec3(1.0f, 1.0f, 1.0f));
+	ExitMenuOption* buttonExit = new ExitMenuOption(&Loader(), game->getSettings()->font, glm::fvec3(1.0f, 1.0f, 1.0f));
+	HighScore * highButton = new HighScore(&Loader(), game->getSettings()->font, glm::fvec3(1.0f, 1.0f, 1.0f));
+	GameDescriptionButton * buttonDescr = new GameDescriptionButton(&Loader(), game->getSettings()->font, glm::fvec3(1.0f, 1.0f, 1.0f));
+
+	menu->addMenuOption(newGame);
+	menu->addMenuOption(buttonDescr);
+	menu->addMenuOption(highButton);
+	//menu->addMenuOption(button);
+	//menu->addMenuOption(button1);
+	menu->addMenuOption(buttonExit);
 }
 
 GameObjectLoader::~GameObjectLoader()

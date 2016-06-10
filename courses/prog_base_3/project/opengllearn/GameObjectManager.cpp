@@ -63,8 +63,6 @@ void GameObjectManager::renderAll()
 		bar->renderText();
 		guiRenderer->renderBar(bar->getBarTexture(), xMax, 1.0f);
 		guiRenderer->render(txt);
-
-
 		renderer->cleanUp();
 	}
 	else
@@ -74,6 +72,8 @@ void GameObjectManager::renderAll()
 		renderer->render((menu->getLight()), (menu->getCamera()));
 		renderer->cleanUp();
 		menu->render(guiRenderer);
+		if (menu->update() == RETURN)
+			return;
 	}
 	renderer->update();
 
@@ -122,12 +122,28 @@ void GameObjectManager::addObject(WhiteHole * hole)
 
 void GameObjectManager::addObject(Menu * menu)
 {
-	this->menu = menu;
+	if(menu == nullptr)
+		this->menu = menu;
+	else
+	{
+		delete this->menu;
+		this->menu = menu;
+	}
 }
 
 void GameObjectManager::addMask(glm::fvec3 mask)
 {
 	this->renderer->mask(mask);
+}
+
+void GameObjectManager::swapWalls()
+{
+	std::reverse(walls.begin(), walls.end());
+}
+
+void GameObjectManager::blinkMask(glm::fvec3 color)
+{
+	this->renderer->blinkMask(color);
 }
 
 WhiteHole * GameObjectManager::getWhiteHole()

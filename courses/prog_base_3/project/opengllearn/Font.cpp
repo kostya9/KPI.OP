@@ -84,6 +84,7 @@ Font::Font(GLchar * fileName) : shader(vertPath, fragPath)
 
 void Font::renderText(GLchar * text, glm::fvec2 position, glm::fvec3 color, GLfloat scale)
 {
+	glm::fvec2 prevPos = position;
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -96,7 +97,12 @@ void Font::renderText(GLchar * text, glm::fvec2 position, glm::fvec3 color, GLfl
 	for (unsigned int i = 0; i < strlen(text); i++)
 	{
 		Character ch = chars[text[i]];
-
+		if (text[i] == '\n')
+		{
+			position = prevPos;
+			position.y -= ch.size.y * scale + 0.05f;;
+			continue;
+		}
 		GLfloat xpos = position.x + ch.bearing.x * scale;
 		GLfloat ypos = position.y - (ch.size.y - ch.bearing.y) * scale;
 

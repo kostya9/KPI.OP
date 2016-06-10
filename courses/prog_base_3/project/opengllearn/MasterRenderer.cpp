@@ -23,6 +23,16 @@ void MasterRenderer::render(Shader shader, Entity entity)
 void MasterRenderer::render(Light * light, Camera * cam)
 {
 	renderer.prepare();
+	if (timeLeft > 0)
+	{
+		renderer.addMask(blinkColor/2.f + (blinkColor/2.f) * glm::cos(timeLeft * 1.2f));
+		timeLeft -= Window::getDeltaTime();
+	}
+	else if(timeLeft < 0)
+	{
+		renderer.addMask(glm::fvec3(1.0f, 1.0f, 1.0f));
+		timeLeft = 0;
+	}
 	shader.use();
 	shader.loadLight(light);
 	shader.loadViewMatrix(cam);
@@ -57,4 +67,13 @@ void MasterRenderer::mask(glm::fvec3 color)
 void MasterRenderer::shake(GLfloat time)
 {
 	renderer.shake(shader, time);
+}
+
+void MasterRenderer::blinkMask(glm::fvec3 color)
+{
+	if (timeLeft <= 0)
+	{
+		this->timeLeft = blinkTime;
+		this->blinkColor = color;
+	}
 }

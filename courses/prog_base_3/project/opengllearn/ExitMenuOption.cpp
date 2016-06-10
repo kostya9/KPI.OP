@@ -5,7 +5,8 @@ ExitMenuOption::ExitMenuOption(Loader * loader, Font * font, glm::fvec3 color) :
 	this->id = 101;
 }
 
-void ExitMenuOption::onClick()
+int ExitMenuOption::onClick()
 {
 	menu->getGame()->close();
+	return RETURN;
 }

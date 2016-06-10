@@ -13,6 +13,7 @@ class Menu
 		Camera * cam;
 		Light * light;
 		Font * font;
+		MenuOption * fullScreen = nullptr;
 		bool active;
 	public:
 		Menu(Game * game, Font * font) { 
@@ -33,9 +34,12 @@ class Menu
 		Camera * getCamera();
 		Light * getLight();
 		void addMenuOption(MenuOption * option);
+		void deleteMenuOption(MenuOption * option);
 		void disable();
+		void setFullScreen(MenuOption * option);
+		void deleteFullSreen();
 		void enable();
-		void update();
+		int update();
 		void render(GuiRenderer * renderer);
 		void renderText();
 };

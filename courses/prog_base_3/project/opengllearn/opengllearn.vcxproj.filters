@@ -198,6 +198,21 @@
     <ClInclude Include="GuiBarShader.h">
       <Filter>Engine\Shader</Filter>
     </ClInclude>
+    <ClInclude Include="Points.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="HighScore.h">
+      <Filter>Game\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="HighScoreScreen.h">
+      <Filter>Game\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="GameDescriptionButton.h">
+      <Filter>Game\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="GameDescriptionScreen.h">
+      <Filter>Game\Menu</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Loader.cpp">
@@ -283,6 +298,21 @@
     </ClCompile>
     <ClCompile Include="EnergyBar.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Points.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HighScore.cpp">
+      <Filter>Game\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="HighScoreScreen.cpp">
+      <Filter>Game\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="GameDescriptionButton.cpp">
+      <Filter>Game\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="GameDescriptionScreen.cpp">
+      <Filter>Game\Menu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

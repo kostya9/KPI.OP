@@ -13,6 +13,9 @@ private:
 	StaticShader shader = StaticShader();
 	Renderer renderer = Renderer(shader);
 	unordered_map<TexturedModel, vector<Entity> *> entities = unordered_map<TexturedModel, vector<Entity> *>();
+	GLfloat timeLeft = 0;
+	glm::fvec3 blinkColor;
+	const GLfloat blinkTime = 3.14f/2;
 public:
 	void prepare();
 	void cleanUp();
@@ -22,4 +25,5 @@ public:
 	void update();
 	void mask(glm::fvec3 color);
 	void shake(GLfloat time);
+	void blinkMask(glm::fvec3 color);
 };
