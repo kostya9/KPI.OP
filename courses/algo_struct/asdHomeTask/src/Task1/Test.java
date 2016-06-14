@@ -1,5 +1,7 @@
 package Task1;
 
+import MyPlot.MyChart;
+import MyPlot.MyDataSet;
 import org.jfree.ui.RefineryUtilities;
 
 import java.io.FileNotFoundException;
@@ -13,6 +15,7 @@ import java.util.*;
 public class Test {
 
     public static void main(String[] args) {
+        String chartTitle = "Sorting arrays using Heap Sort";
         MyDataSet random = getDataSetFromFile("stats10MillionRandom.txt");
         MyDataSet sorted = getDataSetFromFile("stats10MillionSorted.txt");
         MyDataSet reversed = getDataSetFromFile("stats10MillionReversed.txt");
@@ -20,13 +23,12 @@ public class Test {
         dataList.add(random);
         dataList.add(sorted);
         dataList.add(reversed);
-
         /*try {
             tester.deserialize();
         } catch (IOException e) {
             e.printStackTrace();
         }/**/
-        MyChart chart = new MyChart(dataList);
+        MyChart chart = new MyChart(dataList, chartTitle);
         chart.pack();
         RefineryUtilities.centerFrameOnScreen(chart);
         chart.setVisible(true);
