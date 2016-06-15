@@ -32,18 +32,18 @@ public class MergeTester {
 
             //Merging
             lengths.add(length);
-            long tStart = System.currentTimeMillis();
+            long tStart = System.nanoTime();
             int[] result1 = Merge.twoWayMerge(first, second);
-            long tEnd = System.currentTimeMillis();
+            long tEnd = System.nanoTime();
             long delta = tEnd - tStart;
-            double deltaSecondsTwoWay = delta / (double) (1e3);
+            double deltaSecondsTwoWay = delta / (double) (1e6);
             timeTwoWayMerge.add(deltaSecondsTwoWay);
 
-            tStart = System.currentTimeMillis();
+            tStart = System.nanoTime();
             int[] result2 = Merge.abstractInPlaceMerge(first, second);
-            tEnd = System.currentTimeMillis();
+            tEnd = System.nanoTime();
             delta = tEnd - tStart;
-            double deltaSecondsInPlace = delta / (double) (1e3);
+            double deltaSecondsInPlace = delta / (double) (1e6);
             timeInPlaceMerge.add(deltaSecondsInPlace);
 
             System.out.format("Merged %d elements two-way vs in-place : %.4f vs %.4f\n", length, deltaSecondsTwoWay, deltaSecondsInPlace);

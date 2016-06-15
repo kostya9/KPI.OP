@@ -7,6 +7,7 @@ import org.jfree.ui.ArrowPanel;
 import org.jfree.ui.RefineryUtilities;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.List;
@@ -16,11 +17,11 @@ import java.util.List;
  */
 public class Test {
     public static void main(String[] args) {
+        //generateAndSerialize();
         MergeTester tester = new MergeTester();
-        tester.merge((int)1e4, (int)2e7);
         try {
-            tester.serialize("100MillionMerge.txt");
-        } catch (FileNotFoundException | UnsupportedEncodingException e) {
+            tester.deserialize("10MillionMerge.txt");
+        } catch (IOException e) {
             e.printStackTrace();
         }
         List<MyDataSet> sets = tester.getDataSets();
@@ -28,6 +29,15 @@ public class Test {
         chart.pack();
         RefineryUtilities.centerFrameOnScreen(chart);
         chart.setVisible(true);
+    }
+    static void generateAndSerialize(){
+        MergeTester tester = new MergeTester();
+        tester.merge((int)1e3, (int)1e7);
+        try {
+            tester.serialize("10MillionMerge.txt");
+        } catch (FileNotFoundException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
     static void testConsole(){
         int length = 10;

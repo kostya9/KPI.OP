@@ -32,12 +32,11 @@ public class DictionaryTester {
         for(int length = 1; length < last; length+=step){
             lengths.add(length);
 
-            int keyToFind = 0;// last logn
-            double deltaSecondsArray = findAndRecordTimeArray(dictArray, keyToFind);
+            int keyToFind = length - 1;// last logn
 
-            keyToFind = length - 1;// last logn
+            double deltaSecondsArray = findAndRecordTimeArray(dictArray, keyToFind);
             double deltaSecondsBST = findAndRecordTimeBST(dictBST, keyToFind); // Root
-            System.out.format("Found the best in %d elements sorted array vs BST : %.4f vs %.4f\n", length, deltaSecondsArray, deltaSecondsBST);
+            System.out.format("Found the average in %d elements sorted array vs BST : %.4f vs %.4f\n", length, deltaSecondsArray, deltaSecondsBST);
         }
     }
 
@@ -51,10 +50,11 @@ public class DictionaryTester {
             lengths.add(length);
             dictArray.buildADictionary(length);
             int keyToFind = (length - 1)/2;// midPoint
+
             double deltaSecondsArray = findAndRecordTimeArray(dictArray, keyToFind);
 
             keyToFind = 0;// Root
-            double deltaSecondsBST = findAndRecordTimeBST(dictBST, keyToFind); // Root
+            double deltaSecondsBST = findAndRecordTimeBST(dictBST, keyToFind);
             System.out.format("Found the best in %d elements sorted array vs BST : %.4f vs %.4f\n", length, deltaSecondsArray, deltaSecondsBST);
         }
     }
@@ -65,10 +65,10 @@ public class DictionaryTester {
         DictionaryBST<Integer, Integer> dictBST = new DictionaryBST<Integer, Integer>();
 
         dictBST.buildWorstCase(last);
-        dictArray.buildADictionary(last);
+
         for(int length = 1; length < last; length+=step){
             int keyToFind = length - 1;
-
+            dictArray.buildADictionary(length);
             lengths.add(length);
             double deltaSecondsArray = findAndRecordTimeArray(dictArray, keyToFind);
             double deltaSecondsBST = findAndRecordTimeBST(dictBST, keyToFind);
@@ -80,24 +80,23 @@ public class DictionaryTester {
         long tStart;
         long tEnd;
         long delta;
-        tStart = System.currentTimeMillis();
+        tStart = System.nanoTime();
         int found = dictBST.get(keyToFind);
+        tEnd = System.nanoTime();
         assert(found == keyToFind);
-        tEnd = System.currentTimeMillis();
         delta = tEnd - tStart;
-        double deltaSecondsBST = delta / (double) (1e3);
+        double deltaSecondsBST = delta / (double) (1e6);
         timeBST.add(deltaSecondsBST);
         return deltaSecondsBST;
     }
 
     private double findAndRecordTimeArray(DictionarySortedArray<Integer, Integer> dictArray, int keyToFind) {
-        long tStart = System.currentTimeMillis();
+        long tStart = System.nanoTime();
         int found = dictArray.get(keyToFind);
-        long tEnd = System.currentTimeMillis();
+        long tEnd = System.nanoTime();
         assert(found == keyToFind);
-
         long delta = tEnd - tStart;
-        double deltaSecondsArray = delta / (double) (1e3);
+        double deltaSecondsArray = delta / (double) (1e6);
         timeArray.add(deltaSecondsArray);
         return deltaSecondsArray;
     }

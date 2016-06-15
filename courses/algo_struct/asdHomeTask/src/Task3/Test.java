@@ -14,23 +14,53 @@ import java.util.List;
  */
 public class Test {
     public static void main(String[] args) {
-        DictionaryTester tester = new DictionaryTester();
-        tester.testAverageCase((int)1e3, (int)1e7);
+        generateAndSerialize();
+        DictionaryTester testerBest = new DictionaryTester();
+        DictionaryTester testerWorst = new DictionaryTester();
+        DictionaryTester testerAverage = new DictionaryTester();
         try {
-            tester.serialize("100MillionFindAverageCase.txt");
-        } catch (FileNotFoundException | UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        /*try {
-            tester.deserialize("100MillionFindWorstCase.txt");
+            testerBest.deserialize("10MillionFindBestCase.txt");
+            testerWorst.deserialize("10MillionFindWorstCase.txt");
+            testerAverage.deserialize("10MillionFindAverageCase.txt");
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
-        List<MyDataSet> sets = tester.getDataSets();
-        MyChart chart = new MyChart(sets, "Dictionary find testing(average case)");
-        chart.pack();
-        RefineryUtilities.centerFrameOnScreen(chart);
-        chart.setVisible(true);
+        }
+        List<MyDataSet> setsBest = testerBest.getDataSets();
+        List<MyDataSet> setsWorst = testerWorst.getDataSets();
+        List<MyDataSet> setsAverage = testerAverage.getDataSets();
+        MyChart chartBest = new MyChart(setsBest, "Dictionary find testing(best case)");
+        chartBest.pack();
+        RefineryUtilities.centerFrameOnScreen(chartBest);
+        chartBest.setVisible(true);
+        MyChart chartWorst = new MyChart(setsWorst, "Dictionary find testing(worst case)");
+        chartWorst.pack();
+        RefineryUtilities.centerFrameOnScreen(chartWorst);
+        chartWorst.setVisible(true);
+        MyChart chartAverage = new MyChart(setsAverage, "Dictionary find testing(average case)");
+        chartAverage.pack();
+        RefineryUtilities.centerFrameOnScreen(chartAverage);
+        chartAverage.setVisible(true);
+    }
+    static void generateAndSerialize(){
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        DictionaryTester testerBest = new DictionaryTester();
+        DictionaryTester testerWorst = new DictionaryTester();
+        DictionaryTester testerAverage = new DictionaryTester();
+        testerBest.testBestCase((int)1e4, (int)1e7);
+        testerWorst.testWorstCase((int)1e4, (int)1e7);
+        testerAverage.testAverageCase((int)1e4, (int)1e7);
+        try {
+            testerBest.serialize("10MillionFindBestCase.txt");
+            testerWorst.serialize("10MillionFindWorstCase.txt");
+            testerAverage.serialize("10MillionFindAverageCase.txt");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
     static void testDictArray(){
         DictionarySortedArray<Integer, String> dict = new DictionarySortedArray<Integer, String>();

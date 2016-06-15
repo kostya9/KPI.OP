@@ -16,6 +16,7 @@ public class Test {
 
     public static void main(String[] args) {
         String chartTitle = "Sorting arrays using Heap Sort";
+        //generateAndSerialize();
         MyDataSet random = getDataSetFromFile("stats10MillionRandom.txt");
         MyDataSet sorted = getDataSetFromFile("stats10MillionSorted.txt");
         MyDataSet reversed = getDataSetFromFile("stats10MillionReversed.txt");
@@ -34,16 +35,22 @@ public class Test {
         chart.setVisible(true);
         //System.out.print(Arrays.toString(arr));
     }
-    static HeapSortTester generateAndSerialize(){
-        HeapSortTester tester = new HeapSortTester();
-        int step = (int)1e4;
-        tester.sortRandomArrays(step, (int)1e7);
+    static void generateAndSerialize(){
+        HeapSortTester random = new HeapSortTester();
+        HeapSortTester reversed = new HeapSortTester();
+        HeapSortTester sorted = new HeapSortTester();
+        random.sortRandomArrays((int)1e4, (int)1e7);
+        reversed.sortReversedArrays((int)1e4, (int)1e7);
+        sorted.sortSortedArrays((int)1e4, (int)1e7);
         try {
-            tester.serialize();
-        } catch (FileNotFoundException | UnsupportedEncodingException e) {
+            random.serialize("stats10millionRandom.txt");
+            reversed.serialize("stats10MillionReversed.txt");
+            sorted.serialize("stats10millionSorted.txt");
+        }
+        catch(Exception e)
+        {
             e.printStackTrace();
         }
-        return tester;
     }
     static MyDataSet getDataSetFromFile(String fileName){
         HeapSortTester tester = new HeapSortTester();

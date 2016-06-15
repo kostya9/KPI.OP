@@ -54,12 +54,12 @@ public class HeapSortTester {
         }
     }
     private void sortAndRecord(int length, int[] arr) {
-        long tStart = System.currentTimeMillis();
+        long tStart = System.nanoTime();
         HeapSort.sort(arr);
-        long tEnd = System.currentTimeMillis();
+        long tEnd = System.nanoTime();
         long delta = tEnd - tStart;
-        double deltaSeconds = delta / (double) (1e3);
-        System.out.format("Elapsed %.4f seconds for sorting %d elements\n", deltaSeconds, length);
+        double deltaSeconds = delta / (double) (1e6);
+        System.out.format("Elapsed %.4f milliseconds for sorting %d elements\n", deltaSeconds, length);
         time.add(deltaSeconds);
         lengths.add(length);
     }
