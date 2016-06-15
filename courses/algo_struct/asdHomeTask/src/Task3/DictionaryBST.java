@@ -1,5 +1,6 @@
 package Task3;
 
+import com.sun.corba.se.spi.oa.ObjectAdapter;
 import com.sun.istack.internal.NotNull;
 
 /**
@@ -42,6 +43,30 @@ public class DictionaryBST<T extends Comparable, E> {
         for(int i = 1; i < length; i++){
             curNode = new BSTNode((T)(Object)i, (E)(Object)i, curNode);
         }
+    }
+
+    public BSTNode buildAverageCase(int[] arr, int start, int end){
+        if(start > end)
+            return null;
+        //Overflow management (is necessary?)
+        int mid = start + (end - start)/2;
+        BSTNode node = new BSTNode((T)(Object)arr[mid], (E)(Object)arr[mid]);
+        node.left = buildAverageCase(arr, start, mid - 1);
+        if(node.left != null)
+            node.left.parent = node;
+        node.right = buildAverageCase(arr, mid + 1, end);
+        if(node.right != null)
+            node.right.parent = node;
+        return node;
+
+
+    }
+    public void buildAverageCase(int length){
+        int[] proto = new int[length];
+        for (int i = 0; i < length; i++) {
+            proto[i] = i;
+        }
+        this.root = buildAverageCase(proto, 0, length - 1);
     }
     public E insert(T key, E element){
         if(root == null) {

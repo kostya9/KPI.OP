@@ -21,13 +21,51 @@ public class DictionaryTester {
         timeBST = new LinkedList<Double>();
         lengths = new LinkedList<Integer>();
     }
+
+    public void testAverageCase(int step, int last){
+        DictionarySortedArray<Integer, Integer>  dictArray = new DictionarySortedArray<Integer, Integer>();
+        DictionaryBST<Integer, Integer> dictBST = new DictionaryBST<Integer, Integer>();
+
+        dictBST.buildAverageCase(last);
+        dictArray.buildADictionary(last);
+
+        for(int length = 1; length < last; length+=step){
+            lengths.add(length);
+
+            int keyToFind = 0;// last logn
+            double deltaSecondsArray = findAndRecordTimeArray(dictArray, keyToFind);
+
+            keyToFind = length - 1;// last logn
+            double deltaSecondsBST = findAndRecordTimeBST(dictBST, keyToFind); // Root
+            System.out.format("Found the best in %d elements sorted array vs BST : %.4f vs %.4f\n", length, deltaSecondsArray, deltaSecondsBST);
+        }
+    }
+
+    public void testBestCase(int step, int last){
+        DictionarySortedArray<Integer, Integer>  dictArray = new DictionarySortedArray<Integer, Integer>();
+        DictionaryBST<Integer, Integer> dictBST = new DictionaryBST<Integer, Integer>();
+
+        dictBST.buildWorstCase(last);
+
+        for(int length = 1; length < last; length+=step){
+            lengths.add(length);
+            dictArray.buildADictionary(length);
+            int keyToFind = (length - 1)/2;// midPoint
+            double deltaSecondsArray = findAndRecordTimeArray(dictArray, keyToFind);
+
+            keyToFind = 0;// Root
+            double deltaSecondsBST = findAndRecordTimeBST(dictBST, keyToFind); // Root
+            System.out.format("Found the best in %d elements sorted array vs BST : %.4f vs %.4f\n", length, deltaSecondsArray, deltaSecondsBST);
+        }
+    }
+
     public void testWorstCase(int step, int last){
 
         DictionarySortedArray<Integer, Integer>  dictArray = new DictionarySortedArray<Integer, Integer>();
         DictionaryBST<Integer, Integer> dictBST = new DictionaryBST<Integer, Integer>();
 
         dictBST.buildWorstCase(last);
-        dictArray.buildWorstCase(last);
+        dictArray.buildADictionary(last);
         for(int length = 1; length < last; length+=step){
             int keyToFind = length - 1;
 

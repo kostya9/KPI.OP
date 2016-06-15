@@ -15,19 +15,19 @@ import java.util.List;
 public class Test {
     public static void main(String[] args) {
         DictionaryTester tester = new DictionaryTester();
-        /*tester.testWorstCase((int)1e3, (int)1e7);
+        tester.testAverageCase((int)1e3, (int)1e7);
         try {
-            tester.serialize("100MillionFindWorstCase.txt");
+            tester.serialize("100MillionFindAverageCase.txt");
         } catch (FileNotFoundException | UnsupportedEncodingException e) {
             e.printStackTrace();
-        }*/
-        try {
+        }
+        /*try {
             tester.deserialize("100MillionFindWorstCase.txt");
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
         List<MyDataSet> sets = tester.getDataSets();
-        MyChart chart = new MyChart(sets, "Dictionary find testing(worst case)");
+        MyChart chart = new MyChart(sets, "Dictionary find testing(average case)");
         chart.pack();
         RefineryUtilities.centerFrameOnScreen(chart);
         chart.setVisible(true);

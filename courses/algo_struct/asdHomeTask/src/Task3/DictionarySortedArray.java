@@ -31,7 +31,7 @@ public class DictionarySortedArray<T extends Comparable, E> {
         arr = (Entry<T, E>[]) new Entry[8];
     }
 
-    public void buildWorstCase(int length){
+    public void buildADictionary(int length){
         this.arr = new Entry[length + 1];
         for(int i = 0; i < length; i++){
             arr[i] = new Entry<T, E>((T)(Object)i, (E)(Object)i);
