@@ -53,6 +53,20 @@ public class HeapSortTester {
             sortAndRecord(length, arr);
         }
     }
+
+    void sortAlmostSortedArrays(int step, int last){
+        for(int length = 1; length < last && length > 0; length += step) {
+            int[] arr = new int[length];
+            Random r = new Random();
+            for (int i = 0; i < length; i++) {
+                arr[i] = i;
+            }
+            for(int i = 0; i < length/40; i++){
+                HeapSort.swap(r.nextInt(length), r.nextInt(length), arr);
+            }
+            sortAndRecord(length, arr);
+        }
+    }
     private void sortAndRecord(int length, int[] arr) {
         long tStart = System.nanoTime();
         HeapSort.sort(arr);

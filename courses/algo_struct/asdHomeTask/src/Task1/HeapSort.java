@@ -4,35 +4,30 @@ package Task1;
  * Created by kostya on 6/12/2016.
  */
 public class HeapSort {
-    private static int getLeftIndex(int arr[], int index)
-    {
+    private static int getLeftIndex(int arr[], int index) {
         return index * 2 + 1;
     }
 
-    private static int getRightIndex(int arr[], int index)
-    {
+    private static int getRightIndex(int arr[], int index) {
         return index * 2 + 2;
     }
 
-    private static void sink(int arr[], int index, int count)
+    private static void sink(int arr[], int index, int end)
     {
         int left = getLeftIndex(arr, index);
         int right = getRightIndex(arr, index);
-        int length = count;
         int max = index;
 
-        if(left < length && arr[left] > arr[index])
+        if(left < end && arr[left] > arr[max])
             max = left;
-        else
-            max = index;
 
-        if(right < length && arr[right] > arr[max])
+        if(right < end && arr[right] > arr[max])
             max = right;
 
         if(max != index)
         {
             swap(index, max, arr);
-            sink(arr, max, count);
+            sink(arr, max, end);
         }
     }
 
@@ -53,7 +48,7 @@ public class HeapSort {
 
     }
 
-    private static void swap(int index1, int index2, int[] arr)
+    public static void swap(int index1, int index2, int[] arr)
     {
         int temp = arr[index1];
         arr[index1] = arr[index2];

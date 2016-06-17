@@ -3,6 +3,7 @@ package Task3;
 import MyPlot.MyDataSet;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,10 +28,11 @@ public class DictionaryTester {
         DictionaryBST<Integer, Integer> dictBST = new DictionaryBST<Integer, Integer>();
 
         dictBST.buildAverageCase(last);
-        dictArray.buildADictionary(last);
+
 
         for(int length = 1; length < last; length+=step){
             lengths.add(length);
+            dictArray.buildADictionary(length);
 
             int keyToFind = length - 1;// last logn
 
@@ -50,7 +52,6 @@ public class DictionaryTester {
             lengths.add(length);
             dictArray.buildADictionary(length);
             int keyToFind = (length - 1)/2;// midPoint
-
             double deltaSecondsArray = findAndRecordTimeArray(dictArray, keyToFind);
 
             keyToFind = 0;// Root
@@ -77,25 +78,36 @@ public class DictionaryTester {
     }
 
     private double findAndRecordTimeBST(DictionaryBST<Integer, Integer> dictBST, int keyToFind) {
-        long tStart;
-        long tEnd;
-        long delta;
-        tStart = System.nanoTime();
-        int found = dictBST.get(keyToFind);
-        tEnd = System.nanoTime();
-        assert(found == keyToFind);
-        delta = tEnd - tStart;
+        //int found;
+        int deltaCount = 10;
+        long deltaSum = 0;
+        for(int i = 0; i < deltaCount; i++)
+        {
+            long tStart = System.nanoTime();
+            dictBST.get(keyToFind);
+            long tEnd = System.nanoTime();
+            deltaSum += tEnd - tStart;
+        }
+        long delta = deltaSum / deltaCount;
+        //assert(found == keyToFind);
+
         double deltaSecondsBST = delta / (double) (1e6);
         timeBST.add(deltaSecondsBST);
         return deltaSecondsBST;
     }
 
     private double findAndRecordTimeArray(DictionarySortedArray<Integer, Integer> dictArray, int keyToFind) {
-        long tStart = System.nanoTime();
-        int found = dictArray.get(keyToFind);
-        long tEnd = System.nanoTime();
-        assert(found == keyToFind);
-        long delta = tEnd - tStart;
+        int deltaCount = 10;
+        long deltaSum = 0;
+        for(int i = 0; i < deltaCount; i++)
+        {
+            long tStart = System.nanoTime();
+            dictArray.get(keyToFind);
+            long tEnd = System.nanoTime();
+            deltaSum += tEnd - tStart;
+        }
+        long delta = deltaSum / deltaCount;
+        //assert(found == keyToFind);
         double deltaSecondsArray = delta / (double) (1e6);
         timeArray.add(deltaSecondsArray);
         return deltaSecondsArray;

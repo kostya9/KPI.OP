@@ -58,8 +58,6 @@ public class DictionaryBST<T extends Comparable, E> {
         if(node.right != null)
             node.right.parent = node;
         return node;
-
-
     }
     public void buildAverageCase(int length){
         int[] proto = new int[length];

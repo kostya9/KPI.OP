@@ -42,20 +42,15 @@ public class Test {
         chartAverage.setVisible(true);
     }
     static void generateAndSerialize(){
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        DictionaryTester testerBest = new DictionaryTester();
-        DictionaryTester testerWorst = new DictionaryTester();
+        //DictionaryTester testerBest = new DictionaryTester();
+        //DictionaryTester testerWorst = new DictionaryTester();
         DictionaryTester testerAverage = new DictionaryTester();
-        testerBest.testBestCase((int)1e4, (int)1e7);
-        testerWorst.testWorstCase((int)1e4, (int)1e7);
+        //testerBest.testBestCase((int)1e4, (int)1e7);
+        //testerWorst.testWorstCase((int)1e4, (int)1e7);
         testerAverage.testAverageCase((int)1e4, (int)1e7);
         try {
-            testerBest.serialize("10MillionFindBestCase.txt");
-            testerWorst.serialize("10MillionFindWorstCase.txt");
+            //testerBest.serialize("10MillionFindBestCase.txt");
+            //testerWorst.serialize("10MillionFindWorstCase.txt");
             testerAverage.serialize("10MillionFindAverageCase.txt");
         }
         catch (Exception e){

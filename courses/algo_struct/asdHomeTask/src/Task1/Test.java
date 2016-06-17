@@ -20,10 +20,12 @@ public class Test {
         MyDataSet random = getDataSetFromFile("stats10MillionRandom.txt");
         MyDataSet sorted = getDataSetFromFile("stats10MillionSorted.txt");
         MyDataSet reversed = getDataSetFromFile("stats10MillionReversed.txt");
+        MyDataSet almostSorted = getDataSetFromFile("stats10millionAlmostSorted.txt");
         LinkedList<MyDataSet> dataList = new LinkedList<MyDataSet>();
         dataList.add(random);
         dataList.add(sorted);
         dataList.add(reversed);
+        dataList.add(almostSorted);
         /*try {
             tester.deserialize();
         } catch (IOException e) {
@@ -39,10 +41,13 @@ public class Test {
         HeapSortTester random = new HeapSortTester();
         HeapSortTester reversed = new HeapSortTester();
         HeapSortTester sorted = new HeapSortTester();
+        HeapSortTester almostSorted = new HeapSortTester();
+        almostSorted.sortAlmostSortedArrays((int)1e4, (int)1e7);
         random.sortRandomArrays((int)1e4, (int)1e7);
         reversed.sortReversedArrays((int)1e4, (int)1e7);
         sorted.sortSortedArrays((int)1e4, (int)1e7);
         try {
+            almostSorted.serialize("stats10millionAlmostSorted.txt");
             random.serialize("stats10millionRandom.txt");
             reversed.serialize("stats10MillionReversed.txt");
             sorted.serialize("stats10millionSorted.txt");
