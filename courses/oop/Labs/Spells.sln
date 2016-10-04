@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spells.ConsoleOutput", "Spells\Spells.ConsoleOutput.csproj", "{FE410845-E4A5-40BC-92F8-6FBA603F3573}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spells.Domain", "Spells.Domain\Spells.Domain.csproj", "{8B4CAE53-3836-4D1F-8772-6B2B07F1FA70}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FE410845-E4A5-40BC-92F8-6FBA603F3573}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE410845-E4A5-40BC-92F8-6FBA603F3573}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE410845-E4A5-40BC-92F8-6FBA603F3573}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE410845-E4A5-40BC-92F8-6FBA603F3573}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B4CAE53-3836-4D1F-8772-6B2B07F1FA70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B4CAE53-3836-4D1F-8772-6B2B07F1FA70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B4CAE53-3836-4D1F-8772-6B2B07F1FA70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B4CAE53-3836-4D1F-8772-6B2B07F1FA70}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
