@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration.Assemblies;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,12 +15,10 @@ namespace Spells
         private static readonly int FixedFrameDeltaMilliseconds;
 
         private readonly Stream _output = Console.OpenStandardOutput();
-        private int[,] _field;
-        private Dictionary<ICastable, Vector2D> _spells;
-        private List<IDamagable> _objects;
-        private List<Missle> _missles;
+        private readonly int[,] _field;
         private TimeSpan _lastUpdate;
         private Vector2D _fieldUpperLeft = new Vector2D (1, 1);
+        private readonly SpellsContainer _container = new SpellsContainer();
 
         private int XMax => _field.GetUpperBound(0) + 1;
 
@@ -35,30 +34,14 @@ namespace Spells
         public ConsoleField()
         {
             _field = new int[41, 41]; // Not even !
-            _spells = new Dictionary<ICastable, Vector2D>
-            {
-                {new FireBall(_output), new Vector2D (-4, -4)},
-                {new FireBall(_output), new Vector2D (4, 4)},
-                {new FireBall(_output), new Vector2D (4, -4)},
-            };
-            _objects = new List<IDamagable>
-            {
-                //new Enemy(new Vector2D (0, 0), 1, 3)
-            };
-            _missles = new List<Missle>();
+            _container.AddSpell(new FireBall(_output), new Vector2D (-4, -4));
+            _container.AddSpell(new FireBall(_output), new Vector2D(4, 4));
+            _container.AddSpell(new FireBall(_output), new Vector2D(4, -4));
+            _container.AddSpell(new SpinningFireBall(_output), new Vector2D(-4, 4));
+            _container.CastAllSpellsToRandomDirection();
             _lastUpdate = TimeHelper.GetCurrentTime();
-            var r = new Random();
-
-
-            foreach (var spell in _spells)
-            {
-                var direction = new Vector2D (1 - r.Next(3), 1 - r.Next(3));
-                _missles.Add(spell.Key.Cast(spell.Value, direction));
-            }
-
-            Spell testSpell = new SpinningFireBall(_output);
-            _missles.Add(testSpell.Cast(new Vector2D(0, 0), new Vector2D(1, 0)));
         }
+
 
         public bool UpdateMissles()
         {
@@ -67,12 +50,12 @@ namespace Spells
 
             _lastUpdate = TimeHelper.GetCurrentTime();
 
-            foreach (var missle in _missles.ToList())
+            foreach (var missle in _container.Missles.ToList())
             {
                 missle.UpdatePosition();
 
                 if (!IsInTheField(missle.Position))
-                    _missles.Remove(missle);
+                    _container.RemoveMissle(missle);
             }
             return true;
         }
@@ -110,13 +93,6 @@ namespace Spells
                     }
                 }
             }
-        }
-
-        private void UpdateObjects()
-        {
-            foreach (var obj in _objects.ToList())
-                if (obj.Health == 0)
-                    _objects.Remove(obj);
         }
 
         private Vector2D ToCoordinate(Vector2D index)
@@ -159,19 +135,16 @@ namespace Spells
             }
         }
 
-        public void AddMissle(Missle missle)
-        {
-            _missles.Add(missle);
-        }
-
         public void CheckCollisionAndDraw()
         {
             Array.Clear(_field, 0, _field.Length);
             // TODO: volume calculation and drawing
             // TODO: object ASCII extended + health %
-            foreach (var missle in _missles)
+            foreach (var missle in _container.Missles)
             {
                 var index = ToIndex(missle.Position);
+                if(_field[index.X, index.Y] == 1)
+                    Debug.Write("Boom!\n");
                 _field[index.X, index.Y] = 1;
             }
 
