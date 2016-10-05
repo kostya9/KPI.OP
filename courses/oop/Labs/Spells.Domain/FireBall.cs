@@ -9,10 +9,15 @@ namespace Spells.Domain
 {
     public class FireBall : Spell
     {
-        public FireBall(Stream output)
-            : base((int) Spells.FireBall, nameof(FireBall), 1, 1, 1, TimeSpan.FromSeconds(2), "ShhhBoom", output)
+        protected FireBall(Spells id) : base((int)id, id.ToString(), 1, 1, 1, TimeSpan.FromSeconds(2), "ShhhBoom")
         {
             
+        }
+
+        public FireBall() :
+            this(Spells.FireBall)
+        {
+
         }
     }
 }

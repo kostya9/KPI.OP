@@ -9,8 +9,8 @@ namespace Spells.Domain
 {
     public class SpellsContainer
     {
-        private Dictionary<ICastable, Vector2D> _spells = new Dictionary<ICastable, Vector2D>();
-        public List<Missle> _missles = new List<Missle>();
+        private readonly Dictionary<ICastable, Vector2D> _spells = new Dictionary<ICastable, Vector2D>();
+        private readonly List<Missle> _missles = new List<Missle>();
         public IList<Missle> Missles => _missles.AsReadOnly();
 
         public void AddSpell(ICastable spell,

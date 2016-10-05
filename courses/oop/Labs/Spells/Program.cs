@@ -20,7 +20,7 @@ namespace Spells.ConsoleOutput
                 field.ClearMissles();
                 field.CheckCollisionAndDraw();
             }
-            Console.ReadLine();
+            Console.ReadKey();
         }
     }
 }

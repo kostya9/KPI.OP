@@ -14,7 +14,6 @@ namespace Spells
     {
         private static readonly int FixedFrameDeltaMilliseconds;
 
-        private readonly Stream _output = Console.OpenStandardOutput();
         private readonly int[,] _field;
         private TimeSpan _lastUpdate;
         private Vector2D _fieldUpperLeft = new Vector2D (1, 1);
@@ -27,17 +26,17 @@ namespace Spells
         static ConsoleField()
         {
             FixedFrameDeltaMilliseconds = 700;
-            Console.SetWindowPosition(0, 0);
-            Console.SetWindowSize(100, 60);
         }
 
         public ConsoleField()
         {
+            Console.SetWindowPosition(0, 0);
+            Console.SetWindowSize(100, 60);
             _field = new int[41, 41]; // Not even !
-            _container.AddSpell(new FireBall(_output), new Vector2D (-4, -4));
-            _container.AddSpell(new FireBall(_output), new Vector2D(4, 4));
-            _container.AddSpell(new FireBall(_output), new Vector2D(4, -4));
-            _container.AddSpell(new SpinningFireBall(_output), new Vector2D(-4, 4));
+            _container.AddSpell(new FireBall(), new Vector2D (-4, -4));
+            _container.AddSpell(new FireBall(), new Vector2D(4, 4));
+            _container.AddSpell(new FireBall(), new Vector2D(4, -4));
+            _container.AddSpell(new SpinningFireBall(), new Vector2D(-4, 4));
             _container.CastAllSpellsToRandomDirection();
             _lastUpdate = TimeHelper.GetCurrentTime();
         }

@@ -2,6 +2,6 @@
 {
     public enum Spells
     {
-        FireBall
+        FireBall, SpinningFireBall
     }
 }

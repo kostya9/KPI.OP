@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -19,7 +20,6 @@ namespace Spells.Domain
         public string Sound { get; }
 
         private TimeSpan _lastCasted;
-        private readonly Stream _output;
        
 
         public Spell(int id,
@@ -28,8 +28,7 @@ namespace Spells.Domain
             int damage,
             int volume,
             TimeSpan cooldown,
-            string sound,
-            Stream output)
+            string sound)
         {
             Id = id;
             Name = name;
@@ -38,7 +37,6 @@ namespace Spells.Domain
             Volume = volume;
             Cooldown = cooldown;
             Sound = sound;
-            _output = output;
         }
 
         public virtual Missle Cast(Vector2D position, Vector2D direction)
@@ -50,9 +48,7 @@ namespace Spells.Domain
 
             _lastCasted = timeNow;
 
-            var writer = new StreamWriter(_output);
-            writer.WriteLine("Spell casted : {0}.\n Shouts {1}", Name, Sound);
-
+            Debug.WriteLine("Spell casted : {0}\n Shouts {1}", Name, Sound);
             return new Missle(this, position, direction, timeNow);
         }
 

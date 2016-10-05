@@ -9,11 +9,10 @@ namespace Spells.Domain
 {
     public class SpinningFireBall : FireBall
     {
-        public SpinningFireBall(Stream output) : base(output)
+        public SpinningFireBall() : base(Spells.SpinningFireBall)
         {
             
         }
-
         public override Missle Cast(Vector2D position,
             Vector2D direction)
         {
