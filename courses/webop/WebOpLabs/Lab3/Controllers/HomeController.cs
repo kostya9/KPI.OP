@@ -27,7 +27,18 @@ namespace Lab3new.Controllers
 
             ViewData["MenuActive"] = "bags";
 
-            return View(bags);
+            return View(new BagsModel() { Bags = bags});
+        }
+
+        public IActionResult Bag(int id)
+        {
+            if (id == 0)
+                return RedirectToAction("Bags");
+            var bag = _bags.FirstOrDefault(x => x.Id == id);
+            if(bag == null)
+                return RedirectToAction("Bags");
+
+            return View(bag);
         }
     }
 }

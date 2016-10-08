@@ -1,13 +1,15 @@
 @model Lab3.Model.BagsModel
-
-@{
-    foreach(var bagModel in Model.Bags)
-    {
-        @:<div class="bag-item col-xs-4 col-md-3">
-        @:<p class="bag-title">@bagModel.Bag.Name</p>
-        @:<img src="@bagModel.Bag.ImageLink" />
-        @: 
-        if(bagModel.IsActive)
-        @:</div>
+<div class="bags-container col-xs-12">
+    @{
+        foreach (var bagModel in Model.Bags)
+        {
+            <div class="bag-item col-xs-4 col-md-3">
+            <p class="bag-title">@bagModel.Bag.Name</p>
+            <img class="bag-preview-image" src="@bagModel.Bag.ImageLink"/>
+            <a href="@(bagModel.IsActive
+                           ? Url.Action("Bag", "Home", new {id = bagModel.Bag.Id})
+                           : "#")"><button class="btn btn-info bag-btn">More</button></a>
+            </div>
+        }
     }
-}
+</div>

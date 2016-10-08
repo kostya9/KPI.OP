@@ -53,6 +53,7 @@ namespace Lab3new
                 {new Bag{
                     Id = 10,
                     Name = "Reusable Shopping Bag",
+                    Description = "Use this bag a lot of times! If you are a great mathematician count your income from not buying bags. You will be suprised!",
                     ImageLink = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUZg64JyyVFS4Cx340G2Qd_zddEFbQbPCO76N4uHL10Cy7gH-sKw"
                 }}
             });
@@ -80,6 +81,11 @@ namespace Lab3new
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name:"bag",
+                    template:"Bags/{id}",
+                    defaults: new {controller="Home", action="Bag"}
+                    );
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

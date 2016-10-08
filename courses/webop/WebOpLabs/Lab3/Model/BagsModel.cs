@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 namespace Lab3.Model
 {
-    class BagsModel
+    public class BagsModel
     {
-        IEnumerable<BagModel> bags;
+        public IEnumerable<BagModel> Bags { get; set; }
     }
 }
