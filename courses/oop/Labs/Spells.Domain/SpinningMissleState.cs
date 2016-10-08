@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Spells.Domain
 {
-    public enum SpinningMissleState
+    internal enum SpinningMissleState
     {
         None = -1, Top, Right, Bottom, Left
     }
 
-    public static class SpinningMissleStateExtensions
+    internal static class SpinningMissleStateExtensions
     {
         public static SpinningMissleState GetPreviousMissleState(this SpinningMissleState state)
         {

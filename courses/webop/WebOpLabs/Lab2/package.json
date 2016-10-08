@@ -1,0 +1,15 @@
+{
+  "name": "Lab2",
+  "version": "1.0.0",
+  "description": "Lab2",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sharovarsky Kostyantyn",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.1.0"
+  }
+}

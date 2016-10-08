@@ -15,7 +15,16 @@ namespace Spells.Domain
         public string Name { get; }
         public int MissleSpeed { get; }
         public int Damage { get;}
-        public int Volume { get; }
+
+        private int _volume;
+        public int Volume {
+            get { return _volume; }
+            set {
+                if (value <= 0)
+                    throw new ArgumentOutOfRangeException();
+                _volume = value;
+            }
+        }
         public TimeSpan Cooldown { get; }
         public string Sound { get; }
 

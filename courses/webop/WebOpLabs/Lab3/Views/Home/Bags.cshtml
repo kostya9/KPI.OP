@@ -1,0 +1,13 @@
+@model Lab3.Model.BagsModel
+
+@{
+    foreach(var bagModel in Model.Bags)
+    {
+        @:<div class="bag-item col-xs-4 col-md-3">
+        @:<p class="bag-title">@bagModel.Bag.Name</p>
+        @:<img src="@bagModel.Bag.ImageLink" />
+        @: 
+        if(bagModel.IsActive)
+        @:</div>
+    }
+}

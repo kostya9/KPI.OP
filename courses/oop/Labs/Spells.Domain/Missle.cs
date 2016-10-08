@@ -13,6 +13,8 @@ namespace Spells.Domain
             Vector2D direction,
             TimeSpan timeCasted)
         {
+            if (castedSpell == null)
+                throw new ArgumentNullException();
             CastedSpell = castedSpell;
             Position = position;
             _direction = direction;
@@ -21,6 +23,8 @@ namespace Spells.Domain
 
         public Missle(Missle copyMissle)
         {
+            if (copyMissle == null)
+                throw new ArgumentNullException();
             this.CastedSpell = copyMissle.CastedSpell;
             this.Position = copyMissle.Position;
             this._direction = copyMissle._direction;

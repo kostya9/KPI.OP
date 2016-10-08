@@ -16,7 +16,7 @@ namespace Spells
 
         private readonly int[,] _field;
         private TimeSpan _lastUpdate;
-        private Vector2D _fieldUpperLeft = new Vector2D (1, 1);
+        private readonly Vector2D _fieldUpperLeft = new Vector2D (1, 1);
         private readonly SpellsContainer _container = new SpellsContainer();
 
         private int XMax => _field.GetUpperBound(0) + 1;
@@ -31,8 +31,8 @@ namespace Spells
         public ConsoleField()
         {
             Console.SetWindowPosition(0, 0);
-            Console.SetWindowSize(100, 60);
-            _field = new int[41, 41]; // Not even !
+            Console.SetWindowSize(80, 40);
+            _field = new int[31, 31]; 
             _container.AddSpell(new FireBall(), new Vector2D (-4, -4));
             _container.AddSpell(new FireBall(), new Vector2D(4, 4));
             _container.AddSpell(new FireBall(), new Vector2D(4, -4));

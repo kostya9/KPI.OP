@@ -13,7 +13,7 @@ namespace Spells.Domain
         private const int _radius = 1;
         private SpinningMissleState _spinningMissleState;
 
-        public SpinningMissle(Spell castedSpell,
+        private SpinningMissle(Spell castedSpell,
             Vector2D position,
             Vector2D direction,
             TimeSpan timeCasted) : base(castedSpell, position,

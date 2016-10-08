@@ -2,8 +2,12 @@
 
 namespace Spells.Domain
 {
-    public static class TimeHelper
+    public class TimeHelper
     {
+        private TimeHelper()
+        {
+
+        }
         public static TimeSpan GetCurrentTime()
         {
             var timeNow = DateTime.Now;

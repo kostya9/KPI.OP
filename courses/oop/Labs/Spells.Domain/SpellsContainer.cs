@@ -16,6 +16,8 @@ namespace Spells.Domain
         public void AddSpell(ICastable spell,
             Vector2D position)
         {
+            if (spell == null)
+                throw new ArgumentNullException();
             _spells[spell] = position;
         }
 
@@ -34,11 +36,15 @@ namespace Spells.Domain
 
         public void RemoveMissle(Missle missle)
         {
+            if (missle == null)
+                throw new ArgumentNullException();
             _missles.Remove(missle);
         }
 
         private void CastSpell(ICastable spell, Vector2D direction)
         {
+            if (spell == null)
+                throw new ArgumentNullException();
             Vector2D position;
             try
             {

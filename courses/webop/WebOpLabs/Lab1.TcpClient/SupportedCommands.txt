@@ -1,0 +1,26 @@
+﻿	/*
+	Command template
+	*/
+///////////////////////////
+
+	Commands
+
+Stop
+		Stops a connection
+
+Get Data [options]
+		Returns all data
+	-p 
+		Name of parameter to filter by
+	(next ones only with -p)
+	-s asc
+	-s desc
+		Sorts Ascending or descending
+	-g 10
+	-l 10
+		Returns all greater(-g) or lesser(-l) than a parameter. Uses standart data type comparator. If parsing date - format yyyy_mm_dd_hh:mm
+	-r Remove a field from diplaying
+Get Count
+	returns the count of objects
+	
+	
