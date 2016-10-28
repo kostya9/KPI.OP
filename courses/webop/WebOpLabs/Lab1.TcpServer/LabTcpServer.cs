@@ -132,10 +132,9 @@ namespace Lab1.TcpServer
 
         private string GetResponse(string command)
         {
-            string mainCommand;
-            var position = CheckMainCommand(command, out mainCommand);
+            var parser = new CommandParser(command);
 
-            switch (mainCommand.ToLower())
+            switch (parser.MainCommand.Trim().ToLower())
             {
                 case "get clients":
                 {
@@ -153,35 +152,31 @@ namespace Lab1.TcpServer
                 }
                 case "get data":
                 {
-                    if (position < 0)
-                        return JsonConvert.SerializeObject(_bags, Formatting.None,
-                            new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
-                        var optionsDictionary = ParseOptions(command, position);
+                    /*if (optionsDictionary == null)
+                        return null;*/
 
-                        /*if (optionsDictionary == null)
-                            return null;*/
+                    var copyBags = _bags.ToList();
+                    var optionsDictionary = parser.Options;
 
-                        var copyBags = _bags.ToList();
+                    if (optionsDictionary.ContainsKey("p"))
+                    {
+                        var fieldName = optionsDictionary["p"];
 
-                        if (optionsDictionary.ContainsKey("p"))
-                        {
-                            var fieldName = optionsDictionary["p"];
+                        if (!Bag.FieldExists(fieldName))
+                            return $"There is no property {fieldName} in the JSON";
 
-                            if (!Bag.FieldExists(fieldName))
-                                return $"There is no property {fieldName} in the JSON";
+                        copyBags = FilterBags(optionsDictionary, copyBags, fieldName);
 
-                            copyBags = FilterBags(optionsDictionary, copyBags, fieldName);
-
-                            if (copyBags == null)
-                                return "Incorrect format. Try checking help.";
-                        }
+                        if (copyBags == null)
+                            return "Incorrect format. Try checking help.";
+                    }
 
 /*                        if (optionsDictionary.Count > 0)
-                            return null;*/
+                                                return null;*/
 
-                        return JsonConvert.SerializeObject(copyBags, Formatting.None,
-                            new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                 }
+                    return JsonConvert.SerializeObject(copyBags, Formatting.None,
+                        new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
+                }
                 default:
                 {
                     return null;
@@ -189,7 +184,7 @@ namespace Lab1.TcpServer
             }
         }
 
-        private List<Bag> FilterBags(Dictionary<string, string> optionsDictionary,
+        private List<Bag> FilterBags(IDictionary<string, string> optionsDictionary,
             List<Bag> copyBags,
             string fieldName)
         {
@@ -269,45 +264,6 @@ namespace Lab1.TcpServer
             string fieldName)
         {
             return bags.Where(b => CompareTo(b, value, fieldName) > 0);
-        }
-
-        private int CheckMainCommand(string command,
-            out string mainCommand)
-        {
-            var tempCommand = command;
-
-            var position = command.IndexOf('-');
-
-            if (position >= 0)
-                tempCommand = command.Substring(0, position);
-
-            tempCommand = tempCommand.Trim();
-            mainCommand = tempCommand;
-
-            return position;
-        }
-
-        private Dictionary<string, string> ParseOptions(string command,
-            int position)
-        {
-            var options = command.Substring(position).Split('-');
-            var optionsDictionary = new Dictionary<string, string>();
-            foreach (var option in options)
-            {
-                if (option == "")
-                    continue;
-
-                var optionWords = option.Split(' ');
-
-                if (optionWords.Length < 2)
-                {
-                    optionsDictionary[optionWords[0]] = "";
-                    continue;
-                }
-
-                optionsDictionary[optionWords[0]] = optionWords[1];
-            }
-            return optionsDictionary;
         }
 
         private void LogInfo(string name,

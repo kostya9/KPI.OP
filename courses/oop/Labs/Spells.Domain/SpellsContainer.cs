@@ -10,8 +10,22 @@ namespace Spells.Domain
     public class SpellsContainer
     {
         private readonly Dictionary<ICastable, Vector2D> _spells = new Dictionary<ICastable, Vector2D>();
-        private readonly List<Missle> _missles = new List<Missle>();
-        public IList<Missle> Missles => _missles.AsReadOnly();
+        private readonly MissleMover _missleMover;
+
+        public SpellsContainer(ValidatePosition validater)
+        {
+            _missleMover = new MissleMover(validater);
+        }
+
+        public void SubscribeToMissleMove(MissleMovedHandler handler)
+        {
+            this._missleMover.MissleMoved += handler;
+        }
+
+        public void UnsubscribeToMissleMove(MissleMovedHandler handler)
+        {
+            this._missleMover.MissleMoved -= handler;
+        }
 
         public void AddSpell(ICastable spell,
             Vector2D position)
@@ -19,6 +33,11 @@ namespace Spells.Domain
             if (spell == null)
                 throw new ArgumentNullException();
             _spells[spell] = position;
+        }
+
+        public void UpdateSpells()
+        {
+            _missleMover.MoveMissles();
         }
 
         public void CastAllSpellsToRandomDirection()
@@ -34,13 +53,6 @@ namespace Spells.Domain
             }
         }
 
-        public void RemoveMissle(Missle missle)
-        {
-            if (missle == null)
-                throw new ArgumentNullException();
-            _missles.Remove(missle);
-        }
-
         private void CastSpell(ICastable spell, Vector2D direction)
         {
             if (spell == null)
@@ -49,14 +61,13 @@ namespace Spells.Domain
             try
             {
                 position = _spells[spell];
-
             }
             catch (KeyNotFoundException e)
             {
                 Debug.WriteLine("Could not find a spell in the dictionary");
                 return;
             }
-            _missles.Add(spell.Cast(position, direction));
+            _missleMover.AddMissle(spell.Cast(position, direction));
         }
     }
 }

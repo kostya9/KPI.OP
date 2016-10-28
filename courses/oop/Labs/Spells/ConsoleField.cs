@@ -17,7 +17,8 @@ namespace Spells
         private readonly int[,] _field;
         private TimeSpan _lastUpdate;
         private readonly Vector2D _fieldUpperLeft = new Vector2D (1, 1);
-        private readonly SpellsContainer _container = new SpellsContainer();
+        private readonly SpellsContainer _container;
+        private readonly CoordinateCalculator _calculator;
 
         private int XMax => _field.GetUpperBound(0) + 1;
 
@@ -32,7 +33,11 @@ namespace Spells
         {
             Console.SetWindowPosition(0, 0);
             Console.SetWindowSize(80, 40);
-            _field = new int[31, 31]; 
+            _field = new int[31, 31];
+            _calculator = new CoordinateCalculator(XMax, YMax);
+
+            _container = new SpellsContainer(this.IsInTheField);
+            _container.SubscribeToMissleMove(MissleMovedHandler);
             _container.AddSpell(new FireBall(), new Vector2D (-4, -4));
             _container.AddSpell(new FireBall(), new Vector2D(4, 4));
             _container.AddSpell(new FireBall(), new Vector2D(4, -4));
@@ -46,16 +51,10 @@ namespace Spells
         {
             if (GetDeltaTime() < TimeSpan.FromMilliseconds(FixedFrameDeltaMilliseconds))
                 return false;
-
+             _container.UpdateSpells();
             _lastUpdate = TimeHelper.GetCurrentTime();
 
-            foreach (var missle in _container.Missles.ToList())
-            {
-                missle.UpdatePosition();
 
-                if (!IsInTheField(missle.Position))
-                    _container.RemoveMissle(missle);
-            }
             return true;
         }
 
@@ -63,7 +62,7 @@ namespace Spells
         {
             var xMax = XMax;
             var yMax = YMax;
-            var indexPos = ToIndex(position);
+            var indexPos = _calculator.ToArrayIndex(position);
             return (indexPos.X < xMax) &&
                    (indexPos.Y < yMax) &&
                    (indexPos.X >= 0) &&
@@ -82,35 +81,21 @@ namespace Spells
                 for (var y = 0; y < YMax; y++)
                 {
                     Console.SetCursorPosition(_fieldUpperLeft.X + x, _fieldUpperLeft.Y + y);
-                    if (_field[x, y] == 1)
-                    {
-                        Console.Write("`");
-                    }
-                    else
-                    {
-                        Console.Write(" ");   
-                    }
+                    Console.Write(_field[x, y] == 1 ? "`" : " ");
                 }
             }
         }
 
-        private Vector2D ToCoordinate(Vector2D index)
+        private void MissleMovedHandler(Missle missle,
+            MissleMovedHandlerArgs args)
         {
-            return new Vector2D
-            (
-                index.X - XMax/2,
-                index.Y - YMax/2
-            );
+            var index = _calculator.ToArrayIndex(missle.Position);
+            if (_field[index.X, index.Y] == 1)
+                Debug.Write("Boom!\n");
+            _field[index.X, index.Y] = 1;
         }
 
-        private Vector2D ToIndex(Vector2D coordinate)
-        {
-            return new Vector2D
-            (
-                coordinate.X + XMax/2,
-                coordinate.Y + YMax/2
-            );
-        }
+
 
         public void DrawBorder()
         {
@@ -134,19 +119,8 @@ namespace Spells
             }
         }
 
-        public void CheckCollisionAndDraw()
+        public void Draw()
         {
-            Array.Clear(_field, 0, _field.Length);
-            // TODO: volume calculation and drawing
-            // TODO: object ASCII extended + health %
-            foreach (var missle in _container.Missles)
-            {
-                var index = ToIndex(missle.Position);
-                if(_field[index.X, index.Y] == 1)
-                    Debug.Write("Boom!\n");
-                _field[index.X, index.Y] = 1;
-            }
-
             for (var x = 0; x < XMax; x++)
             {
                 for (var y = 0; y < YMax; y++)
@@ -155,6 +129,8 @@ namespace Spells
                     Console.Write(_field[x, y] == 1 ? "*" : "");
                 }
             }
+
+            Array.Clear(_field, 0, _field.Length);
         }
     }
 }

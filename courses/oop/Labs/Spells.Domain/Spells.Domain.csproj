@@ -46,6 +46,7 @@
     <Compile Include="ICastable.cs" />
     <Compile Include="IDamagable.cs" />
     <Compile Include="Missle.cs" />
+    <Compile Include="MissleMover.cs" />
     <Compile Include="SpellsContainer.cs" />
     <Compile Include="SpinningMissleState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

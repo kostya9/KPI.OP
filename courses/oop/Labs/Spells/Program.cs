@@ -12,13 +12,13 @@ namespace Spells.ConsoleOutput
         {
             ConsoleField field = new ConsoleField();
             field.DrawBorder();
-            field.CheckCollisionAndDraw();
+            field.Draw();
 
             while (!Console.KeyAvailable)
             {
                 if (!field.UpdateMissles()) continue;
                 field.ClearMissles();
-                field.CheckCollisionAndDraw();
+                field.Draw();
             }
             Console.ReadKey();
         }

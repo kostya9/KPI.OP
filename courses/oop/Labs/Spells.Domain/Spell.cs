@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Spells.Domain
 {
-    public class Spell : ICastable
+    public abstract class Spell : ICastable
     {
 
         public int Id {get; }
