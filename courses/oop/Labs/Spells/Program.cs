@@ -17,10 +17,11 @@ namespace Spells.ConsoleOutput
             while (!Console.KeyAvailable)
             {
                 if (!field.UpdateMissles()) continue;
-                field.ClearMissles();
                 field.Draw();
             }
-            Console.ReadKey();
+            ConsoleKeyInfo key = Console.ReadKey();
+            if(key.KeyChar == 'r')
+                Main(new string[2]);
         }
     }
 }

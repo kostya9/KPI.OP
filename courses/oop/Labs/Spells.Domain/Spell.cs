@@ -63,6 +63,8 @@ namespace Spells.Domain
 
         public bool CanCast()
         {
+            if (TimeHelper.GetCurrentTime() < new TimeSpan(0, 0, 0, 5, 0))
+                return true;
             return _lastCasted + Cooldown < TimeHelper.GetCurrentTime();
         }
     }

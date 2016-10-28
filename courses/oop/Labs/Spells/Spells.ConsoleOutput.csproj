@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="ConsoleField.cs" />
     <Compile Include="CoordinateCalculator.cs" />
+    <Compile Include="FIELD_CODE.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

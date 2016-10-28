@@ -7,14 +7,31 @@ using System.Threading.Tasks;
 
 namespace Spells.Domain
 {
+
+    public delegate void SpellCooldownZeroHandler(ICastable sender,
+        SpellCooldownZeroEventArgs args);
+
     public class SpellsContainer
     {
-        private readonly Dictionary<ICastable, Vector2D> _spells = new Dictionary<ICastable, Vector2D>();
+
+        private event SpellCooldownZeroHandler _spellCooldownZero;
+
+        private delegate void UpdateHandler(SpellsContainer container,
+            UpdateEventArgs args);
+
+        private readonly Dictionary<ICastable, Vector2D> _spells;
         private readonly MissleMover _missleMover;
+        private event UpdateHandler _update;
+        private readonly ValidatePosition _validater;
 
         public SpellsContainer(ValidatePosition validater)
         {
+            _spells = new Dictionary<ICastable, Vector2D>();
             _missleMover = new MissleMover(validater);
+            _update += _missleMover.OnUpdate;
+            _update += TimeHelper.Update;
+            _validater = validater;
+            _missleMover.MisslesCollided += MisslesCollisionHandler;
         }
 
         public void SubscribeToMissleMove(MissleMovedHandler handler)
@@ -27,6 +44,16 @@ namespace Spells.Domain
             this._missleMover.MissleMoved -= handler;
         }
 
+        public void SubscribeToCooldownZero(SpellCooldownZeroHandler handler)
+        {
+            this._spellCooldownZero += handler;
+        }
+
+        public void UnsubscribeToCooldownZero(SpellCooldownZeroHandler handler)
+        {
+            this._spellCooldownZero -= handler;
+        }
+
         public void AddSpell(ICastable spell,
             Vector2D position)
         {
@@ -35,9 +62,19 @@ namespace Spells.Domain
             _spells[spell] = position;
         }
 
-        public void UpdateSpells()
+        public void CheckSpellCooldowns()
         {
-            _missleMover.MoveMissles();
+            
+        }
+
+        public void Update()
+        {
+            foreach (var spellAndPosition in _spells)
+            {
+                if(spellAndPosition.Key.CanCast())
+                    _spellCooldownZero?.Invoke(spellAndPosition.Key, new SpellCooldownZeroEventArgs(spellAndPosition.Value));
+            }
+            _update?.Invoke(this, new UpdateEventArgs(_validater));
         }
 
         public void CastAllSpellsToRandomDirection()
@@ -53,7 +90,7 @@ namespace Spells.Domain
             }
         }
 
-        private void CastSpell(ICastable spell, Vector2D direction)
+        public void CastSpell(ICastable spell, Vector2D direction)
         {
             if (spell == null)
                 throw new ArgumentNullException();
@@ -69,5 +106,23 @@ namespace Spells.Domain
             }
             _missleMover.AddMissle(spell.Cast(position, direction));
         }
+
+        private void MisslesCollisionHandler(Missle first,
+            Missle second,
+            EventArgs args)
+        {
+            this._missleMover.RemoveMissle(first);
+            this._missleMover.RemoveMissle(second);
+            Missle m1 = new Missle(first.CastedSpell, first.Position, new Vector2D(1, 1),TimeHelper.GetCurrentTime());
+            Missle m2 = new Missle(first.CastedSpell, first.Position, new Vector2D(-1, -1), TimeHelper.GetCurrentTime());
+            Missle m3 = new Missle(second.CastedSpell, first.Position, new Vector2D(1, -1), TimeHelper.GetCurrentTime());
+            Missle m4 = new Missle(second.CastedSpell, first.Position, new Vector2D(-1, 1), TimeHelper.GetCurrentTime());
+            _missleMover.AddMissle(m1);
+            _missleMover.AddMissle(m2);
+            _missleMover.AddMissle(m3);
+            _missleMover.AddMissle(m4);
+            Debug.WriteLine("Collision!");
+        }
     }
+
 }

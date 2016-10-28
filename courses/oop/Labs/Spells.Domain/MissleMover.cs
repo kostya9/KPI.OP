@@ -11,6 +11,9 @@ namespace Spells.Domain
     public delegate void MissleMovedHandler(Missle sender,
     MissleMovedHandlerArgs args);
 
+    public delegate void MisslesCollidedHandler(Missle first, Missle second,
+    EventArgs args);
+
     public class MissleMovedHandlerArgs
     {
         public Vector2D PreviousPosition { get; }
@@ -21,11 +24,12 @@ namespace Spells.Domain
         }
     }
 
-    class MissleMover
+    public class MissleMover
     {
-        private ValidatePosition _validater;
-        private List<Missle> _missles;
+        private readonly ValidatePosition _validater;
+        private readonly List<Missle> _missles;
         public event MissleMovedHandler MissleMoved;
+        public event MisslesCollidedHandler MisslesCollided;
 
         public MissleMover(ValidatePosition validater)
         {
@@ -38,6 +42,13 @@ namespace Spells.Domain
             this._missles.Add(missle);
         }
 
+        public void OnUpdate(SpellsContainer container,
+            UpdateEventArgs args)
+        {
+            MoveMissles();
+            CheckForCollision();
+        }
+
         public void MoveMissles()
         {
             foreach (var missle in _missles.ToList())
@@ -46,10 +57,33 @@ namespace Spells.Domain
                 missle.UpdatePosition();
 
                 if (!_validater(missle.Position))
-                    _missles.Remove(missle);
+                    RemoveMissle(missle);
                 else
                     MissleMoved?.Invoke(missle, new MissleMovedHandlerArgs(prevPosition));
+            }   
+        }
+
+        public void RemoveMissle(Missle missle)
+        {
+            _missles.Remove(missle);
+        }
+
+        private void CheckForCollision()
+        {
+            Dictionary<Vector2D, Missle> map = new Dictionary<Vector2D, Missle>();
+
+            foreach (var missle in _missles.ToList())
+            {
+                var position = missle.Position;
+                if (map.ContainsKey(position))
+                    MisslesCollided?.Invoke(missle, map[position], new EventArgs());
+                else
+                {
+                    map[position] = missle;
+                }
             }
         }
     }
+
+
 }
