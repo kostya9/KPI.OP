@@ -13,9 +13,10 @@ namespace Spells.ConsoleOutput
             ConsoleField field = new ConsoleField();
             field.DrawBorder();
             field.Draw();
-
+            field.Start();
             while (!Console.KeyAvailable)
             {
+
                 if (!field.UpdateMissles()) continue;
                 field.Draw();
             }

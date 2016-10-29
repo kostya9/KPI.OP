@@ -1,26 +1,39 @@
 ﻿using System;
 using System.Data;
+using System.Diagnostics;
 
 namespace Spells.Domain
 {
     public class TimeHelper
     {
-        private static int updates  = 0;
+        private static Stopwatch watch;
+        private static TimeSpan CurrentTime
+        {
+            get
+            {
+                return watch == null ? new TimeSpan(0, 0, 0, 0, 0) : watch.Elapsed;
+            }
+        }
+
+        static public void Start()
+        {
+            if (watch == null)
+                watch = new Stopwatch();
+
+            watch.Start();
+        }
+        static public void Stop()
+        {
+            watch.Stop();
+        }
         private TimeHelper()
         {
 
         }
 
-        public static void Update(SpellsContainer c,
-            EventArgs args)
-        {
-            updates += 1;
-        }
-
         public static TimeSpan GetCurrentTime()
         {
-            var timeNow = DateTime.Now;
-            return new TimeSpan(0, timeNow.Hour, timeNow.Minute, timeNow.Second, timeNow.Millisecond);
+            return CurrentTime;
         }
     }
 }

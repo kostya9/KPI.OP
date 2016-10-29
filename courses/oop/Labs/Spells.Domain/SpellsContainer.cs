@@ -29,9 +29,18 @@ namespace Spells.Domain
             _spells = new Dictionary<ICastable, Vector2D>();
             _missleMover = new MissleMover(validater);
             _update += _missleMover.OnUpdate;
-            _update += TimeHelper.Update;
             _validater = validater;
             _missleMover.MisslesCollided += MisslesCollisionHandler;
+        }
+
+        public void StartMeasuringTime()
+        {
+            TimeHelper.Start();
+        }
+
+        public void StopMeasuringTime()
+        {
+            TimeHelper.Stop();
         }
 
         public void SubscribeToMissleMove(MissleMovedHandler handler)
@@ -113,15 +122,20 @@ namespace Spells.Domain
         {
             this._missleMover.RemoveMissle(first);
             this._missleMover.RemoveMissle(second);
-            Missle m1 = new Missle(first.CastedSpell, first.Position, new Vector2D(1, 1),TimeHelper.GetCurrentTime());
-            Missle m2 = new Missle(first.CastedSpell, first.Position, new Vector2D(-1, -1), TimeHelper.GetCurrentTime());
-            Missle m3 = new Missle(second.CastedSpell, first.Position, new Vector2D(1, -1), TimeHelper.GetCurrentTime());
-            Missle m4 = new Missle(second.CastedSpell, first.Position, new Vector2D(-1, 1), TimeHelper.GetCurrentTime());
+            Debug.WriteLine("Collision!");
+            if (first.IsCollided || second.IsCollided)
+            {
+                return;
+            }
+
+            Missle m1 = new Missle(first.CastedSpell, first.Position, new Vector2D(1, 1),TimeHelper.GetCurrentTime(), true);
+            Missle m2 = new Missle(first.CastedSpell, first.Position, new Vector2D(-1, -1), TimeHelper.GetCurrentTime(), true);
+            Missle m3 = new Missle(second.CastedSpell, first.Position, new Vector2D(1, -1), TimeHelper.GetCurrentTime(), true);
+            Missle m4 = new Missle(second.CastedSpell, first.Position, new Vector2D(-1, 1), TimeHelper.GetCurrentTime(), true);
             _missleMover.AddMissle(m1);
             _missleMover.AddMissle(m2);
             _missleMover.AddMissle(m3);
             _missleMover.AddMissle(m4);
-            Debug.WriteLine("Collision!");
         }
     }
 

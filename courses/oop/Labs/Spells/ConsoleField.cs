@@ -43,7 +43,7 @@ namespace Spells
             _container.AddSpell(new FireBall(), new Vector2D(4, 4));
             _container.AddSpell(new FireBall(), new Vector2D(4, -4));
             _container.AddSpell(new SpinningFireBall(), new Vector2D(-4, 4));
-            _container.CastAllSpellsToRandomDirection();
+            //_container.CastAllSpellsToRandomDirection();
             _lastUpdate = TimeHelper.GetCurrentTime();
         }
 
@@ -80,6 +80,11 @@ namespace Spells
             if (_field[index.X, index.Y] == (int) FieldCode.MissleCode)
                 Debug.Write("Boom!\n");
             _field[index.X, index.Y] = (int) FieldCode.MissleCode;
+        }
+
+        public void Start()
+        {
+            this._container.StartMeasuringTime();
         }
 
         public void DrawBorder()
@@ -146,6 +151,8 @@ namespace Spells
         private void SpellCooldownZeroHandler(ICastable spell,
             SpellCooldownZeroEventArgs args)
         {
+            _container.StopMeasuringTime();
+
             var pos = _calculator.ToArrayIndex(args.Position);
             Console.SetCursorPosition(pos.X, pos.Y);
             var prevColor = Console.ForegroundColor;
@@ -179,6 +186,7 @@ namespace Spells
 
             Console.ForegroundColor = prevColor;
             _container.CastSpell(spell, currentDirection);
+            _container.StartMeasuringTime();
     }
 
         private Vector2D getNextDirectionClockwise(Vector2D prevDirection)
