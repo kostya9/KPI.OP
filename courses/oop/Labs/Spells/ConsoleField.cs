@@ -42,7 +42,7 @@ namespace Spells
             _container.AddSpell(new FireBall(), new Vector2D(4, 4));
             _container.AddSpell(new FireBall(), new Vector2D(4, -4));
             _container.AddSpell(new SpinningFireBall(), new Vector2D(-4, 4));
-            _container.CastAllSpellsToRandomDirection();
+            //_container.CastAllSpellsToRandomDirection();
             _lastUpdate = TimeHelper.GetCurrentTime();
         }
 
@@ -94,6 +94,11 @@ namespace Spells
             if (_field[index.X, index.Y] == (int)FieldCode.MissleCode)
                 Debug.Write("Boom!\n");
             _field[index.X, index.Y] = (int)FieldCode.MissleCode;
+        }
+
+        public void Start()
+        {
+            this._container.StartMeasuringTime();
         }
 
         public void DrawBorder()
