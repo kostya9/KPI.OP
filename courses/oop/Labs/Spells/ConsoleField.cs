@@ -77,9 +77,9 @@ namespace Spells
             MissleMovedHandlerArgs args)
         {
             var index = _calculator.ToArrayIndex(missle.Position);
-            if (_field[index.X, index.Y] == (int) FieldCode.MissleCode)
+            if (_field[index.X, index.Y] == (int)FieldCode.MissleCode)
                 Debug.Write("Boom!\n");
-            _field[index.X, index.Y] = (int) FieldCode.MissleCode;
+            _field[index.X, index.Y] = (int)FieldCode.MissleCode;
         }
 
         public void DrawBorder()
@@ -87,20 +87,25 @@ namespace Spells
             var xMax = XMax;
             var yMax = YMax;
 
-            for (var i = 0; i < xMax; i++)
-            {
-                Console.SetCursorPosition(_fieldUpperLeft.X + i, _fieldUpperLeft.Y - 1);
-                Console.Write("%");
-                Console.SetCursorPosition(_fieldUpperLeft.X + i, _fieldUpperLeft.Y + yMax);
-                Console.Write("%");
-            }
+            DrawHorizontalBorders(xMax, yMax);
+            DrawVerticalBorders(xMax, yMax);
+        }
 
+        private void DrawVerticalBorders(int xMax, int yMax)
+        {
             for (var i = 0; i < yMax; i++)
             {
-                Console.SetCursorPosition(_fieldUpperLeft.X - 1, _fieldUpperLeft.Y + i);
-                Console.Write("%");
-                Console.SetCursorPosition(_fieldUpperLeft.X + xMax, _fieldUpperLeft.Y + i);
-                Console.Write("%");
+                ConsoleDrawer.DrawBorderSymbolAt(new Vector2D(_fieldUpperLeft.X - 1, _fieldUpperLeft.Y + i));
+                ConsoleDrawer.DrawBorderSymbolAt(new Vector2D(_fieldUpperLeft.X + xMax, _fieldUpperLeft.Y + i));
+            }
+        }
+
+        private void DrawHorizontalBorders(int xMax, int yMax)
+        {
+            for (var i = 0; i < xMax; i++)
+            {
+                ConsoleDrawer.DrawBorderSymbolAt(new Vector2D(_fieldUpperLeft.X + i, _fieldUpperLeft.Y - 1));
+                ConsoleDrawer.DrawBorderSymbolAt(new Vector2D(_fieldUpperLeft.X + i, _fieldUpperLeft.Y + yMax));
             }
         }
 
@@ -118,27 +123,26 @@ namespace Spells
         private void DrawAtPositionAndChangeCode(int x,
             int y)
         {
-            switch ((FieldCode) _field[x, y])
+            var consolePosition = new Vector2D(_fieldUpperLeft.X + x, _fieldUpperLeft.Y + y);
+            var arrayPosition = new Vector2D(x, y);
+            switch ((FieldCode)_field[x, y])
             {
                 case FieldCode.TrailCode:
-                {
-                    Console.SetCursorPosition(_fieldUpperLeft.X + x, _fieldUpperLeft.Y + y);
-                    Console.Write("`");
-                    _field[x, y] = (int) FieldCode.Nothing;
-                }
+                    {
+                        ConsoleDrawer.DrawMissleTail(consolePosition);
+                        SetCodeAt(arrayPosition, FieldCode.Nothing);
+                    }
                     break;
                 case FieldCode.MissleCode:
-                {
-                    Console.SetCursorPosition(_fieldUpperLeft.X + x, _fieldUpperLeft.Y + y);
-                    Console.Write("*");
-                    _field[x, y] = (int) FieldCode.TrailCode;
-                }
+                    {
+                        ConsoleDrawer.DrawMissle(consolePosition);
+                        SetCodeAt(arrayPosition, FieldCode.TrailCode);
+                    }
                     break;
                 case FieldCode.Nothing:
-                {
-                    Console.SetCursorPosition(_fieldUpperLeft.X + x, _fieldUpperLeft.Y + y);
-                    Console.Write(" ");
-                }
+                    {
+                        ConsoleDrawer.ClearConsoleAt(consolePosition);
+                    }
                     break;
             }
         }
@@ -146,73 +150,54 @@ namespace Spells
         private void SpellCooldownZeroHandler(ICastable spell,
             SpellCooldownZeroEventArgs args)
         {
-            var pos = _calculator.ToArrayIndex(args.Position);
-            Console.SetCursorPosition(pos.X, pos.Y);
-            var prevColor = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("*");
+            var newMissleDirection = GetNewMissleDirection(args.Position);
+            _container.CastSpell(spell, newMissleDirection);
+        }
 
+        private Vector2D GetNewMissleDirection(Vector2D spellPosition)
+        {
+            var prevColor = Console.ForegroundColor;
             var enteredKey = ConsoleKey.X;
             var currentDirection = new Vector2D(1, 1);
+            Console.ForegroundColor = ConsoleColor.Red;
 
             while (enteredKey != ConsoleKey.Enter)
             {
-                var curPosition = pos + currentDirection;
+                ConsoleDrawer.DrawSpell(spellPosition);
+                var directionViewPosition = spellPosition + currentDirection;
                 enteredKey = Console.ReadKey().Key;
                 if (enteredKey == ConsoleKey.LeftArrow)
                 {
-                    Console.SetCursorPosition(curPosition.X, curPosition.Y);
-                    Console.Write(" ");
+                    ConsoleDrawer.ClearConsoleAt(directionViewPosition);
                     currentDirection = getNextDirectionClockwise(currentDirection);
                 }
                 else if (enteredKey == ConsoleKey.RightArrow)
                 {
-                    Console.SetCursorPosition(curPosition.X, curPosition.Y);
-                    Console.Write(" ");
+                    ConsoleDrawer.ClearConsoleAt(directionViewPosition);
                     currentDirection = getNextDirectionCounterClockwise(currentDirection);
                 }
-
-                curPosition = pos + currentDirection;
-                Console.SetCursorPosition(curPosition.X, curPosition.Y);
-                Console.Write("\"");
+                directionViewPosition = spellPosition + currentDirection;
+                ConsoleDrawer.DrawDirectionView(directionViewPosition);
             }
 
             Console.ForegroundColor = prevColor;
-            _container.CastSpell(spell, currentDirection);
-    }
+            return currentDirection;
+        }
 
         private Vector2D getNextDirectionClockwise(Vector2D prevDirection)
         {
-            if (prevDirection.X == 1)
-            {
-                if (prevDirection.Y == 1)
-                {
-                    return new Vector2D(1, -1);
-                }
-                return new Vector2D(-1, -1);
-            }
-            if (prevDirection.Y == 1)
-            {
-                return new Vector2D(1, 1);
-            }
-            return new Vector2D(-1, 1);
+            return prevDirection.RotateBy45DegreesClockwise();
         }
 
         private Vector2D getNextDirectionCounterClockwise(Vector2D prevDirection)
         {
-            if (prevDirection.X == 1)
-            {
-                if (prevDirection.Y == 1)
-                {
-                    return new Vector2D(-1, 1);
-                }
-                return new Vector2D(1, 1);
-            }
-            if (prevDirection.Y == 1)
-            {
-                return new Vector2D(-1, -1);
-            }
-            return new Vector2D(1, -1);
+            return prevDirection.RotateBy45DegreesCounterClockwise();
+        }
+
+        private void SetCodeAt(Vector2D position,
+            FieldCode code)
+        {
+            _field[position.X, position.Y] = (int)code;
         }
     }
 }

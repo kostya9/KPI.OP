@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleDrawer.cs" />
     <Compile Include="ConsoleField.cs" />
     <Compile Include="CoordinateCalculator.cs" />
     <Compile Include="FIELD_CODE.cs" />

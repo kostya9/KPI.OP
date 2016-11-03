@@ -1,4 +1,5 @@
-﻿using System.CodeDom;
+﻿using System;
+using System.CodeDom;
 
 namespace Spells.Domain
 {
@@ -30,6 +31,30 @@ namespace Spells.Domain
                 first.X - second.X,
                 first.Y - second.Y
             );
+        }
+
+        public static Vector2D Round(double x,
+            double y )
+        {
+            return new Vector2D((int)Math.Round(x), (int)Math.Round(y));
+        }
+
+        public Vector2D RotateBy45DegreesClockwise()
+        {
+            var sqrtTwo = Math.Sqrt(2);
+            // Rotation matrix by pi/4
+            var newX = X / sqrtTwo + Y / sqrtTwo;
+            var newY = Y / sqrtTwo - X / sqrtTwo;
+            return Round(newX, newY);
+        }
+
+        public Vector2D RotateBy45DegreesCounterClockwise()
+        {
+            var sqrtTwo = Math.Sqrt(2);
+            // Rotation matrix by -pi/4
+            var newX = X / sqrtTwo - Y / sqrtTwo;
+            var newY = Y / sqrtTwo + X / sqrtTwo;
+            return Round(newX, newY);
         }
 
         public override string ToString()
