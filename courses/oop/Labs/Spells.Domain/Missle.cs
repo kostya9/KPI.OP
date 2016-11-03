@@ -21,6 +21,13 @@ namespace Spells.Domain
             _timeCasted = timeCasted;
         }
 
+        public Missle(Spell castedSpell, Vector2D position,
+   Vector2D direction,
+   TimeSpan timeCasted, bool isCollided) : this(castedSpell, position, direction, timeCasted)
+        {
+            this.IsCollided = isCollided;
+        }
+
         public Missle(Missle copyMissle)
         {
             if (copyMissle == null)
@@ -32,6 +39,7 @@ namespace Spells.Domain
         }
 
         public Spell CastedSpell { get; }
+        public bool IsCollided { get; }
         public Vector2D Position { get; protected set; }
         protected readonly Vector2D _direction;
         private TimeSpan _timeCasted;

@@ -46,6 +46,7 @@ namespace Spells.Domain
             Volume = volume;
             Cooldown = cooldown;
             Sound = sound;
+            _lastCasted = new TimeSpan(0, 0, 0, 0, 0);
         }
 
         public virtual Missle Cast(Vector2D position, Vector2D direction)
@@ -63,7 +64,7 @@ namespace Spells.Domain
 
         public bool CanCast()
         {
-            if (TimeHelper.GetCurrentTime() < new TimeSpan(0, 0, 0, 5, 0))
+            if(_lastCasted == new TimeSpan(0, 0, 0, 0, 0))
                 return true;
             return _lastCasted + Cooldown < TimeHelper.GetCurrentTime();
         }

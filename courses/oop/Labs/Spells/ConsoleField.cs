@@ -19,7 +19,6 @@ namespace Spells
         private readonly Vector2D _fieldUpperLeft = new Vector2D(1, 1);
         private readonly SpellsContainer _container;
         private readonly CoordinateCalculator _calculator;
-
         private int XMax => _field.GetUpperBound(0) + 1;
 
         private int YMax => _field.GetUpperBound(1) + 1;
@@ -45,6 +44,21 @@ namespace Spells
             _container.AddSpell(new SpinningFireBall(), new Vector2D(-4, 4));
             _container.CastAllSpellsToRandomDirection();
             _lastUpdate = TimeHelper.GetCurrentTime();
+        }
+
+        public void Start()
+        {
+            DrawBorder();
+            Draw();
+            TimeHelper.Start();
+            while (!Console.KeyAvailable)
+            {
+                if (!UpdateMissles()) continue;
+                Draw();
+            }
+            ConsoleKeyInfo key = Console.ReadKey();
+            if (key.KeyChar == 'r')
+                Start();
         }
 
 
@@ -150,8 +164,11 @@ namespace Spells
         private void SpellCooldownZeroHandler(ICastable spell,
             SpellCooldownZeroEventArgs args)
         {
-            var newMissleDirection = GetNewMissleDirection(args.Position);
+            Debug.WriteLine(TimeHelper.GetCurrentTime());
+            TimeHelper.Stop();
+            var newMissleDirection = GetNewMissleDirection(_calculator.ToArrayIndex(args.Position));
             _container.CastSpell(spell, newMissleDirection);
+            TimeHelper.Start();
         }
 
         private Vector2D GetNewMissleDirection(Vector2D spellPosition)

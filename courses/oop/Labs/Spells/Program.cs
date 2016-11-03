@@ -11,17 +11,7 @@ namespace Spells.ConsoleOutput
         static void Main(string[] args)
         {
             ConsoleField field = new ConsoleField();
-            field.DrawBorder();
-            field.Draw();
-
-            while (!Console.KeyAvailable)
-            {
-                if (!field.UpdateMissles()) continue;
-                field.Draw();
-            }
-            ConsoleKeyInfo key = Console.ReadKey();
-            if(key.KeyChar == 'r')
-                Main(new string[2]);
+            field.Start();
         }
     }
 }
