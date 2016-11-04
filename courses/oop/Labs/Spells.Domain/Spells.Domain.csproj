@@ -41,12 +41,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CooldownException.cs" />
-    <Compile Include="Enemy.cs" />
     <Compile Include="FireBall.cs" />
     <Compile Include="ICastable.cs" />
-    <Compile Include="IDamagable.cs" />
+    <Compile Include="ICollidable.cs" />
+    <Compile Include="IHealthyObject.cs" />
     <Compile Include="Missle.cs" />
     <Compile Include="MissleMover.cs" />
+    <Compile Include="PositionIsOccupiedException.cs" />
+    <Compile Include="WallStore.cs" />
     <Compile Include="SpellCooldownZeroEventArgs.cs" />
     <Compile Include="SpellsContainer.cs" />
     <Compile Include="SpinningMissleState.cs" />
@@ -56,8 +58,8 @@
     <Compile Include="SpinningFireBall.cs" />
     <Compile Include="SpinningMissle.cs" />
     <Compile Include="TimeHelper.cs" />
-    <Compile Include="UpdateEventArgs.cs" />
     <Compile Include="Vector2D.cs" />
+    <Compile Include="Wall.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDIagramLab1.cd" />

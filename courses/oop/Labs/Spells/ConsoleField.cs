@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration.Assemblies;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Spells.Domain;
 
 namespace Spells
@@ -35,15 +29,22 @@ namespace Spells
             _field = new int[31, 31];
             _calculator = new CoordinateCalculator(XMax, YMax);
 
-            _container = new SpellsContainer(this.IsInTheField);
+            _container = new SpellsContainer(IsInTheField);
             _container.SubscribeToMissleMove(MissleMovedHandler);
-            _container.SubscribeToCooldownZero(this.SpellCooldownZeroHandler);
+            _container.SubscribeToCooldownZero(SpellCooldownZeroHandler);
             _container.AddSpell(new FireBall(), new Vector2D(-4, -4));
             _container.AddSpell(new FireBall(), new Vector2D(4, 4));
             _container.AddSpell(new FireBall(), new Vector2D(4, -4));
             _container.AddSpell(new SpinningFireBall(), new Vector2D(-4, 4));
+            AddWall(new Vector2D(0, 0));
             //_container.CastAllSpellsToRandomDirection();
             _lastUpdate = TimeHelper.GetCurrentTime();
+        }
+
+        private void AddWall(Vector2D position)
+        {
+            SetCodeAt(_calculator.ToArrayIndex(position), FieldCode.WallCode);
+            _container.AddWall(position);
         }
 
         public void Start()
@@ -53,8 +54,8 @@ namespace Spells
             TimeHelper.Start();
             while (!Console.KeyAvailable)
             {
-                if (!UpdateMissles()) continue;
-                Draw();
+                if (Update())
+                    Draw();
             }
             ConsoleKeyInfo key = Console.ReadKey();
             if (key.KeyChar == 'r')
@@ -62,7 +63,7 @@ namespace Spells
         }
 
 
-        public bool UpdateMissles()
+        private bool Update()
         {
             if (GetDeltaTime() < TimeSpan.FromMilliseconds(FixedFrameDeltaMilliseconds))
                 return false;
@@ -91,14 +92,8 @@ namespace Spells
             MissleMovedHandlerArgs args)
         {
             var index = _calculator.ToArrayIndex(missle.Position);
-            if (_field[index.X, index.Y] == (int)FieldCode.MissleCode)
-                Debug.Write("Boom!\n");
-            _field[index.X, index.Y] = (int)FieldCode.MissleCode;
-        }
-
-        public void Start()
-        {
-            this._container.StartMeasuringTime();
+            if(_field[index.X, index.Y] != (int)FieldCode.WallCode)
+                SetCodeAt(index, FieldCode.MissleCode);
         }
 
         public void DrawBorder()
@@ -134,28 +129,26 @@ namespace Spells
             {
                 for (var y = 0; y < YMax; y++)
                 {
-                    DrawAtPositionAndChangeCode(x, y);
+                    DrawAtPositionAndChangeCode(new Vector2D(x, y));
                 }
             }
         }
 
-        private void DrawAtPositionAndChangeCode(int x,
-            int y)
+        private void DrawAtPositionAndChangeCode(Vector2D position)
         {
-            var consolePosition = new Vector2D(_fieldUpperLeft.X + x, _fieldUpperLeft.Y + y);
-            var arrayPosition = new Vector2D(x, y);
-            switch ((FieldCode)_field[x, y])
+            var consolePosition = new Vector2D(_fieldUpperLeft.X + position.X, _fieldUpperLeft.Y + position.Y);
+            switch ((FieldCode)_field[position.X, position.Y])
             {
                 case FieldCode.TrailCode:
                     {
                         ConsoleDrawer.DrawMissleTail(consolePosition);
-                        SetCodeAt(arrayPosition, FieldCode.Nothing);
+                        SetCodeAt(position, FieldCode.Nothing);
                     }
                     break;
                 case FieldCode.MissleCode:
                     {
                         ConsoleDrawer.DrawMissle(consolePosition);
-                        SetCodeAt(arrayPosition, FieldCode.TrailCode);
+                        SetCodeAt(position, FieldCode.TrailCode);
                     }
                     break;
                 case FieldCode.Nothing:
@@ -163,6 +156,15 @@ namespace Spells
                         ConsoleDrawer.ClearConsoleAt(consolePosition);
                     }
                     break;
+                case FieldCode.WallCode:
+                {
+                    var coordinate = _calculator.ToCoordinate(position);
+                    var healthyObject = _container.GetHealthyObjectAt(coordinate);
+                    if(healthyObject.HitPoints == 0) 
+                        SetCodeAt(position, FieldCode.Nothing);
+                    ConsoleDrawer.DrawHealthyObject(consolePosition, healthyObject);
+                }
+                break;
             }
         }
 
@@ -181,12 +183,13 @@ namespace Spells
             var prevColor = Console.ForegroundColor;
             var enteredKey = ConsoleKey.X;
             var currentDirection = new Vector2D(1, 1);
+            var directionViewPosition = spellPosition + currentDirection;
             Console.ForegroundColor = ConsoleColor.Red;
 
             while (enteredKey != ConsoleKey.Enter)
             {
                 ConsoleDrawer.DrawSpell(spellPosition);
-                var directionViewPosition = spellPosition + currentDirection;
+                
                 enteredKey = Console.ReadKey().Key;
                 if (enteredKey == ConsoleKey.LeftArrow)
                 {
@@ -201,7 +204,8 @@ namespace Spells
                 directionViewPosition = spellPosition + currentDirection;
                 ConsoleDrawer.DrawDirectionView(directionViewPosition);
             }
-
+            ConsoleDrawer.ClearConsoleAt(spellPosition);
+            ConsoleDrawer.ClearConsoleAt(directionViewPosition);
             Console.ForegroundColor = prevColor;
             return currentDirection;
         }

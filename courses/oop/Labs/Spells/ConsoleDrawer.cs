@@ -14,6 +14,18 @@ namespace Spells
             ConsoleDrawer.WriteAtPosition('*', position);
         }
 
+        internal static void DrawHealthyObject(Vector2D position, IHealthyObject obj)
+        {
+            if(obj.HitPoints > obj.MaxHitPoints/2)
+                ConsoleDrawer.WriteAtPosition('=', position);
+            else if(obj.HitPoints > 0)
+                ConsoleDrawer.WriteAtPosition('-', position);
+            else
+            {
+                ConsoleDrawer.ClearConsoleAt(position);
+            }
+        }
+
         internal static void DrawMissleTail(Vector2D position)
         {
             ConsoleDrawer.WriteAtPosition('`', position);

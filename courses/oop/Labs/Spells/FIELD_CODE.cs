@@ -2,6 +2,6 @@
 {
     public enum FieldCode
     {
-        Nothing, MissleCode, TrailCode,
+        Nothing, MissleCode, TrailCode, WallCode,
     }
 }

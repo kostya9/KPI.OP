@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom;
 
 namespace Spells.Domain
 {
@@ -33,18 +32,53 @@ namespace Spells.Domain
             );
         }
 
-        public static Vector2D Round(double x,
-            double y )
+        public override bool Equals(object obj)
         {
-            return new Vector2D((int)Math.Round(x), (int)Math.Round(y));
+            if (obj is Vector2D)
+            {
+                var vector = (Vector2D) obj;
+                return (X == vector.X) && (Y == vector.Y);
+            }
+            return false;
+        }
+
+        public bool Equals(Vector2D other)
+        {
+            return (X == other.X) && (Y == other.Y);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (X * 397) ^ Y;
+            }
+        }
+
+        public static bool operator ==(Vector2D first,
+            Vector2D second)
+        {
+            return first.Equals(second);
+        }
+
+        public static bool operator !=(Vector2D first,
+    Vector2D second)
+        {
+            return !first.Equals(second);
+        }
+
+        public static Vector2D Round(double x,
+            double y)
+        {
+            return new Vector2D((int) Math.Round(x), (int) Math.Round(y));
         }
 
         public Vector2D RotateBy45DegreesClockwise()
         {
             var sqrtTwo = Math.Sqrt(2);
             // Rotation matrix by pi/4
-            var newX = X / sqrtTwo + Y / sqrtTwo;
-            var newY = Y / sqrtTwo - X / sqrtTwo;
+            var newX = X/sqrtTwo + Y/sqrtTwo;
+            var newY = Y/sqrtTwo - X/sqrtTwo;
             return Round(newX, newY);
         }
 
@@ -52,8 +86,8 @@ namespace Spells.Domain
         {
             var sqrtTwo = Math.Sqrt(2);
             // Rotation matrix by -pi/4
-            var newX = X / sqrtTwo - Y / sqrtTwo;
-            var newY = Y / sqrtTwo + X / sqrtTwo;
+            var newX = X/sqrtTwo - Y/sqrtTwo;
+            var newY = Y/sqrtTwo + X/sqrtTwo;
             return Round(newX, newY);
         }
 

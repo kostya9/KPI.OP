@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Spells.Domain
 {
     public delegate bool ValidatePosition(Vector2D position);
 
     public delegate void MissleMovedHandler(Missle sender,
-    MissleMovedHandlerArgs args);
+        MissleMovedHandlerArgs args);
 
-    public delegate void MisslesCollidedHandler(Missle first, Missle second,
-    EventArgs args);
+    public delegate void MisslesCollidedHandler(Missle missle,
+        ICollidable collision,
+        EventArgs args);
 
     public class MissleMovedHandlerArgs
     {
@@ -20,7 +19,7 @@ namespace Spells.Domain
 
         public MissleMovedHandlerArgs(Vector2D previousPosition)
         {
-            this.PreviousPosition = previousPosition;
+            PreviousPosition = previousPosition;
         }
     }
 
@@ -34,25 +33,27 @@ namespace Spells.Domain
         public MissleMover(ValidatePosition validater)
         {
             _missles = new List<Missle>();
-            this._validater = validater;
+            _validater = validater;
         }
 
         public void AddMissle(Missle missle)
         {
-            this._missles.Add(missle);
+            _missles.Add(missle);
         }
 
-        public void OnUpdate(SpellsContainer container,
-            UpdateEventArgs args)
+        public void Move(WallStore store)
         {
             MoveMissles();
-            CheckForCollision();
+            CheckForCollision(store);
         }
 
-        public void MoveMissles()
+        private void MoveMissles()
         {
             foreach (var missle in _missles.ToList())
             {
+                if (missle.IsDestroyed)
+                    RemoveMissle(missle);
+
                 var prevPosition = missle.Position;
                 missle.UpdatePosition();
 
@@ -60,30 +61,47 @@ namespace Spells.Domain
                     RemoveMissle(missle);
                 else
                     MissleMoved?.Invoke(missle, new MissleMovedHandlerArgs(prevPosition));
-            }   
+            }
         }
 
-        public void RemoveMissle(Missle missle)
+        private void RemoveMissle(Missle missle)
         {
             _missles.Remove(missle);
         }
 
-        private void CheckForCollision()
+        private void CheckForCollision(WallStore store)
         {
-            Dictionary<Vector2D, Missle> map = new Dictionary<Vector2D, Missle>();
+            var map = new Dictionary<Vector2D, Missle>();
 
             foreach (var missle in _missles.ToList())
             {
+                if (RemoveIfDestroyed(missle)) continue;
+
                 var position = missle.Position;
+                if (store.ExistsWallAt(position))
+                    MisslesCollided?.Invoke(missle, store.GetWallAt(position), new EventArgs());
+
+                if (RemoveIfDestroyed(missle)) continue;
+
                 if (map.ContainsKey(position))
-                    MisslesCollided?.Invoke(missle, map[position], new EventArgs());
-                else
                 {
-                    map[position] = missle;
+                    var nextMissle = map[position];
+                    if (!nextMissle.IsDestroyed)
+                        MisslesCollided?.Invoke(missle, nextMissle, new EventArgs());
                 }
+                else
+                    map[position] = missle;
             }
         }
+
+        private bool RemoveIfDestroyed(Missle missle)
+        {
+            if (missle.IsDestroyed)
+            {
+                RemoveMissle(missle);
+                return true;
+            }
+            return false;
+        }
     }
-
-
 }

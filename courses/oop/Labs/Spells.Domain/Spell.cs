@@ -29,9 +29,9 @@ namespace Spells.Domain
         public string Sound { get; }
 
         private TimeSpan _lastCasted;
-       
 
-        public Spell(int id,
+
+        protected Spell(int id,
             string name,
             int missleSpeed,
             int damage,
