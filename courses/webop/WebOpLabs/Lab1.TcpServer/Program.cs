@@ -13,18 +13,29 @@ namespace Lab1.TcpServer
         public static void Main(string[] args)
         {
             var bags = Bag.GetInitializedBags();
-            const string pathToBags = "bags.json";
-            if (!File.Exists(pathToBags))
+            int port = GetPort();
+            if (port < 0)
             {
-                File.WriteAllText(pathToBags, JsonConvert.SerializeObject(bags));
+                Console.WriteLine("Incorrect format. Exitting...");
+                return;
             }
-            else
-            {
-                bags = JsonConvert.DeserializeObject<List<Bag>>(File.ReadAllText(pathToBags));
-            }
-            LabTcpServer server = new LabTcpServer(bags);
+
+            LabTcpServer server = new LabTcpServer(bags, port);
             server.Start();
-            Console.ReadLine();
+            //Console.ReadLine();
+        }
+
+        private static int GetPort()
+        {
+            Console.WriteLine("Enter the port :");
+            var input = Console.ReadLine();
+            int inputNumber = 0;
+            var result = int.TryParse(input, out inputNumber);
+
+            if (!result)
+                return -1;
+
+            return inputNumber;
         }
     }
 }

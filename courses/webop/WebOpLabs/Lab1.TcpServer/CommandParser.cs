@@ -17,6 +17,11 @@ namespace Lab1.TcpServer
         {
             this.MainCommand = GetMainCommand(command);
             var indexOfOptions = MainCommand.Length + 1;
+            if (command.Length == MainCommand.Length)
+            {
+                this.Options = new Dictionary<string, string>();
+                return;
+            }
             var options = command.Substring(indexOfOptions);
             this.Options = GetOptions(options);
         }
@@ -46,7 +51,7 @@ namespace Lab1.TcpServer
         private string GetMainCommand(string command)
         {
             var indexOfOptions = command.IndexOf(" -", StringComparison.Ordinal);
-            var mainCommand = command.Substring(0, indexOfOptions);
+            var mainCommand = indexOfOptions >= 0  ? command.Substring(0, indexOfOptions) : command;
             return mainCommand;
         }
     }

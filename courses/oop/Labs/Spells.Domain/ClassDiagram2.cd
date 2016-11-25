@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="Spells.Domain.CooldownException" Collapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>CooldownException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Spells.Domain.CooldownExceptionArgs" Collapsed="true">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAgBCAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CooldownExceptionArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Spells.Domain.FireBall">
+    <Position X="0.5" Y="5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FireBall.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Spells.Domain.Missle">
+    <Position X="4" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAUACAwACAAAAQAAAAAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>Missle.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Spells.Domain.MissleMovedHandlerArgs" Collapsed="true">
+    <Position X="11" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>MissleMover.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Spells.Domain.MissleMover" Collapsed="true">
+    <Position X="12.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAABAAIAAAEBAAAAAAAAIABAAQAAAAAAAACAAIAA=</HashCode>
+      <FileName>MissleMover.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Spells.Domain.PositionIsOccupiedException" Collapsed="true">
+    <Position X="7.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PositionIsOccupiedException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Spells.Domain.Spell">
+    <Position X="0.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAECAAAAAAAIAAAAAAAQEAAAAAAAgBgIAAACAAAA=</HashCode>
+      <FileName>Spell.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Spells.Domain.SpellCooldownZeroEventArgs" Collapsed="true">
+    <Position X="9.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SpellCooldownZeroEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Spells.Domain.SpellsContainer" Collapsed="true">
+    <Position X="11" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQIAQAEAAAAAgACQAAAAAIAAkAIEgAAAAAKAABAIAA=</HashCode>
+      <FileName>SpellsContainer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Spells.Domain.SpinningFireBall">
+    <Position X="0.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SpinningFireBall.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Spells.Domain.SpinningMissle">
+    <Position X="3.5" Y="4.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AQAIAAAAAAAAACAAAAAAAAAAAAAAAAIAAAAIAAAAAAA=</HashCode>
+      <FileName>SpinningMissle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Spells.Domain.SpinningMissleStateExtensions" Collapsed="true">
+    <Position X="12.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SpinningMissleState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Spells.Domain.TimeHelper" Collapsed="true">
+    <Position X="7.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAIAIAAAgAgAAAA=</HashCode>
+      <FileName>TimeHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Spells.Domain.Wall" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAQAAAABAQAAAAAAAAAABAIAAAAAAA=</HashCode>
+      <FileName>Wall.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Spells.Domain.WallStore" Collapsed="true">
+    <Position X="11" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gBAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>WallStore.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Spells.Domain.Vector2D" Collapsed="true">
+    <Position X="7.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEwAECAAAAAAAAAIAAAEAAAAIAYiA=</HashCode>
+      <FileName>Vector2D.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="Spells.Domain.ICastable" Collapsed="true">
+    <Position X="7.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ICastable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Spells.Domain.ICollidable" Collapsed="true">
+    <Position X="9.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ICollidable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Spells.Domain.IHealthyObject" Collapsed="true">
+    <Position X="11" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>IHealthyObject.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Spells.Domain.Spells" Collapsed="true">
+    <Position X="7.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Spells.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Spells.Domain.SpinningMissleState" Collapsed="true">
+    <Position X="9.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAIAAAACACAAAEAAAA=</HashCode>
+      <FileName>SpinningMissleState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="Spells.Domain.ValidatePosition" Collapsed="true">
+    <Position X="12.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MissleMover.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Spells.Domain.MissleMovedHandler" Collapsed="true">
+    <Position X="7.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>MissleMover.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Spells.Domain.MisslesCollidedHandler" Collapsed="true">
+    <Position X="9.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAgAAAACAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MissleMover.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Spells.Domain.SpellCooldownZeroHandler" Collapsed="true">
+    <Position X="11" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>SpellsContainer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

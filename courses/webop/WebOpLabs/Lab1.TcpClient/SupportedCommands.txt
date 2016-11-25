@@ -22,5 +22,7 @@ Get Data [options]
 	-r Remove a field from diplaying
 Get Count
 	returns the count of objects
+Get Cleints
+	returns all connected clients (to the server)
 	
 	

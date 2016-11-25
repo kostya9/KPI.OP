@@ -22,9 +22,9 @@ namespace Lab1.TcpClient
             //_client = new System.Net.Sockets.TcpClient();
         }
 
-        public void StartSending(IPAddress address)
+        public void StartSending(IPEndPoint endPoint)
         {
-            StartSending(address, Port).Wait();
+            StartSending(endPoint.Address, endPoint.Port).Wait();
         }
 
         public async Task StartSending(IPAddress address,

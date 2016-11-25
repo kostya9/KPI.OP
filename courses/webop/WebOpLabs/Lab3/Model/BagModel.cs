@@ -6,7 +6,7 @@ namespace Lab3.Model{
         public BagModel(Bag bag)
         {
             Bag = bag;
-            IsActive = bag.Id != 0 ? true : false;
+            IsActive = bag.Description != null;
         }
     }
 }

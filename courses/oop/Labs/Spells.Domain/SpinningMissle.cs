@@ -10,7 +10,7 @@ namespace Spells.Domain
 {
     class SpinningMissle : Missle
     {
-        private const int _radius = 1;
+        private const int Radius = 1;
         private SpinningMissleState _spinningMissleState;
 
         private SpinningMissle(Spell castedSpell,

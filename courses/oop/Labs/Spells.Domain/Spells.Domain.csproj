@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CooldownException.cs" />
+    <Compile Include="CooldownExceptionArgs.cs" />
     <Compile Include="FireBall.cs" />
     <Compile Include="ICastable.cs" />
     <Compile Include="ICollidable.cs" />
@@ -62,6 +63,8 @@
     <Compile Include="Wall.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram2.cd" />
     <None Include="ClassDIagramLab1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

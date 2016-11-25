@@ -19,13 +19,14 @@ namespace Lab1.TcpServer
     {
         private IEnumerable<Bag> _bags;
         private TcpListener _listener;
-        private static readonly int Port = 5000;
+        private static int Port;
         private static readonly IPAddress Address = IPAddress.Any;
         private static readonly double MinutesAlive = 2;
         private List<TcpClient> _clients;
 
-        public LabTcpServer(IEnumerable<Bag> bags)
+        public LabTcpServer(IEnumerable<Bag> bags, int port)
         {
+            Port = port;
             _listener = new TcpListener(Address, Port);
             _bags = bags;
             _clients = new List<TcpClient>();
@@ -34,7 +35,20 @@ namespace Lab1.TcpServer
         public void Start()
         {
             Console.WriteLine($"Started a server on {Address}:{Port}");
-            _listener.Start();
+            try
+            {
+                _listener.Start();
+            }
+            catch (SocketException e)
+            {
+                if (e.SocketErrorCode == SocketError.AddressAlreadyInUse)
+                {
+                    Console.WriteLine("Port is already in use. Exitting...");
+                    return;
+                }
+
+                Console.WriteLine("Could not start the server. Exitting...");
+            }
             while (true)
             {
                 //var result = await _listener.AcceptTcpClientAsync();
@@ -90,6 +104,16 @@ namespace Lab1.TcpServer
             }
             catch (Exception e)
             {
+                //if(e.SocketErrorCode == )
+                
+                var innerE = e.GetBaseException() as IOException;
+
+                if (innerE != null)
+                {
+                    LogInfo(clientDisplayName, "Connected client aborted the connection.");
+                    return;
+                }
+
                 LogInfo("Error", e.Message);
             }
             finally
@@ -221,7 +245,7 @@ namespace Lab1.TcpServer
                 if (optionsDictionary["s"] == "asc")
                     copyBags = copyBags.OrderBy(x => x[fieldName]).ToList();
                 else if (optionsDictionary["s"] == "desc")
-                    copyBags = copyBags.OrderBy(x => x[fieldName]).ToList();
+                    copyBags = copyBags.OrderBy(x => x[fieldName]).Reverse().ToList();
                 else
                     copyBags = null;
             }

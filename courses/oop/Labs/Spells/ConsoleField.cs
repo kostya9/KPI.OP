@@ -34,7 +34,6 @@ namespace Spells
             _container.SubscribeToCooldownZero(SpellCooldownZeroHandler);
             _container.AddSpell(new FireBall(), new Vector2D(-4, -4));
             _container.AddSpell(new FireBall(), new Vector2D(4, 4));
-            _container.AddSpell(new FireBall(), new Vector2D(4, -4));
             _container.AddSpell(new SpinningFireBall(), new Vector2D(-4, 4));
             AddWall(new Vector2D(0, 0));
             //_container.CastAllSpellsToRandomDirection();
@@ -52,11 +51,29 @@ namespace Spells
             DrawBorder();
             Draw();
             TimeHelper.Start();
+
+            // Test cooldown exception
+            var fireBall = new FireBall();
+            _container.AddSpell(fireBall, new Vector2D(4, -4));
+            try
+            {
+                _container.CastSpell(fireBall, new Vector2D(1, 1));
+                _container.CastSpell(fireBall, new Vector2D(1, -1));
+            }
+            catch (CooldownException e)
+            {
+                Debug.Write($"The spell casted from {e.Args.Position} at direction {e.Args.Direction} is on cooldown. \nTry cast again in {e.Args.RemainingTime} ");
+            }
+
+            //Main loop
             while (!Console.KeyAvailable)
             {
+                // If were any updates - draw them
                 if (Update())
                     Draw();
             }
+
+            // r for restart
             ConsoleKeyInfo key = Console.ReadKey();
             if (key.KeyChar == 'r')
                 Start();
@@ -65,6 +82,7 @@ namespace Spells
 
         private bool Update()
         {
+            // Fixed framerate
             if (GetDeltaTime() < TimeSpan.FromMilliseconds(FixedFrameDeltaMilliseconds))
                 return false;
             _container.Update();
@@ -72,6 +90,7 @@ namespace Spells
             return true;
         }
 
+        // To have an ability to delete something if it's gone from the field
         private bool IsInTheField(Vector2D position)
         {
             var xMax = XMax;
@@ -160,6 +179,7 @@ namespace Spells
                 {
                     var coordinate = _calculator.ToCoordinate(position);
                     var healthyObject = _container.GetHealthyObjectAt(coordinate);
+                    //Delete object if it's gone
                     if(healthyObject.HitPoints == 0) 
                         SetCodeAt(position, FieldCode.Nothing);
                     ConsoleDrawer.DrawHealthyObject(consolePosition, healthyObject);
@@ -178,6 +198,7 @@ namespace Spells
             TimeHelper.Start();
         }
 
+        // Prompt the user to direct the missle
         private Vector2D GetNewMissleDirection(Vector2D spellPosition)
         {
             var prevColor = Console.ForegroundColor;

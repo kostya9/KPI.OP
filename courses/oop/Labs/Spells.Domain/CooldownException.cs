@@ -4,9 +4,11 @@ namespace Spells.Domain
 {
     public class CooldownException : Exception
     {
-        public CooldownException() : base("This spell was already castes and is on cooldown")
+        public CooldownExceptionArgs Args { get; }
+
+        public CooldownException(CooldownExceptionArgs args) : base("This spell was already castes and is on cooldown")
         {
-            
+            Args = args;
         }
     }
 }

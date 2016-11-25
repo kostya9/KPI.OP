@@ -11,23 +11,17 @@ namespace Lab1.TcpClient
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("Type in the address of the server");
-            string ip = Console.ReadLine();
+            var endPoint = GetIpEndpoint();
 
-            var client = new LabTcpClient();
-            Console.WriteLine("Type 'exit' to quit");
-            IPAddress address;
-            try
+            if (endPoint == null)
             {
-                address = IPAddress.Parse(ip);
-            }
-            catch (FormatException e)
-            {
-                Console.WriteLine("Incorrect format. Closing...");
+                Console.WriteLine("Incorrect format. Exitting...");
                 return;
             }
 
-            client.StartSending(address);
+            var client = new LabTcpClient();
+            Console.WriteLine("Type 'exit' to quit");
+            client.StartSending(endPoint);
 
             Console.WriteLine("Press anything to exit...");
             Console.ReadKey();
@@ -40,6 +34,30 @@ namespace Lab1.TcpClient
 
                 client.StartSending(input);
             }*/
+        }
+
+        private static IPEndPoint GetIpEndpoint()
+        {
+            Console.WriteLine("Type in the address of the server(with port)");
+            string ipAndPort = Console.ReadLine();
+            var ipAndPortArray = ipAndPort.Split(':');
+
+            if (ipAndPortArray.Length != 2)
+                return null;
+
+            IPAddress address = null;
+            var result = IPAddress.TryParse(ipAndPortArray[0], out address);
+            if (!result)
+                return null;
+
+            int port = 0;
+            result = int.TryParse(ipAndPortArray[1], out port);
+            if (!result)
+                return null;
+
+
+
+            return new IPEndPoint(address, port);
         }
     }
 }

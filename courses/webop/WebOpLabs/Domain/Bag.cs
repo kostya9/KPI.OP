@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -14,6 +15,7 @@ namespace Domain
         public object this[string name] => this.GetType().GetRuntimeProperty(name).GetValue(this, null);
 
         public int Id { get; set; }
+        public int Price { get; set; }
         public string Name { get; set; }
         public DateTime TimeCreation { get; set; }
         public DateTime? TimeBought { get; set; }
@@ -30,6 +32,10 @@ namespace Domain
 
         public static List<Bag> GetInitializedBags()
         {
+            const string pathToBags = "bags.json";
+            if (File.Exists(pathToBags))
+                return JsonConvert.DeserializeObject<List<Bag>>(File.ReadAllText(pathToBags));
+
             List<Bag> bags = new List<Bag>()
             {
                 new Bag() { Name = "BagSuper", Factory = "Zimbab", Owner = "Slaughter", Id=123, TimeBought = null, TimeCreation = DateTime.Now},

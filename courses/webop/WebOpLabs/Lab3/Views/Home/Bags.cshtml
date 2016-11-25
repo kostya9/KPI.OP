@@ -3,8 +3,13 @@
     @{
         foreach (var bagModel in Model.Bags)
         {
+            if (bagModel.Bag.ImageLink == null)
+            {
+                continue;
+            }
             <div class="bag-item col-xs-4 col-md-3">
-            <p class="bag-title">@bagModel.Bag.Name</p>
+                <p class="bag-title">@bagModel.Bag.Name</p>
+                <span class="money">@bagModel.Bag.Price $</span>
             <img class="bag-preview-image" src="@bagModel.Bag.ImageLink"/>
             <a href="@(bagModel.IsActive
                            ? Url.Action("Bag", "Home", new {id = bagModel.Bag.Id})

@@ -52,9 +52,9 @@ namespace Spells.Domain
         public virtual Missle Cast(Vector2D position, Vector2D direction)
         {
             var canCast = CanCast();
-            if (!canCast)
-                throw new CooldownException();
             var timeNow = TimeHelper.GetCurrentTime();
+            if (!canCast)
+                throw new CooldownException(new CooldownExceptionArgs(direction, position, this, Cooldown - (timeNow - _lastCasted)));
 
             _lastCasted = timeNow;
 
