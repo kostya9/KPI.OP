@@ -1,0 +1,21 @@
+﻿@model Domain.Bag
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div class="full-bag-item col-xs-4 col-xs-offset-4">
+    <ul>
+        <li>
+            Name : @Model.Name
+        </li>
+        <li>
+            Image : <img class="bag-image" src="@Model.ImageLink" />
+        </li>
+        <li>
+            Description : @Model.Description
+        </li>
+
+    </ul>
+</div>

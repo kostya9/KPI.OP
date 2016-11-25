@@ -1,0 +1,124 @@
+[
+  {
+    "Id": 123,
+    "Name": "BagSuper",
+    "TimeCreation": "2016-09-13T01:44:48.5433578+03:00",
+    "TimeBought": null,
+    "Owner": "Slaughter",
+    "Factory": "Zimbab",
+    "Price":  10 
+  },
+  {
+    "Id": 321,
+    "Name": "Crator",
+    "TimeCreation": "2016-09-11T01:44:48.5453635+03:00",
+    "TimeBought": "2016-09-12T01:44:48.5453635+03:00",
+    "Owner": "Gus'",
+    "Factory": "Viba",
+    "Price": 15
+  },
+  {
+    "Id": 1234,
+    "Name": "Bacor",
+    "TimeCreation": "2015-09-13T01:44:48.5453635+03:00",
+    "TimeBought": "2016-09-10T01:44:48.5453635+03:00",
+    "Owner": "Asgall Druiminn",
+    "Factory": "Westwend",
+    "Price": 12
+  },
+  {
+    "Id": 1236,
+    "Name": "Latisha",
+    "TimeCreation": "2007-06-13T01:44:48.5453635+03:00",
+    "TimeBought": null,
+    "Owner": "Pòl MacIllIanain",
+    "Factory": "Haedleigh",
+    "Price": 20
+  },
+  {
+    "Id": 1231,
+    "Name": "Enriqueta",
+    "TimeCreation": "2016-05-13T01:44:48.5453635+03:00",
+    "TimeBought": null,
+    "Owner": "Dubh-shìth Cèampach",
+    "Factory": "Ballinamallard",
+    "Price": 30
+  },
+  {
+    "Id": 1239,
+    "Name": "Nona",
+    "TimeCreation": "2016-03-13T01:44:48.5453635+02:00",
+    "TimeBought": "2016-08-19T01:44:48.5453635+03:00",
+    "Owner": "Rgoan",
+    "Factory": "City of Fire",
+    "Price": 22,
+    "ImageLink" : 
+    "https://media.gucci.com/style/DarkGray_South_0_160_316x316/1449741628/421890_A7M0T_6339_001_090_0000_Light-GG-Marmont-leather-top-handle-bag.jpg"
+  },
+  {
+    "Id": 1238,
+    "Name": "Hoyt",
+    "TimeCreation": "2015-12-13T01:44:48.5453635+02:00",
+    "TimeBought": "2016-08-29T01:44:48.5453635+03:00",
+    "Owner": "Baradiel",
+    "Factory": "Northwich",
+    "Price": 100,
+    "ImageLink" : 
+    "http://bagbible.com/blog/wp-content/uploads/2009/04/duffell_bag.jpg"
+  },
+  {
+    "Id": 12387,
+    "Name": "Meggan",
+    "TimeCreation": "2016-06-13T01:44:48.5453635+03:00",
+    "TimeBought": "2016-09-02T01:44:48.5453635+03:00",
+    "Owner": "Naooo",
+    "Factory": "Hull",
+    "Price": 34,
+    "ImageLink" : 
+    "https://s-media-cache-ak0.pinimg.com/originals/c7/c3/ea/c7c3ead2a778f8a4f4f0523a15f3a427.jpg"
+  },
+  {
+    "Id": 12342,
+    "Name": "Tabitha",
+    "TimeCreation": "2015-09-13T01:44:48.5453635+03:00",
+    "TimeBought": null,
+    "Owner": "Bhuchung",
+    "Factory": "Whiteridge",
+    "Price": 32,
+    "ImageLink" : 
+    "https://ae01.alicdn.com/kf/HTB1ftSYIpXXXXXVXVXXq6xXFXXXD/HETI-2015-Hot-men-and-women-printing-leaves-backpacks-mochila-rucksack-fashion-canvas-bags-retro-casual.jpg_350x350.jpg"
+  },
+  {
+    "Id": 12341,
+    "Name": "Vesta",
+    "TimeCreation": "2014-12-13T01:44:48.5453635+02:00",
+    "TimeBought": "2016-09-06T01:44:48.5453635+03:00",
+    "Owner": "Wangdup",
+    "Factory": "Elinmylly",
+    "Price": 32
+  },
+  {
+    "Id": 12387,
+    "Name": "Adolfo",
+    "TimeCreation": "2014-02-13T01:44:48.5453635+02:00",
+    "TimeBought": "2016-09-09T01:44:48.5453635+03:00",
+    "Owner": "Rigzin",
+    "Factory": "Sanlow",
+    "Price": 11,
+    "ImageLink" : 
+    "http://shop.millscanvas.com/media/images/naptholred_ice_bag.jpg"
+  },
+  {
+    "Name" : 
+    "Reusable Shopping Bag",
+    "Description": 
+    "Use this bag a lot of times! If you are a great mathematician count your income from not buying bags. You will be suprised!",
+    "ImageLink" : 
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUZg64JyyVFS4Cx340G2Qd_zddEFbQbPCO76N4uHL10Cy7gH-sKw",
+    "TimeCreation": "2016-05-13T01:44:48.5453635+03:00",
+    "TimeBought": "2016-09-04T01:44:48.5453635+03:00",
+    "Owner": "Kundang Nepali",
+    "Factory": "Kameeraska",
+    "Price": 19
+  }
+]

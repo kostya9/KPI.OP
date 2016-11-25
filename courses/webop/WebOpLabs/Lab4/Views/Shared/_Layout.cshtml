@@ -1,0 +1,55 @@
+﻿@using Lab3.Helpers;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="/css/site.css"/>
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css"/>
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="@{
+                    if(ViewData["MenuActive"] != "home"){ 
+                        @Url.Action("Index", "Home")
+                    }
+                    else{
+                        @:#
+                    }
+                    }">Genius bags shop</a>
+        </div>
+        <ul class="nav navbar-nav text-center">
+            <li class="@Html.GetMenuItemClass("home")">
+                <a href="@{
+                    if(ViewData["MenuActive"] != "home"){ 
+                        @Url.Action("Index", "Home")
+                    }
+                    else{
+                        @:#
+                    }
+                    }" class="">Home</a>
+            </li>
+            <li class="@Html.GetMenuItemClass("bags")">
+                <a class="bag_button" href="@{
+                    if(ViewData["MenuActive"] != "bags"){ 
+                        @Url.Action("Bags", "Home")
+                    }
+                    else{
+                        @:#
+                        }
+                    }">Freaking bags!</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    @RenderBody()
+</div>
+</body>
+</html>

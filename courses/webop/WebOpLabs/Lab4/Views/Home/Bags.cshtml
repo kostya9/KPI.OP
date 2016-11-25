@@ -1,0 +1,29 @@
+@model Lab3.Model.BagsModel
+<div class="bags-container col-xs-12">
+    @{
+        foreach (var bagModel in Model.Bags)
+        {
+            if (bagModel.Bag.ImageLink == null)
+            {
+                continue;
+            }
+            <div class="bag-item col-xs-4 col-md-3">
+                <p class="bag-title">@bagModel.Bag.Name</p>
+                <span class="money">@bagModel.Bag.Price $</span>
+            <img class="bag-preview-image" src="@bagModel.Bag.ImageLink"/>
+            <a href="@(bagModel.IsActive
+                           ? Url.Action("Bag", "Home", new {id = bagModel.Bag.Id})
+                           : "#")"><button class="btn btn-info bag-btn">More</button></a>
+            </div>
+        }
+    }
+    <div class="paginator">@{
+                               for (int i = 1; i <= (int) ViewData["Pages"]; i++)
+                               {
+                                   <a href=@Url.Action("Bags", "Home", new {page = i}) class="@((int) ViewData["Page"] == i ? "selected" : "")
+
+                                   "> @i </a>
+                               }
+
+    }</div>
+</div>

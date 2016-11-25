@@ -1,0 +1,69 @@
+﻿.bag_button {
+    width: 200px;
+}
+
+img {
+    width: 400px;
+}
+
+.bag-item {
+    padding: 10px;
+    margin: 20px;
+    background-color: lightgray;
+    border: 2px solid gray;
+    border-radius: 10px;
+    height: 250px;
+    min-width: 170px;
+}
+
+.full-bag-item{
+    background-color: lightgray;
+    border: 2px solid gray;
+}
+
+.bag-image{
+    max-height: 200px;
+    max-width: 200px;
+}
+
+.bag-preview-image {
+    width: 120px;
+    height: 120px;
+    margin: 5px;
+    clear: left;
+    float: left;
+}
+
+.bag-title {
+    margin: 5px;
+    float: left;
+    clear: left;
+}
+
+.full-bag-item ul {
+    list-style-type: none;
+}
+
+.full-bag-item li {
+    margin: 20px;
+    padding: 10px;
+}
+
+.bag-btn {
+    float: left;
+    clear: left;
+
+}
+
+.money {
+    background-color: green;
+    color: white;
+    border-radius: 5px;
+    margin: 5px;
+}
+
+.selected {
+    background-color: blue;
+    color: white;
+    border-radius: 5px;
+}
