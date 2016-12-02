@@ -51,6 +51,7 @@
     <Compile Include="MissleMover.cs" />
     <Compile Include="PositionIsOccupiedException.cs" />
     <Compile Include="SpellsGame.cs" />
+    <Compile Include="WallBlock.cs" />
     <Compile Include="WallStore.cs" />
     <Compile Include="SpellCooldownZeroEventArgs.cs" />
     <Compile Include="SpellsContainer.cs" />

@@ -43,6 +43,7 @@ namespace Spells
             _game.SpellsContainer.AddSpell(new SpinningFireBall(), new Vector2D(-4, 4));
             _game.SpellsContainer.AddSpell(new FireBall(), new Vector2D(4, -4));
             AddWall(new Vector2D(0, 0));
+            AddWall(new Vector2D(0, 0));
             //_container.CastAllSpellsToRandomDirection();
             _lastUpdate = TimeHelper.GetCurrentTime();
         }
@@ -173,7 +174,7 @@ namespace Spells
                     var coordinate = _calculator.ToCoordinate(position);
                     var healthyObject = _game.WallStore.GetHealthyObjectAt(coordinate);
                     //Delete object if it's gone
-                    if(healthyObject.HitPoints == 0) 
+                    if(healthyObject == null || healthyObject.HitPoints == 0) 
                         SetCodeAt(position, FieldCode.Nothing);
                     ConsoleDrawer.DrawHealthyObject(consolePosition, healthyObject);
                 }

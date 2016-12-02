@@ -16,6 +16,11 @@ namespace Spells
 
         internal static void DrawHealthyObject(Vector2D position, IHealthyObject obj)
         {
+            if (obj == null)
+            {
+                ConsoleDrawer.ClearConsoleAt(position);
+                return;
+            }
             if(obj.HitPoints > obj.MaxHitPoints/2)
                 ConsoleDrawer.WriteAtPosition('=', position);
             else if(obj.HitPoints > 0)
