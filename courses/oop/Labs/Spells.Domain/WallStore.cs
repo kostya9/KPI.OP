@@ -10,7 +10,7 @@ namespace Spells.Domain
     {
         private readonly Dictionary<Vector2D, Wall> _walls;
 
-        public WallStore()
+        internal WallStore()
         {
             this._walls = new Dictionary<Vector2D, Wall>();
         }
@@ -23,7 +23,12 @@ namespace Spells.Domain
             _walls[position] = new Wall();
         }
 
-        public Wall GetWallAt(Vector2D position)
+        public IHealthyObject GetHealthyObjectAt(Vector2D position)
+        {
+            return GetWallAt(position);
+        }
+
+        internal Wall GetWallAt(Vector2D position)
         {
             if(!ExistsWallAt(position))
                 return null;
@@ -31,7 +36,7 @@ namespace Spells.Domain
             return _walls[position];
         }
 
-        public bool ExistsWallAt(Vector2D position)
+        internal bool ExistsWallAt(Vector2D position)
         {
             return _walls.ContainsKey(position);
         }

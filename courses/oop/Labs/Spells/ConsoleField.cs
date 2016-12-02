@@ -11,7 +11,7 @@ namespace Spells
         private readonly int[,] _field;
         private TimeSpan _lastUpdate;
         private readonly Vector2D _fieldUpperLeft = new Vector2D(1, 1);
-        private readonly SpellsContainer _container;
+        private readonly SpellsGame _game;
         private readonly CoordinateCalculator _calculator;
         private int XMax => _field.GetUpperBound(0) + 1;
 
@@ -29,12 +29,19 @@ namespace Spells
             _field = new int[31, 31];
             _calculator = new CoordinateCalculator(XMax, YMax);
 
-            _container = new SpellsContainer(IsInTheField);
-            _container.SubscribeToMissleMove(MissleMovedHandler);
-            _container.SubscribeToCooldownZero(SpellCooldownZeroHandler);
-            _container.AddSpell(new FireBall(), new Vector2D(-4, -4));
-            _container.AddSpell(new FireBall(), new Vector2D(4, 4));
-            _container.AddSpell(new SpinningFireBall(), new Vector2D(-4, 4));
+            _game = new SpellsGame(IsInTheField);
+            _game.MissleMoved += ((m,
+                    e) =>
+                {
+                    var index = _calculator.ToArrayIndex(m.Position);
+                    if (_field[index.X, index.Y] != (int)FieldCode.WallCode)
+                        SetCodeAt(index, FieldCode.MissleCode);
+                });
+            _game.SpellCooldownZero += (SpellCooldownZeroHandler);
+            _game.SpellsContainer.AddSpell(new FireBall(), new Vector2D(-4, -4));
+            _game.SpellsContainer.AddSpell(new FireBall(), new Vector2D(4, 4));
+            _game.SpellsContainer.AddSpell(new SpinningFireBall(), new Vector2D(-4, 4));
+            _game.SpellsContainer.AddSpell(new FireBall(), new Vector2D(4, -4));
             AddWall(new Vector2D(0, 0));
             //_container.CastAllSpellsToRandomDirection();
             _lastUpdate = TimeHelper.GetCurrentTime();
@@ -43,40 +50,34 @@ namespace Spells
         private void AddWall(Vector2D position)
         {
             SetCodeAt(_calculator.ToArrayIndex(position), FieldCode.WallCode);
-            _container.AddWall(position);
+            _game.WallStore.CreateWall(position);
         }
 
-        public void Start()
+        public bool Start()
         {
             DrawBorder();
             Draw();
             TimeHelper.Start();
 
-            // Test cooldown exception
-            var fireBall = new FireBall();
-            _container.AddSpell(fireBall, new Vector2D(4, -4));
-            try
-            {
-                _container.CastSpell(fireBall, new Vector2D(1, 1));
-                _container.CastSpell(fireBall, new Vector2D(1, -1));
-            }
-            catch (CooldownException e)
-            {
-                Debug.Write($"The spell casted from {e.Args.Position} at direction {e.Args.Direction} is on cooldown. \nTry cast again in {e.Args.RemainingTime} ");
-            }
-
             //Main loop
-            while (!Console.KeyAvailable)
+            while (true)
             {
                 // If were any updates - draw them
                 if (Update())
                     Draw();
+
+                if(!Console.KeyAvailable)
+                    continue;
+
+                ConsoleKeyInfo key = Console.ReadKey();
+                if (key.Key == ConsoleKey.R)
+                    return true;
+                if (key.Key == ConsoleKey.Escape)
+                    return false;
             }
 
             // r for restart
-            ConsoleKeyInfo key = Console.ReadKey();
-            if (key.KeyChar == 'r')
-                Start();
+
         }
 
 
@@ -85,7 +86,7 @@ namespace Spells
             // Fixed framerate
             if (GetDeltaTime() < TimeSpan.FromMilliseconds(FixedFrameDeltaMilliseconds))
                 return false;
-            _container.Update();
+            _game.Update();
             _lastUpdate = TimeHelper.GetCurrentTime();
             return true;
         }
@@ -105,14 +106,6 @@ namespace Spells
         private TimeSpan GetDeltaTime()
         {
             return TimeHelper.GetCurrentTime() - _lastUpdate;
-        }
-
-        private void MissleMovedHandler(Missle missle,
-            MissleMovedHandlerArgs args)
-        {
-            var index = _calculator.ToArrayIndex(missle.Position);
-            if(_field[index.X, index.Y] != (int)FieldCode.WallCode)
-                SetCodeAt(index, FieldCode.MissleCode);
         }
 
         public void DrawBorder()
@@ -178,7 +171,7 @@ namespace Spells
                 case FieldCode.WallCode:
                 {
                     var coordinate = _calculator.ToCoordinate(position);
-                    var healthyObject = _container.GetHealthyObjectAt(coordinate);
+                    var healthyObject = _game.WallStore.GetHealthyObjectAt(coordinate);
                     //Delete object if it's gone
                     if(healthyObject.HitPoints == 0) 
                         SetCodeAt(position, FieldCode.Nothing);
@@ -194,7 +187,7 @@ namespace Spells
             Debug.WriteLine(TimeHelper.GetCurrentTime());
             TimeHelper.Stop();
             var newMissleDirection = GetNewMissleDirection(_calculator.ToArrayIndex(args.Position));
-            _container.CastSpell(spell, newMissleDirection);
+            _game.SpellsContainer.CastSpell(spell, newMissleDirection);
             TimeHelper.Start();
         }
 

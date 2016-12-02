@@ -11,7 +11,10 @@ namespace Spells.ConsoleOutput
         static void Main(string[] args)
         {
             ConsoleField field = new ConsoleField();
-            field.Start();
+            while (field.Start())
+            {
+                field = new ConsoleField();
+            }
         }
     }
 }

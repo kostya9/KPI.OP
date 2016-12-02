@@ -58,7 +58,7 @@ namespace Spells.Domain
 
             _lastCasted = timeNow;
 
-            Debug.WriteLine("Spell casted : {0}\n Shouts {1}", Name, Sound);
+            Debug.WriteLine($"Spell casted : {Name}\n Shouts {Sound}");
             return new Missle(this, position, direction, timeNow);
         }
 

@@ -1,6 +1,6 @@
 ﻿namespace Spells.Domain
 {
-    public class Wall : ICollidable, IHealthyObject
+    internal class Wall : ICollidable, IHealthyObject
     {
         public int MaxHitPoints => 10;
         private int _hitPoints;

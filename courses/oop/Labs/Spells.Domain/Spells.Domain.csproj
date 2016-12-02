@@ -49,6 +49,7 @@
     <Compile Include="Missle.cs" />
     <Compile Include="MissleMover.cs" />
     <Compile Include="PositionIsOccupiedException.cs" />
+    <Compile Include="SpellsGame.cs" />
     <Compile Include="WallStore.cs" />
     <Compile Include="SpellCooldownZeroEventArgs.cs" />
     <Compile Include="SpellsContainer.cs" />
