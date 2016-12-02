@@ -39,7 +39,7 @@ namespace Spells
                 });
             _game.SpellCooldownZero += (SpellCooldownZeroHandler);
             _game.SpellsContainer.AddSpell(new FireBall(), new Vector2D(-4, -4));
-            _game.SpellsContainer.AddSpell(new FireBall(), new Vector2D(4, 4));
+            _game.SpellsContainer.AddSpell(new HealingBall(), new Vector2D(4, 4));
             _game.SpellsContainer.AddSpell(new SpinningFireBall(), new Vector2D(-4, 4));
             _game.SpellsContainer.AddSpell(new FireBall(), new Vector2D(4, -4));
             AddWall(new Vector2D(0, 0));
@@ -75,6 +75,10 @@ namespace Spells
                     return true;
                 if (key.Key == ConsoleKey.Escape)
                     return false;
+                if(key.Key == ConsoleKey.S)
+                    _game.WallStore.SerializeFirst();
+                if(key.Key == ConsoleKey.D)
+                    _game.WallStore.DeserializeFirst();
             }
 
             // r for restart

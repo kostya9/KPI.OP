@@ -1,18 +1,83 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace Spells.Domain
 {
     public class WallStore
     {
         private readonly Dictionary<Vector2D, WallBlock> _walls;
-
+        private readonly string _serializationType = "json";
         internal WallStore()
         {
             this._walls = new Dictionary<Vector2D, WallBlock>();
+        }
+
+        public void SerializeFirst()
+        {
+            var block = _walls.FirstOrDefault().Value;
+            switch (_serializationType)
+            {
+                case "xml":
+                {
+                    
+                    XmlSerializer serializer = new XmlSerializer(typeof(WallBlock), new Type[] { typeof(Wall) });
+                    using (var file = File.Create("text.xml"))
+                    {
+                        serializer.Serialize(file, block);
+                    }
+                }
+                    break;
+                case "json":
+                {
+                        DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(WallBlock), new [] {typeof(Wall)});
+                        using (var file = File.Create("text.json"))
+                        {
+                            serializer.WriteObject(file, block);
+                        }
+                    }
+                    break;
+            }
+
+        }
+
+        public void DeserializeFirst()
+        {
+            var pos = new Vector2D(0, 0);
+            var block = _walls[pos];
+            _walls.Remove(pos);
+            switch (_serializationType)
+            {
+                case "xml":
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(WallBlock));
+                    using (var file = File.OpenRead("text.xml"))
+                    {
+                        block = (WallBlock)serializer.Deserialize(file);
+                    }
+                }
+                break;
+                case "json":
+                {
+                    DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(WallBlock), new[] { typeof(Wall) });
+                    using (var file = File.OpenRead("text.json"))
+                    {
+                            block = (WallBlock)serializer.ReadObject(file);
+                    }
+                }
+                break;
+            }
+            _walls[pos] = block;
+
         }
 
         public void CreateWall(Vector2D position)
@@ -25,17 +90,17 @@ namespace Spells.Domain
 
         public IHealthyObject GetHealthyObjectAt(Vector2D position)
         {
-            return GetWallAt(position);
+            return GetWallAt(position).GetTop();
         }
 
-        internal Wall GetWallAt(Vector2D position)
+        internal WallBlock GetWallAt(Vector2D position)
         {
             if (!ExistsWallAt(position))
                 return null;
 
             var block = _walls[position];
 
-            return block.GetTop();
+            return block;
         }
 
         internal bool ExistsWallAt(Vector2D position)

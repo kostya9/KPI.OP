@@ -1,13 +1,29 @@
 ﻿using System;
+using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace Spells.Domain
 {
-    internal class Wall : ICollidable, IHealthyObject, IComparable
+    [DataContract]
+    [Serializable]
+    public class Wall : ICollidable, IHealthyObject, IComparable
     {
         public int MaxHitPoints => 5;
-        private int _hitPoints;
 
-        public int HitPoints => _hitPoints;
+        
+        private int _hitPoints;
+        [DataMember]
+        [XmlAttribute]
+        public int HitPoints
+        {
+            get { return _hitPoints; }
+            set
+            {
+                if(value > MaxHitPoints)
+                    throw new ArgumentException();
+                _hitPoints = value;
+            }
+        }
 
         public Wall()
         {

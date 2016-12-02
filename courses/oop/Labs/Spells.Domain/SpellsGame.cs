@@ -30,7 +30,7 @@ namespace Spells.Domain
             SpellsContainer = new SpellsContainer();
             _missleMover = new MissleMover(validater);
             WallStore = new WallStore();
-            _collider = new Collider(_missleMover);
+            _collider = new Collider(_missleMover, WallStore);
 
             SpellsContainer.SpellCasted += (s,
                 e) => _missleMover.AddMissle(e.Missle);

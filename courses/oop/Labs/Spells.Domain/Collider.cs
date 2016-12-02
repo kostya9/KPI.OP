@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,10 +12,13 @@ namespace Spells.Domain
     {
         private readonly MissleMover _missleMover;
         private readonly List<Missle> _wasBrokenIntoPieces;
+        private readonly WallStore _store;
 
-        public Collider(MissleMover missleMover)
+        public Collider(MissleMover missleMover,
+            WallStore store)
         {
             _missleMover = missleMover;
+            _store = store;
             _wasBrokenIntoPieces = new List<Missle>();
             AddMissleMoverSubscriptions();
         }
@@ -24,6 +28,20 @@ namespace Spells.Domain
             _missleMover.MisslesCollided += (mFirst,
                 mSecond,
                 e) => Debug.WriteLine("Collision!");
+
+            _missleMover.MisslesCollided += (missle,
+                    collision,
+                    e) =>
+                {
+                    var healing = missle as HealingMissle;
+                    if (healing == null)
+                        return;
+                    var block = collision as WallBlock;
+                    if (block == null)
+                        return;
+                    block.ChangeHitpoints(w => w.HitPoints + healing.Healing, (w) => Debug.WriteLine("Could not heal"));
+                    healing.Collide(block);
+                };
 
             _missleMover.MisslesCollided += (mFirst,
                     mSecond,
