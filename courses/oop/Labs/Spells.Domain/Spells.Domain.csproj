@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collider.cs" />
     <Compile Include="CooldownException.cs" />
     <Compile Include="CooldownExceptionArgs.cs" />
     <Compile Include="FireBall.cs" />
