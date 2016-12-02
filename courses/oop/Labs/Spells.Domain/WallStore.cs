@@ -59,7 +59,7 @@ namespace Spells.Domain
             {
                 case "xml":
                 {
-                    XmlSerializer serializer = new XmlSerializer(typeof(WallBlock));
+                    XmlSerializer serializer = new XmlSerializer(typeof(WallBlock), new Type[] { typeof(Wall) });
                     using (var file = File.OpenRead("text.xml"))
                     {
                         block = (WallBlock)serializer.Deserialize(file);
