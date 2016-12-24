@@ -8,7 +8,7 @@ namespace Spells.Domain
     [Serializable]
     public class Wall : ICollidable, IHealthyObject, IComparable
     {
-        public int MaxHitPoints => 5;
+        public int MaxHitPoints { get; }
 
         
         private int _hitPoints;
@@ -27,8 +27,17 @@ namespace Spells.Domain
 
         public Wall()
         {
+            MaxHitPoints = 5;
             _hitPoints = MaxHitPoints;
         }
+
+        public Wall(int maxHitpoints)
+        {
+            if (maxHitpoints <= 0) throw new ArgumentOutOfRangeException(nameof(maxHitpoints));
+            MaxHitPoints = maxHitpoints;
+            _hitPoints = MaxHitPoints;
+        }
+
         public bool IsCollided => _hitPoints < MaxHitPoints;
         public bool IsDestroyed => _hitPoints == 0;
 

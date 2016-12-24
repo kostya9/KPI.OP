@@ -4,15 +4,17 @@ using Spells.Domain;
 
 namespace Spells
 {
-    internal class ConsoleField
+    internal class ConsoleField : IDisposable
     {
         private static readonly int FixedFrameDeltaMilliseconds;
 
         private readonly int[,] _field;
         private TimeSpan _lastUpdate;
         private readonly Vector2D _fieldUpperLeft = new Vector2D(1, 1);
-        private readonly SpellsGame _game;
+        private SpellsGame Game => _gameReference.Target as SpellsGame;
+        private readonly WeakReference _gameReference;
         private readonly CoordinateCalculator _calculator;
+        private bool disposed;
         private int XMax => _field.GetUpperBound(0) + 1;
 
         private int YMax => _field.GetUpperBound(1) + 1;
@@ -29,29 +31,39 @@ namespace Spells
             _field = new int[31, 31];
             _calculator = new CoordinateCalculator(XMax, YMax);
 
-            _game = new SpellsGame(IsInTheField);
-            _game.MissleMoved += ((m,
+            _gameReference = new WeakReference(new SpellsGame(IsInTheField));
+            Game.MissleMoved += ((m,
                     e) =>
                 {
                     var index = _calculator.ToArrayIndex(m.Position);
                     if (_field[index.X, index.Y] != (int)FieldCode.WallCode)
                         SetCodeAt(index, FieldCode.MissleCode);
                 });
-            _game.SpellCooldownZero += (SpellCooldownZeroHandler);
-            _game.SpellsContainer.AddSpell(new FireBall(), new Vector2D(-4, -4));
-            _game.SpellsContainer.AddSpell(new HealingBall(), new Vector2D(4, 4));
-            _game.SpellsContainer.AddSpell(new SpinningFireBall(), new Vector2D(-4, 4));
-            _game.SpellsContainer.AddSpell(new FireBall(), new Vector2D(4, -4));
+            Game.SpellCooldownZero += (SpellCooldownZeroHandler);
+            Game.SpellsContainer.AddSpell(new FireBall(), new Vector2D(-4, -4));
+            Game.SpellsContainer.AddSpell(new HealingBall(), new Vector2D(4, 4));
+            Game.SpellsContainer.AddSpell(new SpinningFireBall(), new Vector2D(-4, 4));
+            Game.SpellsContainer.AddSpell(new FireBall(), new Vector2D(4, -4));
             AddWall(new Vector2D(0, 0));
             AddWall(new Vector2D(0, 0));
             //_container.CastAllSpellsToRandomDirection();
             _lastUpdate = TimeHelper.GetCurrentTime();
         }
 
+        public ConsoleField(string pathToSettings)
+        {
+            Console.SetWindowPosition(0, 0);
+            Console.SetWindowSize(80, 40);
+            _field = new int[31, 31];
+            _calculator = new CoordinateCalculator(XMax, YMax);
+            //Game = new SpellsGame(IsInTheField, pathToSettings);
+            _lastUpdate = TimeHelper.GetCurrentTime();
+        }
+
         private void AddWall(Vector2D position)
         {
             SetCodeAt(_calculator.ToArrayIndex(position), FieldCode.WallCode);
-            _game.WallStore.CreateWall(position);
+            Game.WallStore.CreateWall(position);
         }
 
         public bool Start()
@@ -59,13 +71,26 @@ namespace Spells
             DrawBorder();
             Draw();
             TimeHelper.Start();
-
+            int odds = 20;
+            Random r = new Random();
             //Main loop
             while (true)
             {
                 // If were any updates - draw them
                 if (Update())
+                {
                     Draw();
+                    // USE RELEASE MODE!!!
+                    if (r.Next(odds) % (odds / 2) == 0)
+                        GC.Collect();
+                    if (Game == null)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Game was cleared by GC");
+                        Console.ReadKey();
+                        return false;
+                    }
+                }
 
                 if(!Console.KeyAvailable)
                     continue;
@@ -76,9 +101,9 @@ namespace Spells
                 if (key.Key == ConsoleKey.Escape)
                     return false;
                 if(key.Key == ConsoleKey.S)
-                    _game.WallStore.SerializeFirst();
+                    Game.WallStore.SerializeFirst();
                 if(key.Key == ConsoleKey.D)
-                    _game.WallStore.DeserializeFirst();
+                    Game.WallStore.DeserializeFirst();
             }
 
             // r for restart
@@ -91,7 +116,7 @@ namespace Spells
             // Fixed framerate
             if (GetDeltaTime() < TimeSpan.FromMilliseconds(FixedFrameDeltaMilliseconds))
                 return false;
-            _game.Update();
+            Game.Update();
             _lastUpdate = TimeHelper.GetCurrentTime();
             return true;
         }
@@ -176,7 +201,7 @@ namespace Spells
                 case FieldCode.WallCode:
                 {
                     var coordinate = _calculator.ToCoordinate(position);
-                    var healthyObject = _game.WallStore.GetHealthyObjectAt(coordinate);
+                    var healthyObject = Game.WallStore.GetHealthyObjectAt(coordinate);
                     //Delete object if it's gone
                     if(healthyObject == null || healthyObject.HitPoints == 0) 
                         SetCodeAt(position, FieldCode.Nothing);
@@ -192,7 +217,7 @@ namespace Spells
             Debug.WriteLine(TimeHelper.GetCurrentTime());
             TimeHelper.Stop();
             var newMissleDirection = GetNewMissleDirection(_calculator.ToArrayIndex(args.Position));
-            _game.SpellsContainer.CastSpell(spell, newMissleDirection);
+            Game.SpellsContainer.CastSpell(spell, newMissleDirection);
             TimeHelper.Start();
         }
 
@@ -243,6 +268,29 @@ namespace Spells
             FieldCode code)
         {
             _field[position.X, position.Y] = (int)code;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (this.disposed)
+                return;
+            if (disposing)
+            {
+                Game.Dispose();
+            }
+
+            this.disposed = true;
+        }
+
+        ~ConsoleField()
+        {
+            this.Dispose(false);
         }
     }
 }

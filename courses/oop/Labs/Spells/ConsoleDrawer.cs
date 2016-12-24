@@ -3,11 +3,9 @@ using Spells.Domain;
 
 namespace Spells
 {
-    internal class ConsoleDrawer
+
+    internal static class ConsoleDrawer
     {
-        static ConsoleDrawer()
-        {
-        }
 
         internal static void DrawMissle(Vector2D position)
         {

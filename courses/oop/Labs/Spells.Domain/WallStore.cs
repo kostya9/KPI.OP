@@ -13,8 +13,9 @@ using System.Xml.Serialization;
 
 namespace Spells.Domain
 {
-    public class WallStore
+    public class WallStore : IDisposable
     {
+        private bool disposed = false;
         private readonly Dictionary<Vector2D, WallBlock> _walls;
         private readonly string _serializationType = "json";
         internal WallStore()
@@ -80,9 +81,15 @@ namespace Spells.Domain
 
         }
 
+        internal void AddWallBlock(Vector2D position, WallBlock block)
+        {
+            if (!ExistsWallAt(position))
+                this._walls[position] = block;
+        }
+
         public void CreateWall(Vector2D position)
         {
-            if(!ExistsWallAt(position))
+            if (!ExistsWallAt(position))
                 _walls[position] = new WallBlock();
 
             _walls[position].Add(new Wall());
@@ -118,6 +125,32 @@ namespace Spells.Domain
                 _walls.Remove(position);
 
             return _walls.ContainsKey(position);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
+
+            if (disposing)
+            {
+                foreach (var wallKeyValuePair in _walls)
+                {
+                    wallKeyValuePair.Value.Dispose();
+                }
+            }
+            disposed = true;
+        }
+
+        ~WallStore()
+        {
+            Dispose(false);
         }
     }
 }

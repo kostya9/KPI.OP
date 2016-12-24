@@ -10,10 +10,13 @@ namespace Spells.ConsoleOutput
     {
         static void Main(string[] args)
         {
-            ConsoleField field = new ConsoleField();
-            while (field.Start())
+            while (true)
             {
-                field = new ConsoleField();
+                using (ConsoleField field = new ConsoleField())
+                {
+                    if (field.Start() == false)
+                        break;
+                }
             }
         }
     }
