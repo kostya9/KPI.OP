@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Spells.Domain
 {
+
     internal class Collider
     {
         private readonly MissleMover _missleMover;
@@ -57,6 +58,8 @@ namespace Spells.Domain
                 ICollidable second,
                 EventArgs e)
             {
+                // REFACTORING : ALgorythom change (was checking a bool in missle that said if it as collided)
+                
                 var otherMissle = second as Missle;
                 if (otherMissle == null || _wasBrokenIntoPieces.Contains(first) || _wasBrokenIntoPieces.Contains(second))
                 {

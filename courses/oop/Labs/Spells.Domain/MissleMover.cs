@@ -23,6 +23,7 @@ namespace Spells.Domain
         }
     }
 
+    // REFACTORIGN extract class behaviour from class Game
     public class MissleMover
     {
         private readonly ValidatePosition _validater;
@@ -46,6 +47,8 @@ namespace Spells.Domain
             MoveMissles();
             CheckForCollision(store);
         }
+
+        // REFACTORING : Move method from spellsContainer
 
         private void MoveMissles()
         {

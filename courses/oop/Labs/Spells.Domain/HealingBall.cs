@@ -21,8 +21,10 @@ namespace Spells.Domain
         public override Missle Cast(Vector2D position,
     Vector2D direction)
         {
+            // REFACTORING : insert reasining variable
+            var healingRate = 1;
             var missle = base.Cast(position, direction);
-            return new HealingMissle(missle, 1);
+            return new HealingMissle(missle, healingRate);
         }
     }
 }

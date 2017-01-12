@@ -7,6 +7,7 @@ using Spells.Domain;
 
 namespace Spells
 {
+    // REFACTORING : replace methods with methods object
     class CoordinateCalculator
     {
         private readonly int _xMax;

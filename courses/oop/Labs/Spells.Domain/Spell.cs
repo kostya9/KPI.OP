@@ -50,6 +50,7 @@ namespace Spells.Domain
             _lastCasted = new TimeSpan(0, 0, 0, 0, 0);
         }
 
+        // RULE F1 (less function arguments) : 4 int -> 2 vectors
         public virtual Missle Cast(Vector2D position, Vector2D direction)
         {
             var canCast = CanCast();

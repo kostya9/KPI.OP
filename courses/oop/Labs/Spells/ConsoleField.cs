@@ -81,7 +81,7 @@ namespace Spells
                 {
                     Draw();
                     // USE RELEASE MODE!!!
-                    if (r.Next(odds) % (odds / 2) == 0)
+                    if (r.Next(odds) == 0)
                         GC.Collect();
                     if (Game == null)
                     {
@@ -111,6 +111,7 @@ namespace Spells
         }
 
 
+        // RULE G30: functions one operation
         private bool Update()
         {
             // Fixed framerate
@@ -122,6 +123,7 @@ namespace Spells
         }
 
         // To have an ability to delete something if it's gone from the field
+        // RULE G28(incapsulated conditional): 
         private bool IsInTheField(Vector2D position)
         {
             var xMax = XMax;
@@ -133,6 +135,7 @@ namespace Spells
                    (indexPos.Y >= 0);
         }
 
+        // RULE N1 : straightforward name
         private TimeSpan GetDeltaTime()
         {
             return TimeHelper.GetCurrentTime() - _lastUpdate;
@@ -143,6 +146,7 @@ namespace Spells
             var xMax = XMax;
             var yMax = YMax;
 
+            // REFACTORING : method extract 
             DrawHorizontalBorders(xMax, yMax);
             DrawVerticalBorders(xMax, yMax);
         }
