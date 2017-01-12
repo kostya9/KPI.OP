@@ -12,20 +12,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Spells.Editor.ViewModel;
 
-namespace SpellsEditor
+namespace Spells.Editor
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MainViewModel ViewModel { get; }
         public MainWindow()
         {
-            ViewModel = new MainViewModel();
-            DataContext = ViewModel;
             InitializeComponent();
+            DataContext = new MainWindowViewModel();
         }
     }
 }

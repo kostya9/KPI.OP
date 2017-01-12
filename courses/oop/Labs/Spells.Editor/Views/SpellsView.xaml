@@ -1,0 +1,91 @@
+﻿<UserControl x:Class="Spells.Editor.Views.SpellsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:model="clr-namespace:Spells.Editor.Model"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="TypeDataFromSpellsType" MethodName="GetValues" ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="model:SpellsType"></x:Type>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ControlTemplate x:Key="Spell">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 10px">
+                    <Label>Type</Label>
+                    <ComboBox ItemsSource="{Binding Source={StaticResource TypeDataFromSpellsType}}" SelectedValue="{Binding SpellType, Mode=TwoWay}"></ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 10px">
+                    <Label>X</Label>
+                    <TextBox PreviewTextInput="NumberValidation" MinWidth="50px" Text="{Binding Coordinates.X, Mode=TwoWay}"></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 10px">
+                    <Label>Y</Label>
+                    <TextBox PreviewTextInput="NumberValidation" MinWidth="50px" Text="{Binding Coordinates.Y, Mode=TwoWay}"></TextBox>
+                </StackPanel>
+            </StackPanel>
+        </ControlTemplate>
+        <Style TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+        </Style>
+    </UserControl.Resources>
+    <Grid Margin="0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition  Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <ListView ItemsSource="{Binding SpellList}" SelectedItem="{Binding SelectedSpell}" Grid.Column="0" Grid.RowSpan="2">
+            <ListView.Resources>
+                <ContextMenu x:Key="DeleteSpell">
+                    <MenuItem Header="Delete"  Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.DeleteCommand}" CommandParameter="{Binding}"></MenuItem>
+                </ContextMenu>
+            </ListView.Resources>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="ContextMenu" Value="{StaticResource DeleteSpell}"></Setter>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Type" Width="120px" DisplayMemberBinding="{Binding SpellType}"></GridViewColumn>
+                    <GridViewColumn Header="X" Width="120px" DisplayMemberBinding="{Binding Coordinates.X}"></GridViewColumn>
+                    <GridViewColumn Header="Y" Width="120px" DisplayMemberBinding="{Binding Coordinates.Y}" ></GridViewColumn>
+                    <GridViewColumn>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.DeleteCommand}" CommandParameter="{Binding}">Delete</Button>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridView.ColumnHeaderContainerStyle>
+                        <Style TargetType="{x:Type GridViewColumnHeader}">
+                            <Setter Property="IsEnabled" Value="False" />
+                        </Style>
+                    </GridView.ColumnHeaderContainerStyle>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <Border BorderBrush="Gray" BorderThickness="1" Grid.Column="1" Grid.Row="0">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Width="150px" Height="190" Margin="10px" x:Name="Add">
+                <ContentControl Template = "{StaticResource Spell}" DataContext="{Binding AddingSpell}"></ContentControl>
+                <Button Width="50px" Margin="0 10px" Command="{Binding AddCommand}">Add</Button>
+            </StackPanel>
+        </Border>
+        <Border BorderBrush="Gray" BorderThickness="1" Grid.Column="1" Grid.Row="1">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Width="150px" Margin="10px" Height="190" x:Name="Change">
+                <ContentControl Template = "{StaticResource Spell}" DataContext="{Binding ChangingSpell}"></ContentControl>
+                <Button Width="50px" Margin="0 10px" Command="{Binding ChangeCommand}">Change</Button>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
+

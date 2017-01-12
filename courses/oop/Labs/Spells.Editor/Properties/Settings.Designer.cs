@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SpellsEditor.Properties
+namespace Spells.Editor.Properties
 {
 
 
