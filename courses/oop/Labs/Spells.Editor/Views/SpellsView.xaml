@@ -30,9 +30,6 @@
                 </StackPanel>
             </StackPanel>
         </ControlTemplate>
-        <Style TargetType="ListViewItem">
-            <Setter Property="HorizontalContentAlignment" Value="Center" />
-        </Style>
         <editor:SpellTypeValueConverter x:Key="SpellTypeValueConverter" />
     </UserControl.Resources>
     <Grid Margin="0">
@@ -53,6 +50,7 @@
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Setter Property="ContextMenu" Value="{StaticResource DeleteSpell}"></Setter>
+                    <Setter Property="HorizontalContentAlignment" Value="Center" />
                 </Style>
             </ListView.ItemContainerStyle>
             <ListView.View>
@@ -75,6 +73,7 @@
                     </GridView.ColumnHeaderContainerStyle>
                 </GridView>
             </ListView.View>
+            
         </ListView>
         <Border BorderBrush="Gray" BorderThickness="1" Grid.Column="1" Grid.Row="0">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Width="150px" Height="190" Margin="10px" x:Name="Add">

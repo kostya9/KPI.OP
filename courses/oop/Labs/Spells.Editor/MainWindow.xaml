@@ -7,7 +7,7 @@
         xmlns:viewModel="clr-namespace:Spells.Editor.ViewModel"
         xmlns:views="clr-namespace:Spells.Editor.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="650">
+        Title="Spells Editor" Height="500" Width="650">
     <Window.Resources>
 
     </Window.Resources>
