@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:model="clr-namespace:Spells.Editor.Model"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:editor="clr-namespace:Spells.Editor"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
@@ -32,6 +33,7 @@
         <Style TargetType="ListViewItem">
             <Setter Property="HorizontalContentAlignment" Value="Center" />
         </Style>
+        <editor:SpellTypeValueConverter x:Key="SpellTypeValueConverter" />
     </UserControl.Resources>
     <Grid Margin="0">
         <Grid.ColumnDefinitions>
@@ -39,8 +41,8 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
             <RowDefinition  Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <ListView ItemsSource="{Binding SpellList}" SelectedItem="{Binding SelectedSpell}" Grid.Column="0" Grid.RowSpan="2">
             <ListView.Resources>
@@ -55,7 +57,8 @@
             </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Type" Width="120px" DisplayMemberBinding="{Binding SpellType}"></GridViewColumn>
+                    <GridViewColumn Header="Type" Width="120px" DisplayMemberBinding="{Binding SpellType, Converter={StaticResource SpellTypeValueConverter}}">
+                    </GridViewColumn>
                     <GridViewColumn Header="X" Width="120px" DisplayMemberBinding="{Binding Coordinates.X}"></GridViewColumn>
                     <GridViewColumn Header="Y" Width="120px" DisplayMemberBinding="{Binding Coordinates.Y}" ></GridViewColumn>
                     <GridViewColumn>
@@ -73,7 +76,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
-
         <Border BorderBrush="Gray" BorderThickness="1" Grid.Column="1" Grid.Row="0">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Width="150px" Height="190" Margin="10px" x:Name="Add">
                 <ContentControl Template = "{StaticResource Spell}" DataContext="{Binding AddingSpell}"></ContentControl>

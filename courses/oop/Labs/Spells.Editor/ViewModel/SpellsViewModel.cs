@@ -2,6 +2,8 @@
 using System.Dynamic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Data;
+using Spells.Editor.Annotations;
 using Spells.Editor.Model;
 
 namespace Spells.Editor.ViewModel
@@ -12,6 +14,7 @@ namespace Spells.Editor.ViewModel
         private SpellModel _selectedSpell;
         private SpellModel _addingSpell;
         private SpellModel _changingSpell;
+
 
         public ObservableCollection<SpellModel> SpellList
         {

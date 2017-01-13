@@ -61,6 +61,7 @@
     <Compile Include="Model\SpellsType.cs" />
     <Compile Include="Model\Vector2D.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="SpellTypeValueConverter.cs" />
     <Compile Include="ViewModel\BindableBase.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\SaveViewModel.cs" />
