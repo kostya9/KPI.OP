@@ -7,6 +7,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-            
+        <StackPanel Orientation="Horizontal" Width="300px" Height="100px">
+            <Label VerticalAlignment="Center">Export path</Label>
+            <TextBox Width="100px" Height="20px" Text="{Binding PathToExportFile, Mode=TwoWay}"></TextBox>
+            <Button Height="20px" Command="{Binding ExportCommand}">Export</Button>
+        </StackPanel>
     </Grid>
 </UserControl>

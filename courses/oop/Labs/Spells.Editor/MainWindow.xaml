@@ -12,14 +12,22 @@
 
     </Window.Resources>
     
-    <Grid>
-        <TabControl>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Main">
+                <MenuItem Header="Exit" Command="{Binding ExitCommand}"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="File">
+                <MenuItem Header="Import" Command="{Binding ImportCommand}"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <TabControl SelectionChanged="Selector_OnSelectionChanged">
         <TabItem Header="Spells" DataContext="{Binding SpellsViewModel}">
             <views:SpellsView></views:SpellsView>
         </TabItem>
-        <TabItem Header="Save" DataContext="{Binding SaveViewModel}">
+        <TabItem x:Name="SaveTab" Header="Save" DataContext="{Binding SaveViewModel}">
             <views:SaveView></views:SaveView>
         </TabItem>
     </TabControl>
-    </Grid>
+    </DockPanel>
 </Window>

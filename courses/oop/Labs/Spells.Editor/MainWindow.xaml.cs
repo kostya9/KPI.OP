@@ -26,5 +26,12 @@ namespace Spells.Editor
             InitializeComponent();
             DataContext = new MainWindowViewModel();
         }
+
+        private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var model = ((MainWindowViewModel) DataContext);
+            if (SaveTab.IsSelected)
+                model.SaveViewModel.Spells = model.SpellsViewModel.SpellList.ToList();
+        }
     }
 }
