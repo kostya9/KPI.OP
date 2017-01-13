@@ -58,6 +58,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ArgumentlessICommand.cs" />
     <Compile Include="Model\SpellsType.cs" />
     <Compile Include="Model\Vector2D.cs" />
     <Compile Include="Properties\Annotations.cs" />

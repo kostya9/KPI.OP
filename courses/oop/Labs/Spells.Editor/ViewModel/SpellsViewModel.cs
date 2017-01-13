@@ -70,19 +70,19 @@ namespace Spells.Editor.ViewModel
         {
             SpellList = new ObservableCollection<SpellModel> {new SpellModel()};
             AddingSpell = new SpellModel();
-            AddCommand = new GenericICommand<object>(Add, CanAdd);
+            AddCommand = new ArgumentlessICommand(Add, CanAdd);
             DeleteCommand = new GenericICommand<SpellModel>(Delete);
-            ChangeCommand = new GenericICommand<object>(Change, CanChange);
+            ChangeCommand = new ArgumentlessICommand(Change, CanChange);
 
 
         }
 
-        public GenericICommand<object> AddCommand { get; set; }
-        public GenericICommand<object> ChangeCommand { get; set; }
+        public ArgumentlessICommand AddCommand { get; set; }
+        public ArgumentlessICommand ChangeCommand { get; set; }
 
         public GenericICommand<SpellModel> DeleteCommand { get; set; }
 
-        public void Add(object arg)
+        public void Add()
         {
             SpellList.Add(AddingSpell);
             AddingSpell = new SpellModel();
@@ -90,7 +90,7 @@ namespace Spells.Editor.ViewModel
             AddCommand.RaiseCanExecuteChanged();
         }
 
-        public bool CanAdd(object arg)
+        public bool CanAdd()
         {
             return !SpellList.Any(s => s.Coordinates.Equals(AddingSpell.Coordinates));
         }
@@ -106,7 +106,7 @@ namespace Spells.Editor.ViewModel
             ChangeCommand.RaiseCanExecuteChanged();
         }
 
-        public void Change(object arg)
+        public void Change()
         {
             _selectedSpell.Coordinates = _changingSpell.Coordinates;
             _selectedSpell.SpellType = _changingSpell.SpellType;
@@ -114,7 +114,7 @@ namespace Spells.Editor.ViewModel
             ChangeCommand.RaiseCanExecuteChanged();
         }
 
-        public bool CanChange(object arg)
+        public bool CanChange()
         {
             return _changingSpell != null && SpellList.All(s => s.Coordinates != ChangingSpell?.Coordinates);
         }

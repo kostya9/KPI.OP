@@ -16,16 +16,16 @@ namespace Spells.Editor.ViewModel
             set { SetProperty(ref _pathToExportFile, value); }
         }
 
-        public GenericICommand<object> ExportCommand { get; set; }
+        public ArgumentlessICommand ExportCommand { get; set; }
         public List<SpellModel> Spells { get; set; }
 
         public SaveViewModel()
         {
             PathToExportFile = "";
-            ExportCommand = new GenericICommand<object>(Export);
+            ExportCommand = new ArgumentlessICommand(Export);
         }
 
-        public void Export(object arg)
+        public void Export()
         {
             string directory = null;
             try

@@ -28,23 +28,23 @@ namespace Spells.Editor.ViewModel
 
         public SaveViewModel SaveViewModel { get; set; }
 
-        public GenericICommand<object> ExitCommand { get; set; }
-        public GenericICommand<object> ImportCommand { get; set; }
+        public ArgumentlessICommand ExitCommand { get; set; }
+        public ArgumentlessICommand ImportCommand { get; set; }
 
         public MainWindowViewModel()
         {
             SpellsViewModel = new SpellsViewModel();
             SaveViewModel = new SaveViewModel();
-            ExitCommand = new GenericICommand<object>(Exit);
-            ImportCommand = new GenericICommand<object>(Import);
+            ExitCommand = new ArgumentlessICommand(Exit);
+            ImportCommand = new ArgumentlessICommand(Import);
         }
 
-        public void Exit(object arg)
+        public void Exit()
         {
             Application.Current.Shutdown();
         }
 
-        public void Import(object arg)
+        public void Import()
         {
             OpenFileDialog fileDialog = new OpenFileDialog();
             if (fileDialog.ShowDialog() == true)
